@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ssss.dao.UserDao">
+	
+	<resultMap type="User" id="userMap">
+		<id column="userID" property="userID"/>
+		<result column="userName" property="userName"/>
+		<result column="userPwd" property="userPwd"/>
+		<result column="userPhone" property="userPhone"/>
+		<result column="userEmail" property="userEmail"/>
+		<result column="userIdentify" property="userIdentify"/>
+		<result column="userCredit" property="userCredit"/>
+		<result column="userState" property="userState"/>
+		<result column="userBadHistory" property="userBadHistory"/>
+		<result column="userOwe" property="userOwe"/>
+	</resultMap>
+	
+	<resultMap type="Message" id="messageMap">
+		<result column="msgID" property="msgID"/>
+		<result column="msgTitle" property="msgTitle"/>
+		<result column="msgContent" property="msgContent"/>
+		<result column="msgState" property="msgState"/>
+		<result column="msgClass" property="msgClass"/>
+		<result column="userID" property="userID"/>
+	</resultMap>
+	
+	<insert id="addAll" parameterType="User">
+		insert into user values(null,#{userName},#{userPwd},#{userPhone},#{userIdentify},#{userEmail},#{userCredit},#{userState},#{userBadHistory},#{userOwe})
+	</insert>
+	
+	<update id="update" parameterType="User">
+		update user set userName = #{userName},userPwd = #{userPwd},userEmail = #{userEmail},userPhone = #{userPhone},userCredit = #{userCredit},userState = #{userState},userIdentify = #{userIdentify},userBadHistory = #{userBadHistory},userOwe = #{userOwe}
+    where userID = #{userID}
+	</update>
+	
+	<select id="findByID" parameterType="Integer" resultType="User">
+		select * from user where userID = #{userID}
+	</select>
+	
+	<select id="findAll" parameterType="PageModel" resultMap="userMap">
+		select * from user where userState="1" or userState="2" or userState="3"
+		limit #{pagestart},#{pagesize}
+	</select>
+	
+	<select id="findAllCount" parameterType="PageModel" resultType="Integer">
+	   select count(*) from user where userState="1" or userState="2" or userState="3"
+	</select>
+	
+	<select id="findByUserName" parameterType="String" resultType="User">
+		select * from user where userName = #{userName}
+	</select>
+	
+	<select id="findByUserIdentify" parameterType="String" resultType="User">
+		select * from user where userIdentify = #{userIdentify}
+	</select>
+	
+	<select id="findByManagerName" parameterType="String" resultType="Manager">
+		select * from manager where managerName = #{managerName}
+	</select>
+	
+	<select id="findByAdminName" parameterType="String" resultType="Administrator">
+		select * from administrator where adminName = #{adminName}
+	</select>
+	
+	<select id="countMsg" parameterType="Integer" resultType="Integer">
+		select count(*) from message where userID=#{userID} and msgState="1"
+	</select>
+	
+	<select id="findMsgByID" parameterType="Integer" resultType="Message">
+		select * from message where msgID = #{msgID}
+	</select>
+	
+	<select id="findAllMsg" parameterType="Integer" resultMap="messageMap">
+		select * from message where userID=#{userID}  order by msgID DESC
+	</select>
+	
+	<update id="readMsg" parameterType="Integer">
+		update message set msgState = "2" where msgID = #{msgID}
+	</update>
+</mapper>

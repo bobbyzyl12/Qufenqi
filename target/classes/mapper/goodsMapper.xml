@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ssss.dao.GoodsDao">
+	
+	<resultMap type="Goods" id="goodsMap">
+		<id column="goodsID" property="goodsID"/>
+		<result column="goodsName" property="goodsName"/>
+		<result column="goodsState" property="goodsState"/>
+		<result column="goodsDescribe" property="goodsDescribe"/>
+		<result column="goodsBrand" property="goodsBrand"/>
+		<result column="goodsClass" property="goodsClass"/>
+		<result column="goodsPicture" property="goodsPicture"/>
+	</resultMap>
+	
+	<resultMap type="Tag" id="tagMap">
+		<result column="goodsID" property="goodsID"/>
+		<result column="tag" property="tag"/>
+		<result column="price" property="price"/>
+		<result column="storage" property="storage"/>
+	</resultMap>
+	
+	
+	
+	<insert id="add" parameterType="Goods">
+		insert into goods(goodsID,goodsName,goodsState,goodsDescribe,goodsPicture,goodsBrand,goodsClass) values(null,#{goodsName},#{goodsState},#{goodsDescribe},#{goodsPicture},#{goodsBrand},#{goodsClass})
+	</insert>
+	
+	<insert id="addTag" parameterType="Tag">
+		insert into tag(goodsID,tag,price,storage) values(#{goodsID},#{tag},#{price},#{storage})
+	</insert>
+	
+	<!--通过goodsId查找其goods的tag以及其所决定的所有元素-->
+	<select id="findByID" parameterType="Integer" resultType="Goods">
+		select * from goods where goodsID = #{goodsID}
+	</select>
+	
+	<!--通过goodsId查找其goods的tag以及其所决定的所有元素-->
+	<select id="findTagsByID" parameterType="Integer" resultMap="tagMap">
+		select * from tag where goodsID = #{goodsID}
+	</select>
+	
+	<select id="findAll" parameterType="PageModel" resultMap="goodsMap">
+		select * from goods
+		limit #{pagestart},#{pagesize}
+	</select>
+	
+	<select id="findAllCount" resultType="Integer">
+	   select count(*) from goods
+	</select>
+</mapper>
