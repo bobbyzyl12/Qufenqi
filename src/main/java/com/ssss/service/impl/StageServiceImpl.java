@@ -55,20 +55,8 @@ public class StageServiceImpl  implements StageService{
 	}
 	
 	public String updateCredit(Credit credit){
-		Integer creditID= credit.getCreditID();
-		Credit originCredit = stageDao.findCreditByID(creditID);
-		Integer sameNameCount = stageDao.findCreditCountByName(credit.getCreditName());
-		Integer sameLevelUpCount = stageDao.findCreditCountByMinLevelUp(credit.getMinLevelUp());
-		if(originCredit.getCreditName()!=credit.getCreditName() && sameNameCount>=1){
-			return "repeat";
-		}
-		else if(originCredit.getMinLevelUp()!=credit.getMinLevelUp() && sameLevelUpCount>=1){
-			return "repeatMinLevelUp";
-		}
-		else{
 			stageDao.updateCredit(credit);
 			return "success";
-		}
 	}
 	
 	public Credit findCreditByID(Integer creditID){
