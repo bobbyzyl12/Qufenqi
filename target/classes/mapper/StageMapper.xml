@@ -1,7 +1,54 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.ssss.dao.StageDao">
+	
 	<select id="findCreditNameByID" parameterType="Integer" resultType="String">
 		select creditName from credit where creditID=#{credirID}
 	</select>
+	
+	<resultMap type="Credit" id="creditMap">
+		<id column="creditID" property="creditID"/>
+		<result column="creditName" property="creditName"/>
+		<result column="charge" property="charge"/>
+		<result column="maxPass" property="maxPass"/>
+		<result column="maxOwe" property="maxOwe"/>
+		<result column="minLevelUp" property="minLevelUp"/>
+	</resultMap>
+	
+	<select id="findAllCredit" parameterType="PageModel" resultMap="creditMap">
+		select * from credit
+		limit #{pagestart},#{pagesize}
+	</select>
+	
+	<select id="findAllCreditCount" resultType="Integer">
+	   select count(*) from credit
+	</select>
+	
+	<select id="findCreditByID" parameterType="Integer" resultType="Credit">
+		select * from credit where creditID=#{creditID}
+	</select>
+	
+	<select id="findCreditCountByName" parameterType="String" resultType="Integer">
+		select count(*) from credit where creditName=#{creditName}
+	</select>
+	
+	<select id="findCreditByName" parameterType="String" resultType="Credit">
+		select * from credit where creditName=#{creditName}
+	</select>
+	
+	<select id="findCreditCountByMinLevelUp" parameterType="Float" resultType="Integer">
+		select count(*) from credit where minLevelUp=#{minLevelUp}
+	</select>
+	
+	<select id="findCreditByMinLevelUp" parameterType="Float" resultType="Credit">
+		select * from credit where minLevelUp=#{minLevelUp}
+	</select>
+	
+	<insert id="addCredit" parameterType="Credit">
+		insert into credit values(null,#{creditName},#{charge},#{maxPass},#{maxOwe},#{minLevelUp})
+	</insert>
+	
+	<update id="updateCredit" parameterType="Credit">
+		update credit set creditName = #{creditName},charge = #{charge},maxPass =#{maxPass},maxOwe=#{maxOwe},minLevelUp=#{minLevelUp} where creditID = #{creditID}
+	</update>
 </mapper>

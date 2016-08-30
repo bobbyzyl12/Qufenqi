@@ -46,7 +46,7 @@
 			<input class="btn" type="submit" value="点击进入"/>
 	</form>
 	<form action="${ctx}/page/jumpToTestPage" method="post">
-			<input class="btn" type="submit" value="点击进入"/>
+			<input class="btn" type="submit" value="测试页面"/>
 	</form>
 </body>
 </html>

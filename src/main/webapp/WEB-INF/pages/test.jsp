@@ -7,16 +7,11 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Insert title here</title>
+<script type="text/javascript">
+</script>
 </head>
 <body>
-	<form action="${ctx}/page/addPicture" method="post" enctype="multipart/form-data">        
-    <table>  
-        <tr>  
-            <td width="100" align="right">照片：</td>  
-            <td><input type="file" name="studentPhoto"/></td>  
-        </tr>  
-    </table>  
-    <input type="submit">  
-</form>  
+  
+ 
 </body>
 </html>

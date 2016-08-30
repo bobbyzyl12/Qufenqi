@@ -9,7 +9,6 @@ import com.ssss.entity.User;
 
 public interface GoodsDao {
 	void add(Goods goods);
-	
 	void addTag(Tag temp);
 	
 	List<Goods> findAll(PageModel<Goods> t);
@@ -17,4 +16,6 @@ public interface GoodsDao {
 	Integer findAllCount(PageModel<Goods> pageModel);
 
 	List<Tag> findTagsByID(Integer goodsID);
+	
+	
 }

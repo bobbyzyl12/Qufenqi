@@ -47,4 +47,5 @@
 	<select id="findAllCount" resultType="Integer">
 	   select count(*) from goods
 	</select>
+
 </mapper>

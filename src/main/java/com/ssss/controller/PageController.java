@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.ssss.entity.Credit;
 import com.ssss.entity.Goods;
 import com.ssss.entity.GoodsPack;
 import com.ssss.entity.PageModel;
-import com.ssss.entity.Picture;
 import com.ssss.entity.User;
 import com.ssss.service.GoodsService;
 import com.ssss.service.StageService;
@@ -209,7 +209,16 @@ public class PageController {
      * @return
      */
 	@RequestMapping(value = "/jumpToCreditAdmin")
-	public String jumpToCreditAdmin(PageModel<GoodsPack> pageModel,Map<String, Object> map){		
+	public String jumpToCreditAdmin(PageModel<Credit> pageModel,Map<String, Object> map){		
+		if (pageModel == null) {
+			pageModel = new PageModel<Credit>();
+		}
+		pageModel.setPagesize(10);
+		List<Credit> creditList = stageService.findAllCredit(pageModel);
+		pageModel.setTotalrecode(stageService.findAllCreditCount(pageModel));
+		pageModel.setDatas(creditList);
+		map.put("goodsList", creditList);
+		map.put("pageModel", pageModel);
 		return "admin/creditAdmin";
 	}
 	
@@ -224,7 +233,7 @@ public class PageController {
 	}
 	
 	/**
-     * 跳转到管理员的订单管理页面
+     * 跳转测试页面
      * @param
      * @return
      */
@@ -232,5 +241,7 @@ public class PageController {
 	public String jumpToTestPage(PageModel<GoodsPack> pageModel,Map<String, Object> map){		
 		return "test";
 	}
+	
+	
 	
 }
