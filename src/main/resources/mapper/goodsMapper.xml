@@ -20,18 +20,29 @@
 	</resultMap>
 	
 	
+	<resultMap type="Integer" id="stageMap">
+		<result column="stageID" property="stageID"/>
+	</resultMap>
 	
 	<insert id="add" parameterType="Goods">
 		insert into goods(goodsID,goodsName,goodsState,goodsDescribe,goodsPicture,goodsBrand,goodsClass) values(null,#{goodsName},#{goodsState},#{goodsDescribe},#{goodsPicture},#{goodsBrand},#{goodsClass})
+	</insert>
+	
+	<insert id="addStage" parameterType="GoodsStage">
+		insert into goodsStage(goodsID,stageID) values(#{goodsID},#{stageID})
 	</insert>
 	
 	<insert id="addTag" parameterType="Tag">
 		insert into tag(goodsID,tag,price,storage) values(#{goodsID},#{tag},#{price},#{storage})
 	</insert>
 	
-	<!--通过goodsId查找其goods的tag以及其所决定的所有元素-->
+	<!--通过goodsId查找其goods以及其所决定的所有元素-->
 	<select id="findByID" parameterType="Integer" resultType="Goods">
 		select * from goods where goodsID = #{goodsID}
+	</select>
+	
+	<select id="findByName" parameterType="String" resultType="Goods">
+		select * from goods where goodsName = #{goodsName}
 	</select>
 	
 	<!--通过goodsId查找其goods的tag以及其所决定的所有元素-->
@@ -48,4 +59,11 @@
 	   select count(*) from goods
 	</select>
 
+	<select id="findAllStages" parameterType="Integer" resultMap="stageMap">
+	   select stageID from goodsStage where goodsID=#{goodsID}
+	</select>
+
+	<delete id="deleteAllStages" parameterType="Integer"> 
+		delete from  goodsStage  where goodsID=#{goodsID}
+	</delete>
 </mapper>

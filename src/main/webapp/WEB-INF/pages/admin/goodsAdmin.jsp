@@ -852,6 +852,7 @@ function closeBg() {
 			<p class="login_title">
 				<span class="title_name">商品名：</span><span class="title_name" style="font-size:10px">（必填）</span>
 				<span class="alert_msg" id="goodsNameError">*商品名称长度应在3-100字符之间</span>
+				<span class="alert_msg" id="goodsNameError">*商品名称重复</span>
 			</p>
 			<input type="text" id="goodsName" placeholder="请输入商品名" class="signin_input">
 						
