@@ -572,6 +572,10 @@
 		background-color:#fff;
 		border-radius:3px;
 	}
+	.checkBox{
+		margin-left:5px;
+		margin-right:20px;
+	}
 </style>
 
 <script type="text/javascript">
@@ -887,6 +891,20 @@ function closeBg() {
 				<button class="btn_cancel" style="width:50px;height:25px;font-size:10px;">上传</button>
 			</p>
 			
+			<p class="login_title">
+				<span class="title_name">商品分期:</span><span class="title_name" style="font-size:10px">（必填）</span>
+				<br>
+				<div style="padding-left:20px;height:40px;">
+					3期<input id="addCheckBox3" type="checkbox" style="margin-left: 5px;margin-right: 15px;">
+					6期<input id="addCheckBox6" type="checkbox"style="margin-left: 5px;margin-right: 15px;">
+					9期<input id="addCheckBox9"  type="checkbox"style="margin-left: 5px;margin-right: 15px;">
+					12期<input id="addCheckBox12" type="checkbox"style="margin-left: 5px;margin-right: 15px;">
+					<br>
+					18期<input id="addCheckBox18" type="checkbox"style="margin-left: 5px;margin-right: 15px;">
+					24期<input id="addCheckBox24" type="checkbox"style="margin-left: 5px;margin-right: 15px;">
+					36期<input id="addCheckBox36" type="checkbox"style="margin-left: 5px;margin-right: 15px;">
+				</div>
+			</p>
 			<p>
 				<button id="addTagsBtn" class="addTagsBtn">
 					<span class="glyphicon glyphicon-plus add_btn_icon"></span>
