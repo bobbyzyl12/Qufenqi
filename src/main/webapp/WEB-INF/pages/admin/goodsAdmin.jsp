@@ -660,8 +660,55 @@
 		    
 		    $("#addTagsBtn").click(function(){
 		    	$("#addTagform").show();
-		    	
 		    });
+		    
+		    $('#addGoodsSaveButton').click(function(){
+		    	
+		    	var tempTagList = new Array(); 
+		    	var tableObj = document.getElementById('addTagList').rows[1];
+		    	var okTable=true;
+		    	if (tableObj == null) {
+		    		okTable=false;
+		    	}
+		    	var i=Number(0);
+		    	var j=Number(0);
+		    	var tempTagName;
+		    	var tempPrice;
+		    	var tempStorage;
+		    	var tempTagList= new Array();
+		    	if(okTable){
+		    		$("#addTagList tr td").each(function(){
+			    		var tempTD=this.innerHTML;
+			    		if(j==0){
+			    			j=j+1;
+			    			tempTagName=tempTD;
+			    		}
+			    		else if(j==1){
+			    			tempPrice=tempTD;
+			    			j=j+1;
+			    		}
+			    		else if(j==2){
+			    			tempStorage=tempTD;
+			    			j=0;
+			    			alert(tempTagName);
+			    			alert(tempPrice);
+			    			alert(tempStorage);
+			    			var tempTag = {'tag':tempTagName,'price':tempPrice,'storage':tempStorage};
+			    			$.ajax({ 							//提交                          	  
+								url: '${ctx}/goods/addTag',       //处理注册的页面                 
+								type: 'POST',
+								data: tempTag,
+								dataType: 'json',
+								success: function (msg){} });
+				    	
+			    		}
+		    		});
+		    		
+		    		
+		    	}
+		               
+		               
+	    	});
 		});
 		
 	});
@@ -851,8 +898,7 @@ function closeBg() {
 		<div class="input_box">
 			<p class="login_title">
 				<span class="title_name">商品名：</span><span class="title_name" style="font-size:10px">（必填）</span>
-				<span class="alert_msg" id="goodsNameError">*商品名称长度应在3-100字符之间</span>
-				<span class="alert_msg" id="goodsNameError">*商品名称重复</span>
+				<span class="alert_msg" id="goodsNameError">*商品名称长度应在3-100字符之间</span><span class="alert_msg" id="goodsNameError">*商品名称重复</span>
 			</p>
 			<input type="text" id="goodsName" placeholder="请输入商品名" class="signin_input">
 						
@@ -902,10 +948,11 @@ function closeBg() {
 					12期<input id="addCheckBox12" type="checkbox"style="margin-left: 5px;margin-right: 15px;">
 					<br>
 					18期<input id="addCheckBox18" type="checkbox"style="margin-left: 5px;margin-right: 15px;">
-					24期<input id="addCheckBox24" type="checkbox"style="margin-left: 5px;margin-right: 15px;">
+					24期<input id="addCheckBox24" type="checkbox"style="margin-left:5px;margin-right: 15px;">
 					36期<input id="addCheckBox36" type="checkbox"style="margin-left: 5px;margin-right: 15px;">
 				</div>
 			</p>
+			
 			<p>
 				<button id="addTagsBtn" class="addTagsBtn">
 					<span class="glyphicon glyphicon-plus add_btn_icon"></span>
