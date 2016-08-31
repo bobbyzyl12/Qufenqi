@@ -653,6 +653,7 @@
 		        width: bw,
 		        display: "block"
 		    });
+		    
 		    $("#addSaveButton").click(function(){
 		    	var tempCreditName = $("#addCreditName").val();
 		    	var tempCharge = $("#addCharge").val();
@@ -831,7 +832,7 @@ $(function(){
 				data: tempCredit,                
 				success: function (msg) { 
 	                if (msg == "success"){
-	                	$("#editSuccessDialog").show();
+	                	window.location.href='${ctx}/page/jumpToCreditAdmin?pageNo=${pageModel.pageNo}';
 	                  }
 	                else if(msg == "repeat"){
 	                	$("#repeatError2").show();
@@ -990,7 +991,7 @@ function closeBg() {
 				<span class="alert_msg" id="creditNameError">*等级名长度应在3-32字符之间</span>
 				<span class="alert_msg" id="repeatError">*该用户等级名已存在</span>
 			</p>
-			<input type="text" id="addCreditNameInput" placeholder="信用等级名" class="signin_input">
+			<input type="text" id="addCreditName" placeholder="信用等级名" class="signin_input">
 						
 			<p class="login_title">
 				<span class="title_name">逾期日利率</span><span class="title_name" style="font-size:10px">（必填）</span>

@@ -34,7 +34,8 @@ public class StageController {
 	@RequestMapping(value = "/updateCredit")
 	@ResponseBody
 	public String updateCredit(Credit tempCredit){
-		return stageService.updateCredit(tempCredit);
+		String res = stageService.updateCredit(tempCredit);
+		return res;
 	}
 	
 	/**
