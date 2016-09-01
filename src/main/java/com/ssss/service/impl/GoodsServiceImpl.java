@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ssss.dao.GoodsDao;
 import com.ssss.entity.Goods;
 import com.ssss.entity.GoodsPack;
+import com.ssss.entity.GoodsStage;
 import com.ssss.entity.PageModel;
 import com.ssss.entity.Tag;
 import com.ssss.entity.User;
@@ -46,7 +47,6 @@ public class GoodsServiceImpl implements GoodsService{
 			tempPack.setGoodsClass(temp.getGoodsClass());
 			tempPack.setGoodsDescribe(temp.getGoodsDescribe());
 			tempPack.setGoodsName(temp.getGoodsName());
-			tempPack.setGoodsPicture(temp.getGoodsPicture());
 			tempPack.setGoodsState(temp.getGoodsState());
 			
 			List<String> tagList =new ArrayList<String>();
@@ -74,5 +74,26 @@ public class GoodsServiceImpl implements GoodsService{
 		goodsPageModel.setPagesize(pageModel.getPagesize());
 		goodsPageModel.setPagestart(pageModel.getPagestart());
 		return goodsDao.findAllCount(goodsPageModel);
+	}
+	
+	@Transactional
+	public Goods findSameName(Goods goods){
+		return goodsDao.findByName(goods.getGoodsName());
+	}
+	
+	@Transactional
+	public String addGoods(Goods goods){
+		goodsDao.add(goods);
+		return "success";
+	}
+	
+	public String addTag(Tag tag){
+		goodsDao.addTag(tag);
+		return "success";
+	}
+	
+	public String addStage(GoodsStage goodsStage){
+		goodsDao.addStage(goodsStage);
+		return "success";
 	}
 }

@@ -7,7 +7,6 @@ public class Goods {
 	private String goodsDescribe;
 	private String goodsBrand;
 	private String goodsClass;
-	private String goodsPicture;
 	
 	/**
 	 * @return the goodsClass
@@ -80,18 +79,6 @@ public class Goods {
 	 */
 	public void setGoodsBrand(String goodsBrand) {
 		this.goodsBrand = goodsBrand;
-	}
-	/**
-	 * @return the goodsPicture
-	 */
-	public String getGoodsPicture() {
-		return goodsPicture;
-	}
-	/**
-	 * @param goodsPicture the goodsPicture to set
-	 */
-	public void setGoodsPicture(String goodsPicture) {
-		this.goodsPicture = goodsPicture;
 	}
 	
 }

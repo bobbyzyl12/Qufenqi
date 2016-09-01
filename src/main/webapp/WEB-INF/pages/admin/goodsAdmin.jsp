@@ -663,51 +663,175 @@
 		    });
 		    
 		    $('#addGoodsSaveButton').click(function(){
+		    	var tempGoodsName=$("#addGoodsName").val();
+		    	var tempGoodsDescribe=$("#addGoodsDescribe").val();
+		    	var tempGoodsBrand=$("#addGoodsBrand").val();
+		    	var tempGoodsClass=$("#addGoodsClass").val()
+		    	var tempDefault=Number(1);
 		    	
-		    	var tempTagList = new Array(); 
+		    	var ok1=false;
+		    	var ok2=false;
+		    	var ok3=false;
+		    	var ok4=false;
+		    	
+		    	if(tempGoodsName=="" || tempGoodsName.length < 3 || tempGoodsName.length > 100){
+		        	 $("#goodsNameError").show();
+		            }
+		        else{ok1=true;}
+		    	
+		    	if(tempGoodsDescribe=="" || tempGoodsDescribe.length < 1 || tempGoodsDescribe.length > 1000){
+		        	 $("#goodsDescribeError").show();
+		            }
+		        else{ok2=true;}
+		    	 
+		    	if(tempGoodsBrand.length > 50){
+		        	 $("#goodsBrandError").show();
+		            }
+		        else{
+		        	if(tempGoodsBrand==""){tempGoodsBrand="暂无";}
+		        	ok3=true;
+		        }
+		    	
+		    	if(tempGoodsClass==""){
+		        	 $("#goodsClassError").show();
+		            }
+		        else{ok4=true;}
+		    	
 		    	var tableObj = document.getElementById('addTagList').rows[1];
 		    	var okTable=true;
 		    	if (tableObj == null) {
 		    		okTable=false;
+		    		$("#goodsTagError").show();
 		    	}
-		    	var i=Number(0);
-		    	var j=Number(0);
-		    	var tempTagName;
-		    	var tempPrice;
-		    	var tempStorage;
-		    	var tempTagList= new Array();
-		    	if(okTable){
-		    		$("#addTagList tr td").each(function(){
-			    		var tempTD=this.innerHTML;
-			    		if(j==0){
-			    			j=j+1;
-			    			tempTagName=tempTD;
-			    		}
-			    		else if(j==1){
-			    			tempPrice=tempTD;
-			    			j=j+1;
-			    		}
-			    		else if(j==2){
-			    			tempStorage=tempTD;
-			    			j=0;
-			    			alert(tempTagName);
-			    			alert(tempPrice);
-			    			alert(tempStorage);
-			    			var tempTag = {'tag':tempTagName,'price':tempPrice,'storage':tempStorage};
-			    			$.ajax({ 							//提交                          	  
-								url: '${ctx}/goods/addTag',       //处理注册的页面                 
-								type: 'POST',
-								data: tempTag,
-								dataType: 'json',
-								success: function (msg){} });
-				    	
-			    		}
-		    		});
+		    	
+		    	if(ok1&&ok2&&ok3&&ok4&&okTable){
+		    		var tempGoods={'goodsName':tempGoodsName,'goodsDescribe':tempGoodsDescribe,'goodsBrand':tempGoodsBrand,'goodsClass':tempGoodsClass,'goodsState':tempDefault}
 		    		
-		    		
+		    		$.ajax({ 							//提交                          	  
+						url: '${ctx}/goods/addGoods',       //处理注册的页面                 
+						type: 'POST',
+						data: tempGoods,
+						success: function (msg){
+							if(msg=="success"){
+								var tempStage =Number(1);
+				    			$.ajax({
+				    				url: '${ctx}/goods/addStage',
+				    				type: 'POST',
+				    				data: {tempStage:tempStage},
+				    				success: function (msg){} 
+				    			});
+				    			
+				    			if($('#addCheckBox3').is(':checked')) {
+				    				tempStage = Number(3);
+				    				$.ajax({
+					    				url: '${ctx}/goods/addStage',
+					    				type: 'POST',
+					    				data: {tempStage:tempStage},
+					    				success: function (msg){} 
+					    			});
+				    			}
+				    			
+				    			if($('#addCheckBox6').is(':checked')) {
+				    				tempStage = Number(6);
+				    				$.ajax({
+					    				url: '${ctx}/goods/addStage',
+					    				type: 'POST',
+					    				data: {tempStage:tempStage},
+					    				success: function (msg){} 
+					    			});
+				    			}
+				    			
+				    			if($('#addCheckBox9').is(':checked')) {
+				    				tempStage = Number(9);
+				    				$.ajax({
+					    				url: '${ctx}/goods/addStage',
+					    				type: 'POST',
+					    				data: {tempStage:tempStage},
+					    				success: function (msg){} 
+					    			});
+				    			}
+				    			
+				    			if($('#addCheckBox12').is(':checked')) {
+				    				tempStage = Number(12);
+				    				$.ajax({
+					    				url: '${ctx}/goods/addStage',
+					    				type: 'POST',
+					    				data: {tempStage:tempStage},
+					    				success: function (msg){} 
+					    			});
+				    			}
+				    			
+				    			
+				    			if($('#addCheckBox18').is(':checked')) {
+				    				tempStage = Number(18);
+				    				$.ajax({
+					    				url: '${ctx}/goods/addStage',
+					    				type: 'POST',
+					    				data: {tempStage:tempStage},
+					    				success: function (msg){} 
+					    			});
+				    			}
+				    			
+				    			if($('#addCheckBox24').is(':checked')) {
+				    				tempStage = Number(18);
+				    				$.ajax({
+					    				url: '${ctx}/goods/addStage',
+					    				type: 'POST',
+					    				data: {tempStage:tempStage},
+					    				success: function (msg){} 
+					    			});
+				    			}
+				    			
+				    			if($('#addCheckBox36').is(':checked')) {
+				    				tempStage = Number(18);
+				    				$.ajax({
+					    				url: '${ctx}/goods/addStage',
+					    				type: 'POST',
+					    				data: {tempStage:tempStage},
+					    				success: function (msg){} 
+					    			});
+				    			}
+				    			
+								var i=Number(0);
+						    	var j=Number(0);
+						    	var tempTagName;
+						    	var tempPrice;
+						    	var tempStorage;
+						    	
+					    		$("#addTagList tr td").each(function(){
+					    			
+					    			var tempTD=this.innerHTML;
+						    		if(j==0){
+						    			j=j+1;
+						    			tempTagName=tempTD;
+						    		}
+						    		else if(j==1){
+						    			tempPrice=tempTD;
+						    			j=j+1;
+						    		}
+						    		else if(j==2){
+						    			tempStorage=tempTD;
+						    			j=j+1;
+						    			var tempTag = {'tag':tempTagName,'price':tempPrice,'storage':tempStorage};
+						    			$.ajax({ 							//提交                          	  
+											url: '${ctx}/goods/addTag',       //处理注册的页面                 
+											type: 'POST',
+											data: tempTag,
+											dataType: 'json',
+											success: function (msg){} 
+										});
+						    		}
+						    		else if(j==3){
+						    			j=0;
+						    		}
+					    		});
+							}
+							else if(msg="repeatName"){
+								$("#goodsNameRepeatError").show();
+							}
+						} 
+					});
 		    	}
-		               
-		               
 	    	});
 		});
 		
@@ -746,7 +870,7 @@ function addAddTag(){
 		$("#addTagform").hide();
 		$(".alert_msg").hide();
 			
-		var txt1="<tr><td>"+tempTag+"</td><td>"+tempPrice+"</td><td>"+tempStorage+"</td></tr>";
+		var txt1="<tr><td>"+tempTag+"</td><td>"+tempPrice+"</td><td>"+tempStorage+"</td></tr>"+"<td><a>删除</a></td>";
 		$("#addTagListHead").after(txt1);
 	}
 }
@@ -818,12 +942,12 @@ function closeBg() {
 							<tr>
 								<th width=50px>ID</th>
   								<th width=100px>商品名</th>
-					  			<th width=100px>商品描述</th>
+					  			<th width=150px>商品描述</th>
 					  			<th width=120px>状态</th>
 					  			<th width=150px>品牌</th>
-					  			<th width=70px>所属分区</th>
-					  			<th width=80px></th>
-					  			<th width=80px></th>
+					  			<th width=80px>所属分区</th>
+					  			<th width=70px></th>
+					  			<th width=70px></th>
 							</tr>
 						</thead>
 						<tbody>
@@ -898,28 +1022,30 @@ function closeBg() {
 		<div class="input_box">
 			<p class="login_title">
 				<span class="title_name">商品名：</span><span class="title_name" style="font-size:10px">（必填）</span>
-				<span class="alert_msg" id="goodsNameError">*商品名称长度应在3-100字符之间</span><span class="alert_msg" id="goodsNameError">*商品名称重复</span>
+				<span class="alert_msg" id="goodsNameError">*商品名称长度应在3-100字符之间</span>
+				<span class="alert_msg" id="goodsNameRepeatError">*商品名称重复</span>
 			</p>
-			<input type="text" id="goodsName" placeholder="请输入商品名" class="signin_input">
+			<input type="text" id="addGoodsName" placeholder="请输入商品名" class="signin_input">
 						
 			<p class="login_title">
 				<span class="title_name">商品描述：</span><span class="title_name" style="font-size:10px">（必填）</span>
 				<span class="alert_msg" id="goodsDescribeError">*商品描述长度应在1000字符之内</span>
 			</p>
 			<div style="height:80px;width:357px;border:1px solid #aaa;overflow:hidden;">
-				<textarea id="goodsDescribe" type="input" rows="4" cols="45" placeholder="请输入商品的详细描述" style="padding-left:20px"></textarea>
+				<textarea id="addGoodsDescribe" type="input" rows="4" cols="45" placeholder="请输入商品的详细描述" style="padding-left:20px"></textarea>
 			</div>
 			
 			<p class="login_title">
-				<span class="title_name">商品品牌：</span><span class="title_name" style="font-size:10px">（必填）</span>
+				<span class="title_name">商品品牌：</span>
 				<span class="alert_msg" id="goodsBrandError">*商品品牌长度应在50字符之内</span>
 			</p>
-			<input type="text" id="goodsBrand" placeholder="请输入商品品牌" class="signin_input">
+			<input type="text" id="addGoodsBrand" placeholder="请输入商品品牌" class="signin_input">
 			
 			<p class="login_title">
 				<span class="title_name">商品分类：</span><span class="title_name" style="font-size:10px">（必填）</span>
-				<span class="alert_msg" id="goodsClassError">*请选择商品分类</span>
-				<select id="test">
+				
+				<select id="addGoodsClass">
+				<option value=""></option> 
 				<option value="手机通讯">手机通讯</option>  
 				<option value="电脑平板">电脑平板</option>
 				<option value="腕表饰品">腕表饰品</option> 
@@ -931,6 +1057,7 @@ function closeBg() {
 				<option value="鞋靴箱包">鞋靴箱包</option>
 				<option value="图书百货">图书百货</option>
 			</select>
+			<span class="alert_msg" id="goodsClassError">*请选择商品分类</span>
 			</p>
 						
 			<p class="login_title">
@@ -939,7 +1066,7 @@ function closeBg() {
 			</p>
 			
 			<p class="login_title">
-				<span class="title_name">商品分期:</span><span class="title_name" style="font-size:10px">（必填）</span>
+				<span class="title_name">商品分期:</span><span class="title_name" style="font-size:10px">（1期默认加入）</span>
 				<br>
 				<div style="padding-left:20px;height:40px;">
 					3期<input id="addCheckBox3" type="checkbox" style="margin-left: 5px;margin-right: 15px;">
@@ -974,6 +1101,7 @@ function closeBg() {
 					<th>分类</th>
 					<th>价格</th>
 					<th>库存</th>
+					<th></th>
 				</tr>
 			</table>
 			

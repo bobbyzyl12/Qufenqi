@@ -9,7 +9,6 @@
 		<result column="goodsDescribe" property="goodsDescribe"/>
 		<result column="goodsBrand" property="goodsBrand"/>
 		<result column="goodsClass" property="goodsClass"/>
-		<result column="goodsPicture" property="goodsPicture"/>
 	</resultMap>
 	
 	<resultMap type="Tag" id="tagMap">
@@ -19,17 +18,16 @@
 		<result column="storage" property="storage"/>
 	</resultMap>
 	
-	
 	<resultMap type="Integer" id="stageMap">
 		<result column="stageID" property="stageID"/>
 	</resultMap>
 	
 	<insert id="add" parameterType="Goods">
-		insert into goods(goodsID,goodsName,goodsState,goodsDescribe,goodsPicture,goodsBrand,goodsClass) values(null,#{goodsName},#{goodsState},#{goodsDescribe},#{goodsPicture},#{goodsBrand},#{goodsClass})
+		insert into goods(goodsID,goodsName,goodsState,goodsDescribe,goodsBrand,goodsClass) values(null,#{goodsName},#{goodsState},#{goodsDescribe},#{goodsBrand},#{goodsClass})
 	</insert>
 	
 	<insert id="addStage" parameterType="GoodsStage">
-		insert into goodsStage(goodsID,stageID) values(#{goodsID},#{stageID})
+		insert into goodsstage(goodsID,stageID) values(#{goodsID},#{stageID})
 	</insert>
 	
 	<insert id="addTag" parameterType="Tag">
