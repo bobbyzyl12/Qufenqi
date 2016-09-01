@@ -1106,12 +1106,7 @@ $(function(){
             	$("#goodsStageInDia").show();
             	$("#editGoodsStage").hide();
             	var oldTagCount = msg.goodsTag.length;
-            	//tags另取 
-            	
-            	//重置table
-            	var thead="<tr id="+"editTagListHead"+"><th width=80px>分类</th><th width=70px>价格</th><th width=70px>库存</th><th width=60px></th><th width=60px></th></tr>";
-            	$("#editTagList").html(thead);
-            	
+            	//预加载tag编辑的方法
             	$(document).on("click",".editTagListBtn",function(){
             		var oldData = $(this).parents('tr:first').children(':first').html();
         			$(this).parents('tr:first').children(':first').html("<input style='text' class=editTagInput>");
@@ -1146,6 +1141,17 @@ $(function(){
     				countTagListEdit = countTagListEdit-1;
     				alert(countTagListEdit);
     			});
+            	
+            	$(document).on("click",".tagListBtn",function(){
+        			$(this).parents('tr:first').remove();
+        		});	
+            	
+            	//tags另取 
+            	//重置table
+            	var thead="<tr id="+"editTagListHead"+"><th width=80px>分类</th><th width=70px>价格</th><th width=70px>库存</th><th width=60px></th><th width=60px></th></tr>";
+            	$("#editTagList").html(thead);
+            	
+            	
             	for (var i = oldTagCount-1; i>=0 ; i--){	//反向取
         	    	$.ajax({ 
         				url: '${ctx}/goods/getGoodsTag',                    
@@ -1155,12 +1161,6 @@ $(function(){
         	            	var txt1="<tr><td>"+msg.tag+"</td><td>"+msg.price+"</td><td>"+msg.storage+
         	            	"</td><td><a class=tagListBtn"+">删除</a></td><td><a class=editTagListBtn"+">修改</a></td></tr>";
         	            	$("#editTagListHead").after(txt1);
-        	            	$(".tagListBtn").click(function(){
-                    			$(this).parents('tr:first').remove();
-                    		});
-        	            	
-        	            	
-        	            	
         	            	
         				}
         			});
