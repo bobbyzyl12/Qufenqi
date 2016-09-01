@@ -1264,15 +1264,15 @@ function closeBg() {
 			
 			<p class="login_title">
 				<span class="title_name">商品品牌：</span>
-				<span class="alert_msg" id="goodsBrandError">*商品品牌长度应在50字符之内</span>
+				<span class="alert_msg" id="goodsBrandError2">*商品品牌长度应在50字符之内</span>
 			</p>
-			<input type="text" id="addGoodsBrand" placeholder="请输入商品品牌" class="signin_input">
+			<input type="text" id="editGoodsBrand" placeholder="请输入商品品牌" class="signin_input">
 			
 			<p class="login_title">
-				<span class="title_name">商品分类：</span><span class="title_name" style="font-size:10px">（必填）</span>
+				<span class="title_name">商品分类：</span>
 				
-				<select id="addGoodsClass">
-				<option value=""></option> 
+				<select id="editGoodsClass">
+				<option value=""></option>
 				<option value="手机通讯">手机通讯</option>  
 				<option value="电脑平板">电脑平板</option>
 				<option value="腕表饰品">腕表饰品</option> 
@@ -1284,7 +1284,7 @@ function closeBg() {
 				<option value="鞋靴箱包">鞋靴箱包</option>
 				<option value="图书百货">图书百货</option>
 			</select>
-			<span class="alert_msg" id="goodsClassError">*请选择商品分类</span>
+			<span class="alert_msg" id="goodsClassError2">*请选择商品分类</span>
 			</p>
 						
 			<p class="login_title">
@@ -1296,35 +1296,35 @@ function closeBg() {
 				<span class="title_name">商品分期:</span><span class="title_name" style="font-size:10px">（1期默认加入）</span>
 				<br>
 				<div style="padding-left:20px;height:40px;">
-					3期<input id="addCheckBox3" type="checkbox" style="margin-left: 5px;margin-right: 15px;">
-					6期<input id="addCheckBox6" type="checkbox"style="margin-left: 5px;margin-right: 15px;">
-					9期<input id="addCheckBox9"  type="checkbox"style="margin-left: 5px;margin-right: 15px;">
-					12期<input id="addCheckBox12" type="checkbox"style="margin-left: 5px;margin-right: 15px;">
+					3期<input id="editCheckBox3" type="checkbox" style="margin-left: 5px;margin-right: 15px;">
+					6期<input id="editCheckBox6" type="checkbox"style="margin-left: 5px;margin-right: 15px;">
+					9期<input id="editCheckBox9"  type="checkbox"style="margin-left: 5px;margin-right: 15px;">
+					12期<input id="editCheckBox12" type="checkbox"style="margin-left: 5px;margin-right: 15px;">
 					<br>
-					18期<input id="addCheckBox18" type="checkbox"style="margin-left: 5px;margin-right: 15px;">
-					24期<input id="addCheckBox24" type="checkbox"style="margin-left:5px;margin-right: 15px;">
-					36期<input id="addCheckBox36" type="checkbox"style="margin-left: 5px;margin-right: 15px;">
+					18期<input id="editCheckBox18" type="checkbox"style="margin-left: 5px;margin-right: 15px;">
+					24期<input id="editCheckBox24" type="checkbox"style="margin-left:5px;margin-right: 15px;">
+					36期<input id="editCheckBox36" type="checkbox"style="margin-left: 5px;margin-right: 15px;">
 				</div>
 			</p>
 			
 			<p>
-				<button id="addTagsBtn" class="addTagsBtn">
+				<button id="editTagsBtn" class="addTagsBtn">
 					<span class="glyphicon glyphicon-plus add_btn_icon"></span>
 					<span >增加商品种类</span>
 				</button>
-				<span class="alert_msg" id="goodsTagError">（请至少添加一种）</span>
-				<span class="alert_msg" id="goodsPriceError"><br>*商品价格为最多两位小数</span>
-				<span class="alert_msg" id="goodsTagNameError"><br>*商品分类为2-32位字符</span>
-				<span class="alert_msg" id="goodsStorageError"><br>*商品库存应为正整数</span>
+				<span class="alert_msg" id="goodsTagError2">（请至少添加一种）</span>
+				<span class="alert_msg" id="goodsPriceError2"><br>*商品价格为最多两位小数</span>
+				<span class="alert_msg" id="goodsTagNameError2"><br>*商品分类为2-32位字符</span>
+				<span class="alert_msg" id="goodsStorageError2"><br>*商品库存应为正整数</span>
 			</p>
 			<p id="addTagform" style="display:none;">
 				<input type="text" id="tagInput" placeholder="分类名"class="signin_input"  style="width:120px">
 				<input type="text" id="priceInput" placeholder="价格"class="signin_input" style="width:80px">
 				<input type="text" id="storageInput" placeholder="库存"class="signin_input" style="width:80px">
-				<button class="btn" id="addTagSaveBtn" onclick="addTag()" style="width:50px;height:30px;font-size:12px;">确认</button>
+				<button class="btn" id="addEditTagSaveBtn" onclick="addTag()" style="width:50px;height:30px;font-size:12px;">确认</button>
 			<p>
-			<table id="addTagList" style="width:350px">
-				<tr id="addTagListHead">
+			<table id="editTagList" style="width:350px">
+				<tr id="editTagListHead">
 					<th width=140px>分类</th>
 					<th width=70px>价格</th>
 					<th width=70px>库存</th>
@@ -1333,7 +1333,7 @@ function closeBg() {
 			</table>
 			
 			<div style="border-top:1px solid #ccc;margin-top:40px;padding-top:10px;padding-right:20px;text-align:right;height:60px;">
-				<button class="btn" id="addGoodsSaveButton" style="width:100px;height:35px;font-size:16px;">保存</button>
+				<button class="btn" id="editGoodsSaveButton" style="width:100px;height:35px;font-size:16px;">保存</button>
 	  			<a href="#" onclick="closeBg();"><button class="btn_cancel" style="width:100px;height:35px;font-size:16px;">取消</button></a>
 			</div>
 		</div>
