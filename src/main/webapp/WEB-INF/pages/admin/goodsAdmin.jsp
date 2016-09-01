@@ -286,7 +286,7 @@
 		padding-right:5px;
 	}
 	
-	tr:hover td {
+	tr.infoTable:hover td {
   		background:#4E5066;
   		color:#FFFFFF;
   		border-top: 1px solid #22262e;
@@ -577,7 +577,7 @@
 		margin-right:20px;
 	}
 	
-	.tagListBtn,.editTagListBtn{
+	.tagListBtn,.editTagListBtn,.editTagSaveBtn{
 		 padding:0;
 		  height:25px;
 		  width:50px;
@@ -606,9 +606,14 @@
 		  text-decoration:none;
 	}
 	
-	.tagListBtn:hover,.editTagListBtn:hover{
+	.tagListBtn:hover,.editTagListBtn:hover,.editTagSaveBtn:hover{
 		background-color:#9bc0fd;
 		color:#fff;
+	}
+	
+	.editTagInput{
+		height:20px;
+		width:100%;
 	}
 </style>
 
@@ -1041,6 +1046,8 @@ $(function(){
 	    	$("#addTagform2").show();
 	    });
 	    
+	    var countTagListEdit = Number(0);
+	    
 	    $.ajax({ 
 			url: '${ctx}/goods/getGoodsPack',       //处理测试页面                 
 			type: 'POST', 
@@ -1105,6 +1112,40 @@ $(function(){
             	var thead="<tr id="+"editTagListHead"+"><th width=80px>分类</th><th width=70px>价格</th><th width=70px>库存</th><th width=60px></th><th width=60px></th></tr>";
             	$("#editTagList").html(thead);
             	
+            	$(document).on("click",".editTagListBtn",function(){
+            		var oldData = $(this).parents('tr:first').children(':first').html();
+        			$(this).parents('tr:first').children(':first').html("<input style='text' class=editTagInput>");
+        			$(this).parents('tr:first').children(':first').children().val(oldData);
+        			
+        			oldData = $(this).parents('tr:first').children(':eq(1)').html();
+        			$(this).parents('tr:first').children(':eq(1)').html("<input style='text' class=editTagInput>");
+        			$(this).parents('tr:first').children(':eq(1)').children().val(oldData);
+        			
+        			oldData = $(this).parents('tr:first').children(':eq(2)').html();
+        			$(this).parents('tr:first').children(':eq(2)').html("<input style='text' class=editTagInput>");
+        			$(this).parents('tr:first').children(':eq(2)').children().val(oldData);
+        			
+        			$(this).parent(':first').html("<a class=editTagSaveBtn>保存</a>");
+        			
+        			countTagListEdit = countTagListEdit+1;
+        			alert(countTagListEdit);
+        			
+        		});
+            	
+            	$(document).on("click",".editTagSaveBtn",function(){
+    				var newData = $(this).parents('tr:first').children(':first').children().val();
+    				$(this).parents('tr:first').children(':first').html(newData);
+    				
+    				newData = $(this).parents('tr:first').children(':eq(1)').children().val();
+    				$(this).parents('tr:first').children(':eq(1)').html(newData);
+    				
+    				newData = $(this).parents('tr:first').children(':eq(2)').children().val();
+    				$(this).parents('tr:first').children(':eq(2)').html(newData);
+    				
+    				$(this).parent(':first').html("<a class=editTagListBtn>修改</a>");
+    				countTagListEdit = countTagListEdit-1;
+    				alert(countTagListEdit);
+    			});
             	for (var i = oldTagCount-1; i>=0 ; i--){	//反向取
         	    	$.ajax({ 
         				url: '${ctx}/goods/getGoodsTag',                    
@@ -1117,6 +1158,10 @@ $(function(){
         	            	$(".tagListBtn").click(function(){
                     			$(this).parents('tr:first').remove();
                     		});
+        	            	
+        	            	
+        	            	
+        	            	
         				}
         			});
         	    }
@@ -1238,7 +1283,7 @@ function closeBg() {
 						</thead>
 						<tbody>
 							<c:forEach items="${pageModel.datas}" var="goods">
-				             <tr>
+				             <tr class="infoTable">
 				          		<td>${goods.goodsID}</td>
 				  				<td>${goods.goodsName}</td>
 				  				<td><div style="height:20px;overflow:hidden;display:block;">${goods.goodsDescribe}</div></td>
@@ -1359,8 +1404,9 @@ function closeBg() {
 			</p>
 			
 			<p class="login_title">
-				<span class="title_name">商品分期:</span><span class="title_name" style="font-size:10px">（1期默认加入）</span>
+				<span class="title_name">商品分期:</span>
 				<br>
+				<span class="title_name" style="font-size:10px">（1期默认加入）</span>
 				<div style="padding-left:20px;height:40px;">
 					3期<input id="addCheckBox3" type="checkbox" style="margin-left: 5px;margin-right: 15px;">
 					6期<input id="addCheckBox6" type="checkbox"style="margin-left: 5px;margin-right: 15px;">
@@ -1466,8 +1512,9 @@ function closeBg() {
 				<span class="title_name" id="goodsStageInDia"></span>
 				<a href="#"><span class="edit_box_show" id="editStageBoxShowBtn">修改商品分期</span></a>
 				<br>
+				<span class="title_name" style="font-size:10px">（1期默认加入）</span>
 				<div style="padding-left:20px;height:40px;" id="editGoodsStage">
-					<span class="title_name" style="font-size:10px">（1期默认加入）</span>
+					
 					3期<input id="editCheckBox3" type="checkbox" style="margin-left: 5px;margin-right: 15px;">
 					6期<input id="editCheckBox6" type="checkbox"style="margin-left: 5px;margin-right: 15px;">
 					9期<input id="editCheckBox9"  type="checkbox"style="margin-left: 5px;margin-right: 15px;">
