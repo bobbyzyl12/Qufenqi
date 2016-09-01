@@ -576,6 +576,40 @@
 		margin-left:5px;
 		margin-right:20px;
 	}
+	
+	.tagListBtn{
+		 padding:0;
+		  height:25px;
+		  width:60px;
+		  color:#ffffff;
+		  background-color:#4f90fb;
+		  font-size:12px;
+		  font-weight:normal;
+		  border:1px solid #1647e9;
+		  -webkit-border-top-left-radius:2px;
+		  -moz-border-radius-topleft:2px;
+		  border-top-left-radius:2px;
+		  -webkit-border-top-right-radius:2px;
+		  -moz-border-radius-topright:2px;
+		  border-top-right-radius:2px;
+		  -webkit-border-bottom-left-radius:2px;
+		  -moz-border-radius-bottomleft:2px;
+		  border-bottom-left-radius:2px;
+		  -webkit-border-bottom-right-radius:2px;
+		  -moz-border-radius-bottomright:2px;
+		  border-bottom-right-radius:2px;
+		  -moz-box-shadow: inset 0px 0px 0px 0px #ffffff;
+		  -webkit-box-shadow: inset 0px 0px 0px 0px #ffffff;
+		  box-shadow: inset 0px 0px 0px 0px #ffffff;
+		  text-align:center;
+		  display:inline-block;
+		  text-decoration:none;
+	}
+	
+	.tagListBtn:hover{
+		background-color:#9bc0fd;
+		color:#fff;
+	}
 </style>
 
 <script type="text/javascript">
@@ -646,7 +680,9 @@
 		}
 	});
 
-	$(function(){
+	
+	
+$(function(){
 		$("#addBtn").click(function(){
 			$("#addGoodsDialog").show();
 			$(".alert_msg").hide();
@@ -837,7 +873,7 @@
 		
 	});
 
-function addAddTag(){
+function addTag(){
 	var tempTag = $("#tagInput").val();
 	var tempPrice = $("#priceInput").val();
 	var tempStorage = $("#storageInput").val();
@@ -870,10 +906,17 @@ function addAddTag(){
 		$("#addTagform").hide();
 		$(".alert_msg").hide();
 			
-		var txt1="<tr><td>"+tempTag+"</td><td>"+tempPrice+"</td><td>"+tempStorage+"</td></tr>"+"<td><a>删除</a></td>";
+		var txt1="<tr><td>"+tempTag+"</td><td>"+tempPrice+"</td><td>"+tempStorage+"</td><td><a class=tagListBtn"+">删除</a></td></tr>";
 		$("#addTagListHead").after(txt1);
 	}
+	
+	$(".tagListBtn").click(function(){
+		$(this).parents('tr:first').remove();
+	});
 }
+
+
+
 function closeBg() {
 	    $("#coverbg").hide();
 	    $(".dialog").hide();
@@ -1094,14 +1137,14 @@ function closeBg() {
 				<input type="text" id="tagInput" placeholder="分类名"class="signin_input"  style="width:120px">
 				<input type="text" id="priceInput" placeholder="价格"class="signin_input" style="width:80px">
 				<input type="text" id="storageInput" placeholder="库存"class="signin_input" style="width:80px">
-				<button class="btn" id="addTagSaveBtn" onclick="addAddTag()" style="width:50px;height:30px;font-size:12px;">确认</button>
+				<button class="btn" id="addTagSaveBtn" onclick="addTag()" style="width:50px;height:30px;font-size:12px;">确认</button>
 			<p>
 			<table id="addTagList" style="width:350px">
 				<tr id="addTagListHead">
-					<th>分类</th>
-					<th>价格</th>
-					<th>库存</th>
-					<th></th>
+					<th width=140px>分类</th>
+					<th width=70px>价格</th>
+					<th width=70px>库存</th>
+					<th width=70px></th>
 				</tr>
 			</table>
 			
@@ -1114,5 +1157,8 @@ function closeBg() {
 	<!-- 临时存放数据用 -->
 	<p style="display:none" id="totalPage">${pageModel.totalpage}</p>
 	<p style="display:none" id="pageNo">${pageModel.pageNo}</p>
+	
+	<script type="text/javascript">
+	</script>
 </body>
 </html>
