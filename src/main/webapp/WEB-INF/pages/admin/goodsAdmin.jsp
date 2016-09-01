@@ -985,7 +985,18 @@ $(function(){
 });
 
 $(function(){
-	
+	$(".editBtn").click(function(){
+		var goodsID = $(this).attr('title');
+		var bh = $(".wrapper").height();
+	    var bw = $(".wrapper").width();
+	    $("#coverbg").css({
+	        height: bh,
+	        width: bw,
+	        display: "block"
+	    });
+	    $(".alert_msg").hide();
+	    $("#editGoodsDialog").show();
+	});
 });
 
 
@@ -1155,6 +1166,100 @@ function closeBg() {
 			</p>
 			<div style="height:80px;width:357px;border:1px solid #aaa;overflow:hidden;">
 				<textarea id="addGoodsDescribe" type="input" rows="4" cols="45" placeholder="请输入商品的详细描述" style="padding-left:20px"></textarea>
+			</div>
+			
+			<p class="login_title">
+				<span class="title_name">商品品牌：</span>
+				<span class="alert_msg" id="goodsBrandError">*商品品牌长度应在50字符之内</span>
+			</p>
+			<input type="text" id="addGoodsBrand" placeholder="请输入商品品牌" class="signin_input">
+			
+			<p class="login_title">
+				<span class="title_name">商品分类：</span><span class="title_name" style="font-size:10px">（必填）</span>
+				
+				<select id="addGoodsClass">
+				<option value=""></option> 
+				<option value="手机通讯">手机通讯</option>  
+				<option value="电脑平板">电脑平板</option>
+				<option value="腕表饰品">腕表饰品</option> 
+				<option value="数码家电">数码家电</option>
+				<option value="家具家饰">家具家饰</option>
+				<option value="家装建材">家装建材</option>
+				<option value="食品饮料">食品饮料</option>
+				<option value="衣装服饰">衣装服饰</option>
+				<option value="鞋靴箱包">鞋靴箱包</option>
+				<option value="图书百货">图书百货</option>
+			</select>
+			<span class="alert_msg" id="goodsClassError">*请选择商品分类</span>
+			</p>
+						
+			<p class="login_title">
+				<span class="title_name">商品图片:</span>
+				<button class="btn_cancel" style="width:50px;height:25px;font-size:10px;">上传</button>
+			</p>
+			
+			<p class="login_title">
+				<span class="title_name">商品分期:</span><span class="title_name" style="font-size:10px">（1期默认加入）</span>
+				<br>
+				<div style="padding-left:20px;height:40px;">
+					3期<input id="addCheckBox3" type="checkbox" style="margin-left: 5px;margin-right: 15px;">
+					6期<input id="addCheckBox6" type="checkbox"style="margin-left: 5px;margin-right: 15px;">
+					9期<input id="addCheckBox9"  type="checkbox"style="margin-left: 5px;margin-right: 15px;">
+					12期<input id="addCheckBox12" type="checkbox"style="margin-left: 5px;margin-right: 15px;">
+					<br>
+					18期<input id="addCheckBox18" type="checkbox"style="margin-left: 5px;margin-right: 15px;">
+					24期<input id="addCheckBox24" type="checkbox"style="margin-left:5px;margin-right: 15px;">
+					36期<input id="addCheckBox36" type="checkbox"style="margin-left: 5px;margin-right: 15px;">
+				</div>
+			</p>
+			
+			<p>
+				<button id="addTagsBtn" class="addTagsBtn">
+					<span class="glyphicon glyphicon-plus add_btn_icon"></span>
+					<span >增加商品种类</span>
+				</button>
+				<span class="alert_msg" id="goodsTagError">（请至少添加一种）</span>
+				<span class="alert_msg" id="goodsPriceError"><br>*商品价格为最多两位小数</span>
+				<span class="alert_msg" id="goodsTagNameError"><br>*商品分类为2-32位字符</span>
+				<span class="alert_msg" id="goodsStorageError"><br>*商品库存应为正整数</span>
+			</p>
+			<p id="addTagform" style="display:none;">
+				<input type="text" id="tagInput" placeholder="分类名"class="signin_input"  style="width:120px">
+				<input type="text" id="priceInput" placeholder="价格"class="signin_input" style="width:80px">
+				<input type="text" id="storageInput" placeholder="库存"class="signin_input" style="width:80px">
+				<button class="btn" id="addTagSaveBtn" onclick="addTag()" style="width:50px;height:30px;font-size:12px;">确认</button>
+			<p>
+			<table id="addTagList" style="width:350px">
+				<tr id="addTagListHead">
+					<th width=140px>分类</th>
+					<th width=70px>价格</th>
+					<th width=70px>库存</th>
+					<th width=70px></th>
+				</tr>
+			</table>
+			
+			<div style="border-top:1px solid #ccc;margin-top:40px;padding-top:10px;padding-right:20px;text-align:right;height:60px;">
+				<button class="btn" id="addGoodsSaveButton" style="width:100px;height:35px;font-size:16px;">保存</button>
+	  			<a href="#" onclick="closeBg();"><button class="btn_cancel" style="width:100px;height:35px;font-size:16px;">取消</button></a>
+			</div>
+		</div>
+	</div>
+	
+	<div id="editGoodsDialog" style="top:10%;height:500px;overflow:auto;width:420px;" class="dialog">
+		<div class="input_box">
+			<p class="login_title">
+				<span class="title_name">商品名：</span>
+				<span class="alert_msg" id="goodsNameError2">*商品名称长度应在3-100字符之间</span>
+				<span class="alert_msg" id="goodsNameRepeatError2">*商品名称重复</span>
+			</p>
+			<input type="text" id="editGoodsName" placeholder="请输入商品名" class="signin_input">
+						
+			<p class="login_title">
+				<span class="title_name">商品描述：</span>
+				<span class="alert_msg" id="goodsDescribeError2">*商品描述长度应在1000字符之内</span>
+			</p>
+			<div style="height:80px;width:357px;border:1px solid #aaa;overflow:hidden;">
+				<textarea id="editGoodsDescribe" type="input" rows="4" cols="45" placeholder="请输入商品的详细描述" style="padding-left:20px"></textarea>
 			</div>
 			
 			<p class="login_title">
