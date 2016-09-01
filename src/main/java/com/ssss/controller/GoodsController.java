@@ -69,4 +69,30 @@ public class GoodsController {
 		goodsStage.setStageID(tempStage);
 		return goodsService.addStage(goodsStage);
 	}
+	
+	/**
+     * 
+     * @param goodsID
+     * @return
+     */
+	@RequestMapping(value = "/deleteGoods")
+	@ResponseBody
+	public String deleteGoods(Integer goodsID){
+		Goods goods = goodsService.findByID(goodsID);
+		goods.setGoodsState("2");
+		return goodsService.updateGoods(goods);
+	}
+	
+	/**
+     * 
+     * @param goodsID
+     * @return
+     */
+	@RequestMapping(value = "/reAddGoods")
+	@ResponseBody
+	public String reAddeGoods(Integer goodsID){
+		Goods goods = goodsService.findByID(goodsID);
+		goods.setGoodsState("1");
+		return goodsService.updateGoods(goods);
+	}
 }

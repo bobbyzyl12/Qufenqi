@@ -96,4 +96,14 @@ public class GoodsServiceImpl implements GoodsService{
 		goodsDao.addStage(goodsStage);
 		return "success";
 	}
+	
+	public Goods findByID(Integer goodsID){
+		return goodsDao.findByID(goodsID);
+	}
+	
+	public String updateGoods(Goods goods){
+		goodsDao.updateGoods(goods);
+		return "success";
+	}
+	
 }

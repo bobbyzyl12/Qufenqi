@@ -680,10 +680,52 @@
 		}
 	});
 
-	
+	function addTag(){
+		var tempTag = $("#tagInput").val();
+		var tempPrice = $("#priceInput").val();
+		var tempStorage = $("#storageInput").val();
+			
+		var regStorage = /^\+?[1-9][0-9]*$/;
+		var regPrice = /^(0|([1-9]\d{0,9}(\.\d{1,2})?))$/;
+			
+		var tagOk1=false;
+		var tagOk2=false;
+		var tagOk3=false;
+			
+		if(tempTag=="" || tempTag < 3 || tempTag > 32){
+	        $("#goodsTagNameError").show();
+	    }
+	    else{tagOk1=true;}
+			
+		if(!regPrice.test(tempPrice))
+		{
+			$("#goodsPriceError").show();
+		}
+			else{tagOk2=true;}
+			
+		if(!regStorage.test(tempStorage))
+		{
+			$("#goodsStorageError").show();
+		}
+		else{tagOk3=true;}
+			
+		if(tagOk1&&tagOk2&&tagOk3){
+			$("#addTagform").hide();
+			$(".alert_msg").hide();
+				
+			var txt1="<tr><td>"+tempTag+"</td><td>"+tempPrice+"</td><td>"+tempStorage+"</td><td><a class=tagListBtn"+">删除</a></td></tr>";
+			$("#addTagListHead").after(txt1);
+		}
+		
+		$(".tagListBtn").click(function(){
+			$(this).parents('tr:first').remove();
+		});
+	}
+
+
 	
 $(function(){
-		$("#addBtn").click(function(){
+	$("#addBtn").click(function(){
 			$("#addGoodsDialog").show();
 			$(".alert_msg").hide();
 			var bh = $(".wrapper").height();
@@ -861,6 +903,9 @@ $(function(){
 						    			j=0;
 						    		}
 					    		});
+					    		
+					    		$("#addSuccessDialog").show();
+					    		
 							}
 							else if(msg="repeatName"){
 								$("#goodsNameRepeatError").show();
@@ -873,48 +918,75 @@ $(function(){
 		
 	});
 
-function addTag(){
-	var tempTag = $("#tagInput").val();
-	var tempPrice = $("#priceInput").val();
-	var tempStorage = $("#storageInput").val();
-		
-	var regStorage = /^\+?[1-9][0-9]*$/;
-	var regPrice = /^(0|([1-9]\d{0,9}(\.\d{1,2})?))$/;
-		
-	var tagOk1=false;
-	var tagOk2=false;
-	var tagOk3=false;
-		
-	if(tempTag=="" || tempTag < 3 || tempTag > 32){
-        $("#goodsTagNameError").show();
-    }
-    else{tagOk1=true;}
-		
-	if(!regPrice.test(tempPrice))
-	{
-		$("#goodsPriceError").show();
-	}
-		else{tagOk2=true;}
-		
-	if(!regStorage.test(tempStorage))
-	{
-		$("#goodsStorageError").show();
-	}
-	else{tagOk3=true;}
-		
-	if(tagOk1&&tagOk2&&tagOk3){
-		$("#addTagform").hide();
-		$(".alert_msg").hide();
-			
-		var txt1="<tr><td>"+tempTag+"</td><td>"+tempPrice+"</td><td>"+tempStorage+"</td><td><a class=tagListBtn"+">删除</a></td></tr>";
-		$("#addTagListHead").after(txt1);
-	}
-	
-	$(".tagListBtn").click(function(){
-		$(this).parents('tr:first').remove();
+$(function(){
+	$(".tryDeleteBtn").click(function(){
+		var goodsID = $(this).attr('title');
+		var bh = $(".wrapper").height();
+	    var bw = $(".wrapper").width();
+	    $("#coverbg").css({
+	        height: bh,
+	        width: bw,
+	        display: "block"
+	    });
+	    $("#deleteConfirmDialog").show();
+    	$("#deleteBtn").click(function(){
+    		$.ajax({ 
+				url: '${ctx}/goods/deleteGoods',       //处理测试页面                 
+				type: 'POST',                  
+				data: {goodsID:goodsID},                
+				success: function (msg){
+	            if (msg == "success"){
+	            	var bh = $(".wrapper").height();
+				    var bw = $(".wrapper").width();
+				    $("#coverbg").css({
+				        height: bh,
+				        width: bw,
+				        display: "block"
+				    });
+                	$("#deleteSuccessDialog").show();
+	            }
+				}
+			});
+    	});
 	});
-}
+});
 
+$(function(){
+	$(".tryReAddBtn").click(function(){
+		var goodsID = $(this).attr('title');
+		var bh = $(".wrapper").height();
+	    var bw = $(".wrapper").width();
+	    $("#coverbg").css({
+	        height: bh,
+	        width: bw,
+	        display: "block"
+	    });
+	    $("#reAddConfirmDialog").show();
+    	$("#reAddBtn").click(function(){
+    		$.ajax({ 
+				url: '${ctx}/goods/reAddGoods',       //处理测试页面                 
+				type: 'POST',                  
+				data: {goodsID:goodsID},                
+				success: function (msg){
+	            if (msg == "success"){
+	            	var bh = $(".wrapper").height();
+				    var bw = $(".wrapper").width();
+				    $("#coverbg").css({
+				        height: bh,
+				        width: bw,
+				        display: "block"
+				    });
+                	$("#reAddSuccessDialog").show();
+	            }
+				}
+			});
+    	});
+	});
+});
+
+$(function(){
+	
+});
 
 
 function closeBg() {
@@ -1015,7 +1087,14 @@ function closeBg() {
 				  					<a href="#" class="btn editBtn" id="editBtn" title="${goods.goodsID}">修改</a>
 				  				</td>
 				  				<td style="padding:0px 5px 0px 5px">
-				  					<a href="#" class="btn tryDeleteBtn" id="tryDeleteBtn" title="${goods.goodsID}">删除</a>
+					  				<c:choose>
+					  					<c:when test="${goods.goodsState == '1'}">
+					  						<a href="#" class="btn tryDeleteBtn" id="tryDeleteBtn" title="${goods.goodsID}">下架</a>
+					  					</c:when>
+					  					<c:when test="${goods.goodsState=='2'}">
+					  						<a href="#" class="btn tryReAddBtn" id="tryReaddBtn" title="${goods.goodsID}">上架</a>
+					  					</c:when>
+									</c:choose>
 				  				</td>
 				         	</tr>
 				         </c:forEach>
@@ -1154,6 +1233,34 @@ function closeBg() {
 			</div>
 		</div>
 	</div>
+	
+	<div id="addSuccessDialog" class="dialog">
+		<p class="dialog_msg">添加商品成功</p>
+  		<a href="${ctx}/page/jumpToGoodsAdmin?pageNo=${pageModel.pageNo}" onclick="closeBg();"><button class="btn" style="width:120px;height:40px;font-size:18px;">关闭</button></a>
+	</div>
+	
+	<div id="reAddConfirmDialog" class="dialog">
+		<p class="dialog_msg">确认上架该商品？</p>
+  		<a href="#" id="reAddBtn" onclick="closeBg();"><button class="btn" style="width:120px;height:40px;font-size:18px;">确认</button></a>
+		<a href="#" onclick="closeBg();"><button class="btn" style="width:120px;height:40px;font-size:18px;background-color:#fff;color:#666;border-color:#666;">取消</button></a>
+	</div>
+	
+	<div id="reAddSuccessDialog" class="dialog">
+		<p class="dialog_msg">上架商品成功</p>
+  		<a href="${ctx}/page/jumpToGoodsAdmin?pageNo=${pageModel.pageNo}" onclick="closeBg();"><button class="btn" style="width:120px;height:40px;font-size:18px;">关闭</button></a>
+	</div>
+	
+	<div id="deleteConfirmDialog" class="dialog">
+		<p class="dialog_msg">确认下架该商品？</p>
+  		<a href="#" id="deleteBtn" onclick="closeBg();"><button class="btn" style="width:120px;height:40px;font-size:18px;">确认</button></a>
+		<a href="#" onclick="closeBg();"><button class="btn" style="width:120px;height:40px;font-size:18px;background-color:#fff;color:#666;border-color:#666;">取消</button></a>
+	</div>
+	
+	<div id="deleteSuccessDialog" class="dialog">
+		<p class="dialog_msg">下架商品成功</p>
+  		<a href="${ctx}/page/jumpToGoodsAdmin?pageNo=${pageModel.pageNo}" onclick="closeBg();"><button class="btn" style="width:120px;height:40px;font-size:18px;">关闭</button></a>
+	</div>
+	
 	<!-- 临时存放数据用 -->
 	<p style="display:none" id="totalPage">${pageModel.totalpage}</p>
 	<p style="display:none" id="pageNo">${pageModel.pageNo}</p>

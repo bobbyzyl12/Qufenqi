@@ -21,4 +21,8 @@ public interface GoodsService {
 	public String addTag(Tag tag);
 	
 	public String addStage(GoodsStage goodsStage);
+	
+	public Goods findByID(Integer goodsID);
+	
+	public String updateGoods(Goods goods);
 }

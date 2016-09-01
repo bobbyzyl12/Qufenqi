@@ -29,4 +29,5 @@ public interface GoodsDao {
 	
 	void deleteAllStages(Integer goodsID);
 	
+	void updateGoods(Goods goods);
 }

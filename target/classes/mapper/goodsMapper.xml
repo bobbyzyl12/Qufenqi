@@ -26,6 +26,11 @@
 		insert into goods(goodsID,goodsName,goodsState,goodsDescribe,goodsBrand,goodsClass) values(null,#{goodsName},#{goodsState},#{goodsDescribe},#{goodsBrand},#{goodsClass})
 	</insert>
 	
+	<update id="updateGoods" parameterType="Goods">
+		update goods set goodsName = #{goodsName},goodsDescribe = #{goodsDescribe},goodsState= #{goodsState},goodsBrand = #{goodsBrand},goodsClass = #{goodsClass}
+    where goodsID = #{goodsID}
+	</update>
+	
 	<insert id="addStage" parameterType="GoodsStage">
 		insert into goodsstage(goodsID,stageID) values(#{goodsID},#{stageID})
 	</insert>
