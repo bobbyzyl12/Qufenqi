@@ -1123,7 +1123,6 @@ $(function(){
         			$(this).parent(':first').html("<a class=editTagSaveBtn>保存</a>");
         			
         			countTagListEdit = countTagListEdit+1;
-        			alert(countTagListEdit);
         			
         		});
             	
@@ -1139,7 +1138,7 @@ $(function(){
     				
     				$(this).parent(':first').html("<a class=editTagListBtn>修改</a>");
     				countTagListEdit = countTagListEdit-1;
-    				alert(countTagListEdit);
+
     			});
             	
             	$(document).on("click",".tagListBtn",function(){
