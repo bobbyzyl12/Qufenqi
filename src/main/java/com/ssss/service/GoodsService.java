@@ -25,4 +25,8 @@ public interface GoodsService {
 	public Goods findByID(Integer goodsID);
 	
 	public String updateGoods(Goods goods);
+	
+	public GoodsPack findGoodsPackByID(Integer goodsID);
+	
+	public List<Tag> findTagList(Integer goodsID);
 }
