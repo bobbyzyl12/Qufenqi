@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ssss.entity.Goods;
+import com.ssss.entity.GoodsPack;
 import com.ssss.entity.GoodsStage;
 import com.ssss.entity.Tag;
 import com.ssss.entity.User;
@@ -94,5 +95,29 @@ public class GoodsController {
 		Goods goods = goodsService.findByID(goodsID);
 		goods.setGoodsState("1");
 		return goodsService.updateGoods(goods);
+	}
+	
+	/**
+     * 
+     * @param goodsID
+     * @return
+     */
+	@RequestMapping(value = "/getGoodsPack")
+	@ResponseBody
+	public GoodsPack getGoodsPack(Integer goodsID){
+		GoodsPack goodsPack = goodsService.findGoodsPackByID(goodsID);	
+		return goodsPack;
+	}
+	
+	/**
+     * 
+     * @param goodsID
+     * @return
+     */
+	@RequestMapping(value = "/getGoodsTag")
+	@ResponseBody
+	public Tag getGoodsTag(Integer goodsID,Integer no){
+		List<Tag> tagList =goodsService.findTagList(goodsID);
+		return tagList.get(no);
 	}
 }

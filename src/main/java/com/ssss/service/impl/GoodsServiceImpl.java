@@ -48,10 +48,9 @@ public class GoodsServiceImpl implements GoodsService{
 			tempPack.setGoodsDescribe(temp.getGoodsDescribe());
 			tempPack.setGoodsName(temp.getGoodsName());
 			tempPack.setGoodsState(temp.getGoodsState());
+			Integer tempGoodsID = temp.getGoodsID();
+			tempPack.setGoodsStage(goodsDao.findAllStages(tempGoodsID));
 			
-			List<String> tagList =new ArrayList<String>();
-			List<Integer> storageList =new ArrayList<Integer>(); 
-			List<Float> priceList =new ArrayList<Float>();
 			List<Tag> tempTagList = new ArrayList<Tag>();
 			
 			List<Tag> resList = goodsDao.findTagsByID(temp.getGoodsID());
@@ -61,6 +60,8 @@ public class GoodsServiceImpl implements GoodsService{
 				tempTagList.add(currentTag);
 			}
 			tempPack.setGoodsTag(tempTagList);
+			
+			
 			
 			goodsPack.add(tempPack);
 		}
@@ -106,4 +107,24 @@ public class GoodsServiceImpl implements GoodsService{
 		return "success";
 	}
 	
+	public GoodsPack findGoodsPackByID(Integer goodsID){
+		GoodsPack goodsPack = new GoodsPack();
+		Goods goods = goodsDao.findByID(goodsID);
+		List<Tag> tagList = goodsDao.findTagsByID(goodsID);
+		
+		goodsPack.setGoodsBrand(goods.getGoodsBrand());
+		goodsPack.setGoodsClass(goods.getGoodsClass());
+		goodsPack.setGoodsDescribe(goods.getGoodsDescribe());
+		goodsPack.setGoodsID(goodsID);
+		goodsPack.setGoodsName(goods.getGoodsName());
+		goodsPack.setGoodsState(goods.getGoodsState());
+		goodsPack.setGoodsTag(tagList);
+		goodsPack.setGoodsStage(goodsDao.findAllStages(goodsID));
+		
+		return goodsPack;
+	}
+	
+	public List<Tag> findTagList(Integer goodsID){
+		return goodsDao.findTagsByID(goodsID);
+	}
 }

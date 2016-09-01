@@ -577,10 +577,10 @@
 		margin-right:20px;
 	}
 	
-	.tagListBtn{
+	.tagListBtn,.editTagListBtn{
 		 padding:0;
 		  height:25px;
-		  width:60px;
+		  width:50px;
 		  color:#ffffff;
 		  background-color:#4f90fb;
 		  font-size:12px;
@@ -606,7 +606,7 @@
 		  text-decoration:none;
 	}
 	
-	.tagListBtn:hover{
+	.tagListBtn:hover,.editTagListBtn:hover{
 		background-color:#9bc0fd;
 		color:#fff;
 	}
@@ -722,7 +722,48 @@
 		});
 	}
 
-
+	function addTagE(){
+		var tempTag = $("#tagInput2").val();
+		var tempPrice = $("#priceInput2").val();
+		var tempStorage = $("#storageInput2").val();
+			
+		var regStorage = /^\+?[1-9][0-9]*$/;
+		var regPrice = /^(0|([1-9]\d{0,9}(\.\d{1,2})?))$/;
+			
+		var tagOk1=false;
+		var tagOk2=false;
+		var tagOk3=false;
+			
+		if(tempTag=="" || tempTag < 3 || tempTag > 32){
+	        $("#goodsTagNameError2").show();
+	    }
+	    else{tagOk1=true;}
+			
+		if(!regPrice.test(tempPrice))
+		{
+			$("#goodsPriceError2").show();
+		}
+			else{tagOk2=true;}
+			
+		if(!regStorage.test(tempStorage))
+		{
+			$("#goodsStorageError2").show();
+		}
+		else{tagOk3=true;}
+			
+		if(tagOk1&&tagOk2&&tagOk3){
+			$("#addTagform2").hide();
+			$(".alert_msg").hide();
+				
+			var txt1="<tr><td>"+tempTag+"</td><td>"+tempPrice+"</td><td>"+tempStorage+"</td><td><a class=tagListBtn"+">删除</a></td></tr>";
+			$("#editTagListHead").after(txt1);
+		}
+		
+		$(".tagListBtn").click(function(){
+			$(this).parents('tr:first').remove();
+		});
+	}
+	
 	
 $(function(){
 	$("#addBtn").click(function(){
@@ -996,6 +1037,125 @@ $(function(){
 	    });
 	    $(".alert_msg").hide();
 	    $("#editGoodsDialog").show();
+	    $("#addTagsBtn2").click(function(){
+	    	$("#addTagform2").show();
+	    });
+	    
+	    $.ajax({ 
+			url: '${ctx}/goods/getGoodsPack',       //处理测试页面                 
+			type: 'POST', 
+			data: {goodsID:goodsID},                
+			success: function (msg){
+            	$("#editGoodsName").val(msg.goodsName);
+            	$("#goodsNameInDia").html(msg.goodsName);
+            	$("#goodsNameInDia").show();
+            	
+            	$("#editGoodsDescribe").val(msg.goodsDescribe);
+            	$("#goodsDescribeInDia").html(msg.goodsDescribe);
+            	$("#goodsDescribeInDiaBox").show();
+            	
+            	$("#editGoodsBrand").val(msg.goodsBrand);
+            	$("#goodsBrandInDia").html(msg.goodsBrand);
+            	$("#goodsBrandInDia").show();
+            	
+            	$("#editGoodsClass").val(msg.goodsClass);
+            	$("#editGoodsClass").hide();
+            	$("#goodsClassInDia").html(msg.goodsClass);
+            	$("#goodsClassInDia").show();
+            	
+            	var stageMsg="";
+            	for (var i = 0; i<msg.goodsStage.length; i++) {
+            		if(msg.goodsStage[i]==1){stageMsg =stageMsg + msg.goodsStage[i]+"期";}
+            		else{stageMsg =stageMsg +"/"+ msg.goodsStage[i]+"期";}
+            		
+            	
+            		switch (msg.goodsStage[i])
+            		{
+	            		case 3:
+	            			$("#editCheckBox3").attr("checked","checked");
+	            			break;
+	            		case 6:
+	            			$("#editCheckBox6").attr("checked","checked");
+	              			break;
+	            		case 9:
+	            			$("#editCheckBox9").attr("checked","checked");
+	              			break;
+	            		case 12:
+	            			$("#editCheckBox12").attr("checked","checked");
+	              			break;
+	            		case 18:
+	            			$("#editCheckBox18").attr("checked","checked");
+	              			break;
+	            		case 24:
+	            			$("#editCheckBox24").attr("checked","checked");
+	              			break;
+	            		case 36:
+	            			$("#editCheckBox24").attr("checked","checked");
+	              			break;
+            		}
+            	};
+            	
+            	$("#goodsStageInDia").html(stageMsg);
+            	$("#goodsStageInDia").show();
+            	$("#editGoodsStage").hide();
+            	var oldTagCount = msg.goodsTag.length;
+            	//tags另取 
+            	
+            	//重置table
+            	var thead="<tr id="+"editTagListHead"+"><th width=80px>分类</th><th width=70px>价格</th><th width=70px>库存</th><th width=60px></th><th width=60px></th></tr>";
+            	$("#editTagList").html(thead);
+            	
+            	for (var i = oldTagCount-1; i>=0 ; i--){	//反向取
+        	    	$.ajax({ 
+        				url: '${ctx}/goods/getGoodsTag',                    
+        				type: 'POST', 
+        				data: {goodsID:goodsID,no:i},                
+        				success: function (msg){
+        	            	var txt1="<tr><td>"+msg.tag+"</td><td>"+msg.price+"</td><td>"+msg.storage+
+        	            	"</td><td><a class=tagListBtn"+">删除</a></td><td><a class=editTagListBtn"+">修改</a></td></tr>";
+        	            	$("#editTagListHead").after(txt1);
+        	            	$(".tagListBtn").click(function(){
+                    			$(this).parents('tr:first').remove();
+                    		});
+        				}
+        			});
+        	    }
+			}
+		});//设定值结束
+		
+	    //点击后显示输入框
+	    $(".edit_input").hide();
+		$(".edit_box_show").show();
+	    $("#editGoodsDescribeArea").hide();
+	    $("#editNameBoxShowBtn").click(function(){ 
+	    	$("#editGoodsName").show();
+	    	$("#editNameBoxShowBtn").hide();
+	    	$("#goodsNameInDia").hide();
+	    });
+	    
+	    $("#editDescribeBoxShowBtn").click(function(){ 
+	    	$("#editGoodsDescribeArea").show();
+	    	$("#editDescribeBoxShowBtn").hide();
+	    	$("#goodsDescribeInDiaBox").hide();
+	    });
+	    
+	    $("#editBrandBoxShowBtn").click(function(){ 
+	    	$("#editGoodsBrand").show();
+	    	$("#editBrandBoxShowBtn").hide();
+	    	$("#goodsBrandInDia").hide();
+	    });
+	    
+	    $("#editClassBoxShowBtn").click(function(){ 
+	    	$("#editGoodsClass").show();
+	    	$("#editClassBoxShowBtn").hide();
+	    	$("#goodsClassInDia").hide();
+	    });
+	    
+	    $("#editStageBoxShowBtn").click(function(){ 
+	    	$("#editGoodsStage").show();
+	    	$("#editStageBoxShowBtn").hide();
+	    	$("#goodsStageInDia").hide();
+	    });
 	});
 });
 
@@ -1249,30 +1409,39 @@ function closeBg() {
 		<div class="input_box">
 			<p class="login_title">
 				<span class="title_name">商品名：</span>
+				<span class="title_name" id="goodsNameInDia"></span>
+				<a href="#"><span class="edit_box_show" id="editNameBoxShowBtn">修改商品名</span></a>
 				<span class="alert_msg" id="goodsNameError2">*商品名称长度应在3-100字符之间</span>
 				<span class="alert_msg" id="goodsNameRepeatError2">*商品名称重复</span>
 			</p>
-			<input type="text" id="editGoodsName" placeholder="请输入商品名" class="signin_input">
+			<input type="text" id="editGoodsName" placeholder="请输入商品名" class="edit_input">
 						
 			<p class="login_title">
 				<span class="title_name">商品描述：</span>
+				<a href="#"><span class="edit_box_show" id="editDescribeBoxShowBtn">修改商品描述</span></a>
+				<p style="overflow:hidden;height:20px;width:350px;" id="goodsDescribeInDiaBox">
+					<span class="title_name" id="goodsDescribeInDia"></span>
+				</p>
 				<span class="alert_msg" id="goodsDescribeError2">*商品描述长度应在1000字符之内</span>
 			</p>
-			<div style="height:80px;width:357px;border:1px solid #aaa;overflow:hidden;">
+			<div style="height:80px;width:357px;border:1px solid #aaa;overflow:hidden;" id="editGoodsDescribeArea">
 				<textarea id="editGoodsDescribe" type="input" rows="4" cols="45" placeholder="请输入商品的详细描述" style="padding-left:20px"></textarea>
 			</div>
 			
 			<p class="login_title">
 				<span class="title_name">商品品牌：</span>
+				<span class="title_name" id="goodsBrandInDia"></span>
+				<a href="#"><span class="edit_box_show" id="editBrandBoxShowBtn">修改商品品牌</span></a>
 				<span class="alert_msg" id="goodsBrandError2">*商品品牌长度应在50字符之内</span>
 			</p>
-			<input type="text" id="editGoodsBrand" placeholder="请输入商品品牌" class="signin_input">
+			<input type="text" id="editGoodsBrand" placeholder="请输入商品品牌" class="edit_input">
 			
 			<p class="login_title">
 				<span class="title_name">商品分类：</span>
+				<span class="title_name" id="goodsClassInDia"></span>
+				<a href="#"><span class="edit_box_show" id="editClassBoxShowBtn">修改商品分类</span></a>
 				
 				<select id="editGoodsClass">
-				<option value=""></option>
 				<option value="手机通讯">手机通讯</option>  
 				<option value="电脑平板">电脑平板</option>
 				<option value="腕表饰品">腕表饰品</option> 
@@ -1293,9 +1462,12 @@ function closeBg() {
 			</p>
 			
 			<p class="login_title">
-				<span class="title_name">商品分期:</span><span class="title_name" style="font-size:10px">（1期默认加入）</span>
+				<span class="title_name">商品分期:</span>
+				<span class="title_name" id="goodsStageInDia"></span>
+				<a href="#"><span class="edit_box_show" id="editStageBoxShowBtn">修改商品分期</span></a>
 				<br>
-				<div style="padding-left:20px;height:40px;">
+				<div style="padding-left:20px;height:40px;" id="editGoodsStage">
+					<span class="title_name" style="font-size:10px">（1期默认加入）</span>
 					3期<input id="editCheckBox3" type="checkbox" style="margin-left: 5px;margin-right: 15px;">
 					6期<input id="editCheckBox6" type="checkbox"style="margin-left: 5px;margin-right: 15px;">
 					9期<input id="editCheckBox9"  type="checkbox"style="margin-left: 5px;margin-right: 15px;">
@@ -1308,7 +1480,7 @@ function closeBg() {
 			</p>
 			
 			<p>
-				<button id="editTagsBtn" class="addTagsBtn">
+				<button id="addTagsBtn2" class="addTagsBtn">
 					<span class="glyphicon glyphicon-plus add_btn_icon"></span>
 					<span >增加商品种类</span>
 				</button>
@@ -1317,11 +1489,11 @@ function closeBg() {
 				<span class="alert_msg" id="goodsTagNameError2"><br>*商品分类为2-32位字符</span>
 				<span class="alert_msg" id="goodsStorageError2"><br>*商品库存应为正整数</span>
 			</p>
-			<p id="addTagform" style="display:none;">
-				<input type="text" id="tagInput" placeholder="分类名"class="signin_input"  style="width:120px">
-				<input type="text" id="priceInput" placeholder="价格"class="signin_input" style="width:80px">
-				<input type="text" id="storageInput" placeholder="库存"class="signin_input" style="width:80px">
-				<button class="btn" id="addEditTagSaveBtn" onclick="addTag()" style="width:50px;height:30px;font-size:12px;">确认</button>
+			<p id="addTagform2" style="display:none;">
+				<input type="text" id="tagInput2" placeholder="分类名"class="signin_input"  style="width:120px">
+				<input type="text" id="priceInput2" placeholder="价格"class="signin_input" style="width:80px">
+				<input type="text" id="storageInput2" placeholder="库存"class="signin_input" style="width:80px">
+				<button class="btn" id="addTagSaveBtn2" onclick="addTagE()" style="width:50px;height:30px;font-size:12px;">确认</button>
 			<p>
 			<table id="editTagList" style="width:350px">
 				<tr id="editTagListHead">
@@ -1343,6 +1515,12 @@ function closeBg() {
 		<p class="dialog_msg">添加商品成功</p>
   		<a href="${ctx}/page/jumpToGoodsAdmin?pageNo=${pageModel.pageNo}" onclick="closeBg();"><button class="btn" style="width:120px;height:40px;font-size:18px;">关闭</button></a>
 	</div>
+	
+	<div id="addSuccessDialog" class="dialog">
+		<p class="dialog_msg">添加商品成功</p>
+  		<a href="${ctx}/page/jumpToGoodsAdmin?pageNo=${pageModel.pageNo}" onclick="closeBg();"><button class="btn" style="width:120px;height:40px;font-size:18px;">关闭</button></a>
+	</div>
+	
 	
 	<div id="reAddConfirmDialog" class="dialog">
 		<p class="dialog_msg">确认上架该商品？</p>

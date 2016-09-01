@@ -11,6 +11,7 @@ public class GoodsPack {
 	private String goodsClass;
 	private List<Tag> goodsTag;
 	private String goodsPicture;
+	private List<Integer> goodsStage;
 	/**
 	 * @return the goodsID
 	 */
@@ -108,6 +109,18 @@ public class GoodsPack {
 	 */
 	public void setGoodsTag(List<Tag> goodsTag) {
 		this.goodsTag = goodsTag;
+	}
+	/**
+	 * @return the goodsStage
+	 */
+	public List<Integer> getGoodsStage() {
+		return goodsStage;
+	}
+	/**
+	 * @param goodsStage the goodsStage to set
+	 */
+	public void setGoodsStage(List<Integer> goodsStage) {
+		this.goodsStage = goodsStage;
 	}
 	
 }
