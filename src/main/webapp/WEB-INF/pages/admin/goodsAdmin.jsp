@@ -760,10 +760,9 @@
 			$("#addTagform2").hide();
 			$(".alert_msg").hide();
 				
-			var txt1="<tr><td>"+tempTag+"</td><td>"+tempPrice+"</td><td>"+tempStorage+"</td><td><a class=tagListBtn"+">删除</a></td></tr>";
+			var txt1="<tr><td>"+tempTag+"</td><td>"+tempPrice+"</td><td>"+tempStorage+"</td><td><a class=tagListBtn"+">删除</a></td><td><a class=editTagListBtn"+">修改</a></td></tr>";
 			$("#editTagListHead").after(txt1);
 		}
-		
 		$(".tagListBtn").click(function(){
 			$(this).parents('tr:first').remove();
 		});
@@ -1127,18 +1126,44 @@ $(function(){
         		});
             	
             	$(document).on("click",".editTagSaveBtn",function(){
-    				var newData = $(this).parents('tr:first').children(':first').children().val();
-    				$(this).parents('tr:first').children(':first').html(newData);
+    				var tempTag = $(this).parents('tr:first').children(':first').children().val();
+    				var tempPrice = $(this).parents('tr:first').children(':eq(1)').children().val();
+    				var tempStorage = $(this).parents('tr:first').children(':eq(2)').children().val();
     				
-    				newData = $(this).parents('tr:first').children(':eq(1)').children().val();
-    				$(this).parents('tr:first').children(':eq(1)').html(newData);
+    				var regStorage = /^\+?[1-9][0-9]*$/;
+    				var regPrice = /^(0|([1-9]\d{0,9}(\.\d{1,2})?))$/;
+    					
+    				var tagOk1=false;
+    				var tagOk2=false;
+    				var tagOk3=false;
     				
-    				newData = $(this).parents('tr:first').children(':eq(2)').children().val();
-    				$(this).parents('tr:first').children(':eq(2)').html(newData);
+    				$(".alert_msg").hide();
     				
-    				$(this).parent(':first').html("<a class=editTagListBtn>修改</a>");
-    				countTagListEdit = countTagListEdit-1;
-
+    				if(tempTag=="" || tempTag < 3 || tempTag > 32){
+    			        $("#goodsTagNameError2").show();
+    			    }
+    			    else{tagOk1=true;}
+    				
+    				
+    				if(!regPrice.test(tempPrice))
+    				{
+    					$("#goodsPriceError2").show();
+    				}
+    					else{tagOk2=true;}
+    					
+    				if(!regStorage.test(tempStorage))
+    				{
+    					$("#goodsStorageError2").show();
+    				}
+    				else{tagOk3=true;}
+    				
+    				if(tagOk1&&tagOk2&&tagOk3){
+    					$(this).parents('tr:first').children(':first').html(tempTag);
+        				$(this).parents('tr:first').children(':eq(1)').html(tempPrice);
+        				$(this).parents('tr:first').children(':eq(2)').html(tempStorage);
+        				$(this).parent(':first').html("<a class=editTagListBtn>修改</a>");
+        				countTagListEdit = countTagListEdit-1;
+    				}
     			});
             	
             	$(document).on("click",".tagListBtn",function(){
@@ -1157,8 +1182,7 @@ $(function(){
         				type: 'POST', 
         				data: {goodsID:goodsID,no:i},                
         				success: function (msg){
-        	            	var txt1="<tr><td>"+msg.tag+"</td><td>"+msg.price+"</td><td>"+msg.storage+
-        	            	"</td><td><a class=tagListBtn"+">删除</a></td><td><a class=editTagListBtn"+">修改</a></td></tr>";
+        	            	var txt1="<tr><td>"+msg.tag+"</td><td>"+msg.price+"</td><td>"+msg.storage+"</td><td><a class=tagListBtn"+">删除</a></td><td><a class=editTagListBtn"+">修改</a></td></tr>";
         	            	$("#editTagListHead").after(txt1);
         	            	
         				}
@@ -1199,6 +1223,207 @@ $(function(){
 	    	$("#editGoodsStage").show();
 	    	$("#editStageBoxShowBtn").hide();
 	    	$("#goodsStageInDia").hide();
+	    });
+	    
+	    $('#editGoodsSaveButton').click(function(){
+	    	var tempGoodsName=$("#editGoodsName").val();
+	    	var tempGoodsDescribe=$("#editGoodsDescribe").val();
+	    	var tempGoodsBrand=$("#editGoodsBrand").val();
+	    	var tempGoodsClass=$("#editGoodsClass").val()
+	    	$(".alert_msg").hide();
+	    	
+	    	var ok1=false;
+	    	var ok2=false;
+	    	var ok3=false;
+	    	var ok4=false;
+	    	
+	    	if(tempGoodsName=="" || tempGoodsName.length < 3 || tempGoodsName.length > 100){
+	        	 $("#goodsNameError2").show();
+	            }
+	        else{ok1=true;}
+	    	
+	    	if(tempGoodsDescribe=="" || tempGoodsDescribe.length < 1 || tempGoodsDescribe.length > 1000){
+	        	 $("#goodsDescribeError2").show();
+	            }
+	        else{ok2=true;}
+	    	 
+	    	if(tempGoodsBrand.length > 50){
+	        	 $("#goodsBrandError2").show();
+	            }
+	        else{
+	        	if(tempGoodsBrand==""){tempGoodsBrand="暂无";}
+	        	ok3=true;
+	        }
+	    	
+	    	if(tempGoodsClass==""){
+	        	 $("#goodsClassError2").show();
+	            }
+	        else{ok4=true;}
+	    	
+	    	var tableObj = document.getElementById('editTagList').rows[1];
+	    	var okTable=true;
+	    	var okTable2=false;
+	    	if (tableObj == null) {
+	    		okTable=false;
+	    		$("#goodsTagError2").show();
+	    	}
+	    	if(countTagListEdit==0)
+	    	{
+	    		okTable2=true;
+	    	}
+	    	else{$("#goodsTagUnsavedError").show();}
+	    	
+	    	
+	    	if(ok1&&ok2&&ok3&&ok4&&okTable&&okTable2){
+	    		var tempGoods={'goodsID':goodsID,'goodsName':tempGoodsName,'goodsDescribe':tempGoodsDescribe,'goodsBrand':tempGoodsBrand,'goodsClass':tempGoodsClass}
+	    		
+	    		$.ajax({ 							//提交                          	  
+					url: '${ctx}/goods/updateGoods',       //处理注册的页面                 
+					type: 'POST',
+					data: tempGoods,
+					success: function (msg){
+						if(msg=="success"){
+							//先清空stage和tags再重新遍历添加
+							$.ajax({
+			    				url: '${ctx}/goods/deleteAllStage',
+			    				type: 'POST',
+			    				data: {goodsID:goodsID},
+			    				success: function (msg){} 
+			    			});
+							
+							$.ajax({
+			    				url: '${ctx}/goods/deleteAllTags',
+			    				type: 'POST',
+			    				data: {goodsID:goodsID},
+			    				success: function (msg){} 
+			    			});
+							
+							
+							//开始添加stage
+							var tempStage =Number(1);
+			    			$.ajax({
+			    				url: '${ctx}/goods/addStage',
+			    				type: 'POST',
+			    				data: {tempStage:tempStage},
+			    				success: function (msg){} 
+			    			});
+			    			
+			    			if($('#editCheckBox3').is(':checked')) {
+			    				tempStage = Number(3);
+			    				$.ajax({
+				    				url: '${ctx}/goods/addStage',
+				    				type: 'POST',
+				    				data: {tempStage:tempStage},
+				    				success: function (msg){} 
+				    			});
+			    			}
+			    			
+			    			if($('#editCheckBox6').is(':checked')) {
+			    				tempStage = Number(6);
+			    				$.ajax({
+				    				url: '${ctx}/goods/addStage',
+				    				type: 'POST',
+				    				data: {tempStage:tempStage},
+				    				success: function (msg){} 
+				    			});
+			    			}
+			    			
+			    			if($('#editCheckBox9').is(':checked')) {
+			    				tempStage = Number(9);
+			    				$.ajax({
+				    				url: '${ctx}/goods/addStage',
+				    				type: 'POST',
+				    				data: {tempStage:tempStage},
+				    				success: function (msg){} 
+				    			});
+			    			}
+			    			
+			    			if($('#editCheckBox12').is(':checked')) {
+			    				tempStage = Number(12);
+			    				$.ajax({
+				    				url: '${ctx}/goods/addStage',
+				    				type: 'POST',
+				    				data: {tempStage:tempStage},
+				    				success: function (msg){} 
+				    			});
+			    			}
+			    			
+			    			
+			    			if($('#editCheckBox18').is(':checked')) {
+			    				tempStage = Number(18);
+			    				$.ajax({
+				    				url: '${ctx}/goods/addStage',
+				    				type: 'POST',
+				    				data: {tempStage:tempStage},
+				    				success: function (msg){} 
+				    			});
+			    			}
+			    			
+			    			if($('#editCheckBox24').is(':checked')) {
+			    				tempStage = Number(18);
+			    				$.ajax({
+				    				url: '${ctx}/goods/addStage',
+				    				type: 'POST',
+				    				data: {tempStage:tempStage},
+				    				success: function (msg){} 
+				    			});
+			    			}
+			    			
+			    			if($('#editCheckBox36').is(':checked')) {
+			    				tempStage = Number(18);
+			    				$.ajax({
+				    				url: '${ctx}/goods/addStage',
+				    				type: 'POST',
+				    				data: {tempStage:tempStage},
+				    				success: function (msg){} 
+				    			});
+			    			}
+			    			
+							var i=Number(0);
+					    	var j=Number(0);
+					    	var tempTagName;
+					    	var tempPrice;
+					    	var tempStorage;
+					    	
+				    		$("#editTagList tr td").each(function(){
+				    			var tempTD=this.innerHTML;
+					    		if(j==0){
+					    			j=j+1;
+					    			tempTagName=tempTD;
+					    		}
+					    		else if(j==1){
+					    			tempPrice=tempTD;
+					    			j=j+1;
+					    		}
+					    		else if(j==2){
+					    			tempStorage=tempTD;
+					    			j=j+1;
+					    			var tempTag = {'tag':tempTagName,'price':tempPrice,'storage':tempStorage};
+					    			$.ajax({ 							//提交                          	  
+										url: '${ctx}/goods/addTag',       //处理注册的页面                 
+										type: 'POST',
+										data: tempTag,
+										dataType: 'json',
+										success: function (msg){} 
+									});
+					    		}
+					    		else if(j==3){
+					    			j=j+1;
+					    		}
+					    		else if(j==4){
+					    			j=0;
+					    		}
+				    		});
+				    		$("#editGoodsDialog").hide();
+				    		$("#editSuccessDialog").show();
+				    		
+						}
+						else if(msg="repeatName"){
+							$("#goodsNameRepeatError2").show();
+						}
+					} 
+				});
+	    	}
 	    });
 	});
 });
@@ -1531,6 +1756,7 @@ function closeBg() {
 					<span >增加商品种类</span>
 				</button>
 				<span class="alert_msg" id="goodsTagError2">（请至少添加一种）</span>
+				<span class="alert_msg" id="goodsTagUnsavedError">请先保存您的修改</span>
 				<span class="alert_msg" id="goodsPriceError2"><br>*商品价格为最多两位小数</span>
 				<span class="alert_msg" id="goodsTagNameError2"><br>*商品分类为2-32位字符</span>
 				<span class="alert_msg" id="goodsStorageError2"><br>*商品库存应为正整数</span>
@@ -1562,8 +1788,8 @@ function closeBg() {
   		<a href="${ctx}/page/jumpToGoodsAdmin?pageNo=${pageModel.pageNo}" onclick="closeBg();"><button class="btn" style="width:120px;height:40px;font-size:18px;">关闭</button></a>
 	</div>
 	
-	<div id="addSuccessDialog" class="dialog">
-		<p class="dialog_msg">添加商品成功</p>
+	<div id="editSuccessDialog" class="dialog">
+		<p class="dialog_msg">修改商品信息成功</p>
   		<a href="${ctx}/page/jumpToGoodsAdmin?pageNo=${pageModel.pageNo}" onclick="closeBg();"><button class="btn" style="width:120px;height:40px;font-size:18px;">关闭</button></a>
 	</div>
 	

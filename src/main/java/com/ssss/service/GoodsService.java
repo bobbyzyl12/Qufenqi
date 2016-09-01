@@ -29,4 +29,8 @@ public interface GoodsService {
 	public GoodsPack findGoodsPackByID(Integer goodsID);
 	
 	public List<Tag> findTagList(Integer goodsID);
+	
+	public String deleteAllStage(Integer goodsID);
+	
+	public String deleteAllTags(Integer goodsID);
 }

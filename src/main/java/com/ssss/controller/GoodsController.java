@@ -120,4 +120,38 @@ public class GoodsController {
 		List<Tag> tagList =goodsService.findTagList(goodsID);
 		return tagList.get(no);
 	}
+	
+	/**
+     * 
+     * @param goods
+     * @return
+     */
+	@RequestMapping(value = "/updateGoods")
+	@ResponseBody
+	public String updateGoods(Goods goods){
+		return goodsService.updateGoods(goods);
+	}
+	
+	/**
+     * 
+     * @param goodsID
+     * @return
+     */
+	@RequestMapping(value = "/deleteAllStage")
+	@ResponseBody
+	public String deleteAllStage(Integer goodsID,HttpSession session){
+		session.setAttribute("goodsID", goodsID);
+		return goodsService.deleteAllStage(goodsID);
+	}
+	
+	/**
+     * 
+     * @param goodsID
+     * @return
+     */
+	@RequestMapping(value = "/deleteAllTags")
+	@ResponseBody
+	public String deleteAllTags(Integer goodsID){
+		return goodsService.deleteAllTags(goodsID);
+	}
 }

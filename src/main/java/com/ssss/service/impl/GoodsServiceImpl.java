@@ -103,6 +103,13 @@ public class GoodsServiceImpl implements GoodsService{
 	}
 	
 	public String updateGoods(Goods goods){
+		Goods oldGoods = goodsDao.findByID(goods.getGoodsID());
+		if(!(oldGoods.getGoodsName().equals(goods.getGoodsName()))){
+			if(goodsDao.findByName(goods.getGoodsName())!=null){
+				return "repeatName";
+			}
+		}
+		goods.setGoodsState(oldGoods.getGoodsState());
 		goodsDao.updateGoods(goods);
 		return "success";
 	}
@@ -126,5 +133,14 @@ public class GoodsServiceImpl implements GoodsService{
 	
 	public List<Tag> findTagList(Integer goodsID){
 		return goodsDao.findTagsByID(goodsID);
+	}
+	
+	public String deleteAllStage(Integer goodsID){
+		goodsDao.deleteAllStages(goodsID);
+		return "success";
+	}
+	public String deleteAllTags(Integer goodsID){
+		goodsDao.deleteAllTags(goodsID);
+		return "success";
 	}
 }

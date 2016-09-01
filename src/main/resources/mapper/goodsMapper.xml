@@ -69,4 +69,8 @@
 	<delete id="deleteAllStages" parameterType="Integer"> 
 		delete from  goodsStage  where goodsID=#{goodsID}
 	</delete>
+	
+	<delete id="deleteAllTags" parameterType="Integer"> 
+		delete from tag  where goodsID=#{goodsID}
+	</delete>
 </mapper>
