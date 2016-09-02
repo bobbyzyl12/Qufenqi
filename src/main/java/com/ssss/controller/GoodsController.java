@@ -1,6 +1,7 @@
 package com.ssss.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -15,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.ssss.entity.Goods;
 import com.ssss.entity.GoodsPack;
 import com.ssss.entity.GoodsStage;
+import com.ssss.entity.PageModel;
 import com.ssss.entity.Tag;
 import com.ssss.entity.User;
 import com.ssss.service.GoodsService;
@@ -105,7 +107,7 @@ public class GoodsController {
 	@RequestMapping(value = "/getGoodsPack")
 	@ResponseBody
 	public GoodsPack getGoodsPack(Integer goodsID){
-		GoodsPack goodsPack = goodsService.findGoodsPackByID(goodsID);	
+		GoodsPack goodsPack = goodsService.findGoodsPackByID(goodsID);
 		return goodsPack;
 	}
 	
@@ -153,5 +155,38 @@ public class GoodsController {
 	@ResponseBody
 	public String deleteAllTags(Integer goodsID){
 		return goodsService.deleteAllTags(goodsID);
+	}
+	
+	/**
+     * 
+     * @param searchContent
+     * @return
+     */
+	@RequestMapping(value = "/searchAll")
+	public String searchAll(@RequestParam(value = "searchContent") String searchContent,PageModel<GoodsPack> pageModel,Map<String, Object> map,HttpSession session){
+		if(searchContent==null){
+			session.setAttribute("haveRes", "no");
+			return "goodsPage/goodsView";
+		}
+		
+		if (pageModel == null) {
+			pageModel = new PageModel<GoodsPack>();
+		}
+		
+		pageModel.setPagesize(10);
+		
+		List<GoodsPack> goodsList = goodsService.searchAll(pageModel,searchContent);
+		if(goodsList==null){
+			session.setAttribute("haveRes", "no");
+			return "goodsPage/goodsView";
+		}
+		
+		pageModel.setTotalrecode(goodsService.searchAllCount(pageModel, searchContent));
+		pageModel.setDatas(goodsList);
+		session.setAttribute("haveRes", "yes");
+		map.put("goodsList", goodsList);
+		map.put("pageModel", pageModel);
+		
+		return "goodsPage/goodsView";
 	}
 }

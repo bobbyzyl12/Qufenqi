@@ -14,6 +14,10 @@ public interface GoodsService {
 	
 	public Integer findAllCount(PageModel<GoodsPack> pageModel);
 	
+	public List<GoodsPack> searchAll(PageModel<GoodsPack> pageModel,String searchStr);
+	
+	public Integer searchAllCount(PageModel<GoodsPack> pageModel,String searchStr);
+	
 	public Goods findSameName(Goods goods);
 	
 	public String addGoods(Goods goods);
@@ -33,4 +37,8 @@ public interface GoodsService {
 	public String deleteAllStage(Integer goodsID);
 	
 	public String deleteAllTags(Integer goodsID);
+	
+	public String changeToHtml(String describe);
+	
+	public String changeToText(String describe);
 }

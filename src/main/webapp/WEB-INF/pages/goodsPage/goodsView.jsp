@@ -483,122 +483,31 @@ figure.effect-ming:hover img {
 	opacity: 0.4;
 }
 	
-	.dialog{
-		display: none;
-		z-index: 5;
-		
-		height:150px;
-		width:400px;
-		background-color: #FFF;
-		border: 1px solid #888;
-		
-		position: fixed !important; /* 浮动对话框 */
-		top: 40%;
-		left:35%;
-		text-align:center;
-		margin-left:auto; 
-		margin-right:auto;
-		
-		-moz-border-radius: 10px;
-		-webkit-border-radius: 10px;
-		border-radius: 10px;
-		
-		border:2px solid #4f90fb;
-	}
-	
-	.dialog_msg{
-		font-size:16px;
-		margin-top:30px;
-	}
-	
-	.coverbg{
-    	background-color:#333;
-    	left: 0px;
-    	opacity: 0.5;
-		position: absolute;
-    	top: 0px;
-    	z-index: 3;
-    	filter: alpha(opacity=50); /* IE6 */
-    	-moz-opacity: 0.5; /* Mozilla */
-    	-khtml-opacity: 0.5; /* Safari */
-	}
-	
-	 	.dialogBtn{
-		  padding:0;
-		  height:25px;
-		  width:70px;
-		  color:#ffffff;
-		  background-color:#4f90fb;
-		  font-size:14px;
-		  font-weight:normal;
-		  border:1px solid #1647e9;
-		  -webkit-border-top-left-radius:2px;
-		  -moz-border-radius-topleft:2px;
-		  border-top-left-radius:2px;
-		  -webkit-border-top-right-radius:2px;
-		  -moz-border-radius-topright:2px;
-		  border-top-right-radius:2px;
-		  -webkit-border-bottom-left-radius:2px;
-		  -moz-border-radius-bottomleft:2px;
-		  border-bottom-left-radius:2px;
-		  -webkit-border-bottom-right-radius:2px;
-		  -moz-border-radius-bottomright:2px;
-		  border-bottom-right-radius:2px;
-		  -moz-box-shadow: inset 0px 0px 0px 0px #ffffff;
-		  -webkit-box-shadow: inset 0px 0px 0px 0px #ffffff;
-		  box-shadow: inset 0px 0px 0px 0px #ffffff;
-		  text-align:center;
-		  display:inline-block;
-		  text-decoration:none;
-		}
-		
-	.dialogBtn:hover{
-		background-color:#9bc0fd;
-		color:#fff;
-	}
 </style>
 
 <script type="text/javascript">
 
 $(function(){
-	$("#search_btn").click(function(){
-		var temp = $("#search").val();
-		var ok=false;
-		if(temp=="")
-		{
-			alert("aaa");
-			var bh = $(".wrapper").height();
-		    var bw = $(".wrapper").width();
-		    $("#coverbg").css({
-		        height: bh,
-		        width: bw,
-		        display: "block"
-		    });
-		    $("#searchNullDialog").show();
-		}
-		else if(temp.length>30)
-		{
-			var bh = $(".wrapper").height();
-		    var bw = $(".wrapper").width();
-		    $("#coverbg").css({
-		        height: bh,
-		        width: bw,
-		        display: "block"
-		    });
-		    $("#searchLongDialog").show();
-		}
-		else{ok = true;}
-		
-	});
-	
+	var temp=$('#msgNum').html();
+	if(temp==0)
+		$('#msgNum').hide();
 });
 
-function closeBg() {
-    $("#coverbg").hide();
-    $(".dialog").hide();
+function showBg() {
+    var bh = $("body").height();
+    var bw = $("body").width();
+    $("#coverbg").css({
+        height: bh,
+        width: bw,
+        display: "block"
+    });
+    $("#dialog").show();
 }
 
-
+//关闭灰色 jQuery 遮罩
+function closeBg() {
+    $("#coverbg,#dialog").hide();
+}
 </script>
 </head>
 <body>
@@ -659,215 +568,69 @@ function closeBg() {
 						</a>
 					</div>
 					<div class="header_search_box">
-						<form action="${ctx}/goods/searchAll" method="post">
-								
-							<input class="header_search" type="text" name="searchContent" id="searchContent" placeholder="输入关键字">
-								
-							<input class="search_btn" type="submit" id="search_btn">搜索
-								
-						</form>
+						<div class="search_box">
+							<input class="header_search" id="search" placeholder="输入关键字">
+						</div>
+						<div class="search_btn_box">
+							<button class="search_btn">搜索</button>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-		<div class="main_container">
-			<div class="center_area">
-				<div class="index_area">
-					<li style="font-size:16px;color:#000;width:100%;height:39px;font-weight:bold;padding-left:42px;background-color:white;">
-						商品分类
-					</li>
-					<li	class="index_li">
-						<a href="#">
-							<span class="index_title">手机通讯</span>
-						</a>
-					</li>
-					<li	class="index_li">
-						<a href="#">
-							<span class="index_title">电脑平板</span>
-						</a>
-					</li>
-					<li	class="index_li">
-						<a href="#">
-							<span class="index_title">腕表饰品</span>
-						</a>
-					</li>
-					<li	class="index_li">
-						<a href="#">
-							<span class="index_title">数码家电</span>
-						</a>
-					</li>
-					<li	class="index_li">
-						<a href="#">
-							<span class="index_title">家具家饰</span>
-						</a>
-					</li>
-					<li	class="index_li">
-						<a href="#">
-							<span class="index_title">家装建材</span>
-						</a>
-					</li>
-					<li	class="index_li">
-						<a href="#">
-							<span class="index_title">食品饮料</span>
-						</a>
-					</li>
-					<li	class="index_li">
-						<a href="#">
-							<span class="index_title">衣装服饰</span>
-						</a>
-					</li>
-					<li	class="index_li">
-						<a href="#">
-							<span class="index_title">鞋靴箱包</span>
-						</a>
-					</li>
-					<li	class="index_li">
-						<a href="#">
-							<span class="index_title">图书百货</span>
-						</a>
-					</li>
-				</div>
-				<div class="puzzle_area">
-					<div class="puzzle_box small_box grid">
-						<figure class="effect-ming small">
-							<img src="${ctx}/img/watch.jpg" alt="watch"/>
-							<figcaption>
-								<h2><span></span></h2>
-								<p style="padding:3px;font-size:16px;">天梭<br>T0636171603</p>
-								<p style="padding:1px;">￥4085.97</p>
-								<p style="padding:1px;">3期/6期/12期</p>
-							</figcaption>			
-						</figure>
-					</div>
-					<div class="puzzle_box small_box grid" style="left:140px;">
-						<figure class="effect-ming small">
-							<img src="${ctx}/img/camera.jpg" alt="camera"/>
-							<figcaption>
-								<h2><span></span></h2>
-								<p style="padding:3px;font-size:16px;">佳能<br>EOS 80D</p>
-								<p style="padding:1px;font-size:12px;">￥8989.98</p>
-								<p style="padding:1px;">6期/12期/24期</p>
-							</figcaption>			
-						</figure>
-					</div>
-					<div class="puzzle_box small_box grid" style="left:280px;">
-						<figure class="effect-ming small">
-							<img src="${ctx}/img/bag.jpg" alt="bag"/>
-							<figcaption>
-								<h2><span></span></h2>
-								<p style="padding:3px;font-size:16px;">TOM TAILOR<br>双肩包</p>
-								<p style="padding:1px;">￥498.08</p>
-								<p style="padding:1px;">3期</p>
-							</figcaption>			
-						</figure>
-					</div>
-					<div class="puzzle_box big_box grid" style="top:140px;">
-						<figure class="effect-ming big">
-							<img src="${ctx}/img/laptop.jpg" alt="laptop"/>
-							<figcaption>
-								<h2><span></span></h2>
-								<p style="padding:0px;font-size:22px;">Dell X13系列</p>
-								<p>9350-3708：￥6988.98<br>
-								   9350-4708：￥8999.98
-								</p>
-								<p>3期/6期/12期/24期</p>
-							</figcaption>			
-						</figure>
-					</div>
-					<div class="puzzle_box small_box grid" style="left:280px;top:140px;">
-						<figure class="effect-ming small">
-							<img src="${ctx}/img/earphone.jpg" alt="earphone"/>
-							<figcaption>
-								<h2><span></span></h2>
-								<p style="padding:3px;font-size:16px;">森海塞尔<br>HD 598</p>
-								<p style="padding:1px;">￥1799.98</p>
-								<p style="padding:1px;">3期/6期</p>
-							</figcaption>			
-						</figure>
-					</div>
-					<div class="puzzle_box small_box grid" style="left:280px;top:280px;">
-						<figure class="effect-ming small">
-							<img src="${ctx}/img/wallpaper.jpg" alt="wallpaper"/>
-							<figcaption>
-								<h2><span></span></h2>
-								<p style="padding:3px;font-size:16px;">本木壁纸<br>HS210101</p>
-								<p style="padding:1px;">￥158.06</p>
-								<p style="padding:1px;">3期/6期</p>
-							</figcaption>			
-						</figure>
-					</div>
-					<div class="puzzle_box big_box grid" style="left:420px;">
-						<figure class="effect-ming big">
-							<img src="${ctx}/img/phone.jpg" alt="phone"/>
-							<figcaption>
-								<h2><span></span></h2>
-								<p style="padding:0px;font-size:22px;">iPhone Pro</p>
-								<p>32G:￥4088.98<br>
-									64G:￥5188.98
-								</p>
-								<p>3期/6期/12期/24期</p>
-							</figcaption>			
-						</figure>
-					</div>
-					<div class="puzzle_box small_box grid" style="left:420px;top:280px;">
-						<figure class="effect-ming small">
-							<img src="${ctx}/img/biscuit.jpg" alt="biscuit"/>
-							<figcaption>
-								<h2><span></span></h2>
-								<p style="padding:3px;font-size:16px;">白色恋人</p>
-								<p style="padding:1px;">￥358.15</p>
-								<p style="padding:1px;">3期</p>
-							</figcaption>			
-						</figure>
-					</div>
-					<div class="puzzle_box small_box grid" style="left:560px;top:280px;">
-						<figure class="effect-ming small">
-							<img src="${ctx}/img/sofa.jpg" alt="sofa"/>
-							<figcaption>
-								<h2><span></span></h2>
-								<p style="padding:3px;font-size:16px;">奥古拉<br>折叠沙发床</p>
-								<p style="padding:1px;">￥1189.18</p>
-								<p style="padding:1px;">3期/6期</p>
-							</figcaption>			
-						</figure>
-					</div>
-					<div class="puzzle_box small_box grid" style="left:700px;top:0px;">
-						<figure class="effect-ming small">
-							<img src="${ctx}/img/books.jpg" alt="books"/>
-							<figcaption>
-								<h2><span></span></h2>
-								<p style="padding:3px;font-size:15px;">东野圭吾精选集</p>
-								<p style="padding:1px;">￥106.61</p>
-								<p style="padding:1px;">3期</p>
-							</figcaption>			
-						</figure>
-					</div>
-					<div class="puzzle_box small_box grid"" style="left:700px;top:140px;">
-						<figure class="effect-ming small">
-							<img src="${ctx}/img/pen.jpg" alt="pen"/>
-							<figcaption>
-								<h2><span></span></h2>
-								<p style="padding:3px;font-size:15px;">凌美  恒星系列<br>L71笔尖</p>
-								<p style="padding:1px;">￥298.00</p>
-								<p style="padding:1px;">3期</p>
-							</figcaption>			
-						</figure>
-					</div>
-					<div class="puzzle_box small_box grid"" style="left:700px;top:280px;">		
-						<figure class="effect-ming small">
-							<img src="${ctx}/img/hardDisk.jpg" alt="hardDisk"/>
-							<figcaption>
-								<h2><span></span></h2>
-								<p style="padding:3px;font-size:15px;">希捷 移动硬盘<br>STDR1000103</p>
-								<p style="padding:0px;">1TB:￥367.71<br>2TB:￥534.88 </p>
-								<p style="padding:1px;">3期</p>
-							</figcaption>			
-						</figure>
-					</div>
-					
-				</div>
+		<div class="main_container" style="background-color:gray;height:100px;">
+			<div class="goods_show_box">
+				<table>
+						<thead>
+							<tr>
+								<th width=50px>ID</th>
+  								<th width=100px>商品名</th>
+					  			<th width=150px>商品描述</th>
+					  			<th width=120px>状态</th>
+					  			<th width=150px>品牌</th>
+					  			<th width=80px>所属分区</th>
+					  			<th width=70px></th>
+					  			<th width=70px></th>
+							</tr>
+						</thead>
+						<tbody>
+							<c:forEach items="${pageModel.datas}" var="goods">
+				             <tr class="infoTable">
+				          		<td>${goods.goodsID}</td>
+				  				<td>${goods.goodsName}</td>
+				  				<td><div style="height:20px;overflow:hidden;display:block;">${goods.goodsDescribe}</div></td>
+				  				<td>
+				  					<c:choose>
+				    					<c:when test="${goods.goodsState == '1'}">
+				       						<span style="color:#00b300;">正常</span>
+				   						</c:when>
+				   						<c:when test="${goods.goodsState=='2'}">
+				       						<span style="color: #4d4dff;">已下架</span>
+				   						</c:when>
+									</c:choose>
+				  				</td>
+				  				<td>${goods.goodsBrand}</td>
+				           		<td>${goods.goodsClass}</td>
+				           		<td style="padding:0px 5px 0px 5px">
+				  					<a href="#" class="btn editBtn" id="editBtn" title="${goods.goodsID}">修改</a>
+				  				</td>
+				  				<td style="padding:0px 5px 0px 5px">
+					  				<c:choose>
+					  					<c:when test="${goods.goodsState == '1'}">
+					  						<a href="#" class="btn tryDeleteBtn" id="tryDeleteBtn" title="${goods.goodsID}">下架</a>
+					  					</c:when>
+					  					<c:when test="${goods.goodsState=='2'}">
+					  						<a href="#" class="btn tryReAddBtn" id="tryReaddBtn" title="${goods.goodsID}">上架</a>
+					  					</c:when>
+									</c:choose>
+				  				</td>
+				         	</tr>
+				         </c:forEach>
+				         
+						</tbody>
+					</table>
 			</div>
-			
+			<div class="page_box"></div>
 		</div>
 		
 		<div class="footer_container" id="aaa">
@@ -881,14 +644,9 @@ function closeBg() {
 	<div id="coverbg" class="coverbg"></div>
 	
 	<!-- 这里存放dialogs -->
-	<div id="searchNullDialog" class="dialog">
-		<p class="dialog_msg">搜索内容为空</p>
-		<a href="#" onclick="closeBg();"><button class="dialogBtn" style="width:120px;height:40px;font-size:18px;">确认</button></a>
+	<div id="dialog" class="dialog">
 	</div>
-	<div id="searchLongDialog" class="dialog">
-		<p class="dialog_msg">搜索内容过长</p>
-		<a href="#" onclick="closeBg();"><button class="dialogBtn" style="width:120px;height:40px;font-size:18px;">确认</button></a>
-	</div>
+	
 	<!-- 暂存数据用 -->
 	
 </body>

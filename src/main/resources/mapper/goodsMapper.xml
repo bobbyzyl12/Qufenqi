@@ -58,6 +58,11 @@
 		limit #{pagestart},#{pagesize}
 	</select>
 	
+	
+	<select id="findAllGoods" resultMap="goodsMap">
+		select * from goods
+	</select>
+	
 	<select id="findAllCount" resultType="Integer">
 	   select count(*) from goods
 	</select>
@@ -73,4 +78,12 @@
 	<delete id="deleteAllTags" parameterType="Integer"> 
 		delete from tag  where goodsID=#{goodsID}
 	</delete>
+	
+	<select id="searchAll" parameterType="String" resultMap="goodsMap">
+		SELECT * FROM goods WHERE goodsName LIKE #{query} or goodsBrand LIKE #{query} or goodsClass LIKE #{query}
+	</select>
+	
+	<select id="searchAllCount" parameterType="String" resultMap="goodsMap">
+		SELECT count(*) FROM goods WHERE goodsName LIKE #{query} or goodsBrand LIKE #{query} or goodsClass LIKE #{query}
+	</select>
 </mapper>

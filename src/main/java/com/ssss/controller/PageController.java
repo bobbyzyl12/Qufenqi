@@ -194,7 +194,7 @@ public class PageController {
 		if (pageModel == null) {
 			pageModel = new PageModel<GoodsPack>();
 		}
-		pageModel.setPagesize(2);
+		pageModel.setPagesize(10);
 		List<GoodsPack> goodsList = goodsService.findAll(pageModel);
 		pageModel.setTotalrecode(goodsService.findAllCount(pageModel));
 		pageModel.setDatas(goodsList);
@@ -238,7 +238,7 @@ public class PageController {
      * @return
      */
 	@RequestMapping(value = "/jumpToTestPage")
-	public String jumpToTestPage(PageModel<GoodsPack> pageModel,Map<String, Object> map){		
+	public String jumpToTestPage(Map<String, Object> map){		
 		return "test";
 	}
 	

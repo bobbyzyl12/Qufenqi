@@ -1689,7 +1689,7 @@ function closeBg() {
 			<p class="login_title">
 				<span class="title_name">商品描述：</span>
 				<a href="#"><span class="edit_box_show" id="editDescribeBoxShowBtn">修改商品描述</span></a>
-				<p style="overflow:hidden;height:20px;width:350px;" id="goodsDescribeInDiaBox">
+				<p style="overflow:hidden;height:20px;width:300px;margin-left:30px;" id="goodsDescribeInDiaBox">
 					<span class="title_name" id="goodsDescribeInDia"></span>
 				</p>
 				<span class="alert_msg" id="goodsDescribeError2">*商品描述长度应在1000字符之内</span>

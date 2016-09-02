@@ -32,4 +32,11 @@ public interface GoodsDao {
 	void deleteAllTags(Integer goodsID);
 	
 	void updateGoods(Goods goods);
+	
+	List<Goods> searchAll(String query);
+	
+	Integer searchAllCount(String query);
+	
+	List<Goods> findAllGoods();
+	
 }

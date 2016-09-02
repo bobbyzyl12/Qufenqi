@@ -69,6 +69,47 @@ public class GoodsServiceImpl implements GoodsService{
 		return goodsPack;
 	}
 	
+	public List<GoodsPack> searchAll(PageModel<GoodsPack> pageModel,String searchStr){
+		searchStr = "%"+searchStr+"%";
+		List<Goods> goodsList = goodsDao.searchAll(searchStr);
+		
+		if(goodsList==null){return null;}
+		List<GoodsPack> searchedPack = new  ArrayList<GoodsPack>();
+		
+		Integer pageSize =pageModel.getPagesize();
+		Integer pageStart = pageModel.getPagestart();
+		if(pageStart == null){pageStart =0;}
+		for(int i=pageStart;i<(pageSize+pageStart);++i){
+			Goods temp = goodsList.get(i);
+			GoodsPack tempPack = new GoodsPack();
+			tempPack.setGoodsID(temp.getGoodsID());
+			tempPack.setGoodsBrand(temp.getGoodsBrand());
+			tempPack.setGoodsClass(temp.getGoodsClass());
+			tempPack.setGoodsDescribe(temp.getGoodsDescribe());
+			tempPack.setGoodsName(temp.getGoodsName());
+			tempPack.setGoodsState(temp.getGoodsState());
+			Integer tempGoodsID = temp.getGoodsID();
+			tempPack.setGoodsStage(goodsDao.findAllStages(tempGoodsID));
+			
+			List<Tag> tempTagList = new ArrayList<Tag>();
+			
+			List<Tag> resList = goodsDao.findTagsByID(temp.getGoodsID());
+			for(int j=0;j<resList.size();++j)
+			{
+				Tag currentTag = resList.get(j);
+				tempTagList.add(currentTag);
+			}
+			tempPack.setGoodsTag(tempTagList);
+			searchedPack.add(tempPack);
+		}
+		
+		return searchedPack;
+	}
+	
+	public Integer searchAllCount(PageModel<GoodsPack> pageModel,String searchStr){
+		return goodsDao.searchAllCount(searchStr);
+	}
+	
 	@Transactional
 	public Integer findAllCount(PageModel<GoodsPack> pageModel) {
 		PageModel<Goods> goodsPageModel= new PageModel<Goods>();
@@ -77,6 +118,8 @@ public class GoodsServiceImpl implements GoodsService{
 		return goodsDao.findAllCount(goodsPageModel);
 	}
 	
+	
+	
 	@Transactional
 	public Goods findSameName(Goods goods){
 		return goodsDao.findByName(goods.getGoodsName());
@@ -84,6 +127,9 @@ public class GoodsServiceImpl implements GoodsService{
 	
 	@Transactional
 	public String addGoods(Goods goods){
+		String goodsDescribe = goods.getGoodsDescribe();
+		goodsDescribe = changeToHtml(goodsDescribe);
+		goods.setGoodsDescribe(goodsDescribe);
 		goodsDao.add(goods);
 		return "success";
 	}
@@ -110,6 +156,11 @@ public class GoodsServiceImpl implements GoodsService{
 			}
 		}
 		goods.setGoodsState(oldGoods.getGoodsState());
+		
+		String goodsDescribe = goods.getGoodsDescribe();
+		goodsDescribe = changeToHtml(goodsDescribe);
+		goods.setGoodsDescribe(goodsDescribe);
+		
 		goodsDao.updateGoods(goods);
 		return "success";
 	}
@@ -121,7 +172,7 @@ public class GoodsServiceImpl implements GoodsService{
 		
 		goodsPack.setGoodsBrand(goods.getGoodsBrand());
 		goodsPack.setGoodsClass(goods.getGoodsClass());
-		goodsPack.setGoodsDescribe(goods.getGoodsDescribe());
+		goodsPack.setGoodsDescribe(changeToText(goods.getGoodsDescribe()));
 		goodsPack.setGoodsID(goodsID);
 		goodsPack.setGoodsName(goods.getGoodsName());
 		goodsPack.setGoodsState(goods.getGoodsState());
@@ -142,5 +193,15 @@ public class GoodsServiceImpl implements GoodsService{
 	public String deleteAllTags(Integer goodsID){
 		goodsDao.deleteAllTags(goodsID);
 		return "success";
+	}
+	
+	public String changeToHtml(String describe){
+		describe =describe.replace("\n", "<br>");
+		return describe;
+	}
+	
+	public String changeToText(String describe){
+		describe =describe.replace("<br>", "\n");
+		return describe;
 	}
 }
