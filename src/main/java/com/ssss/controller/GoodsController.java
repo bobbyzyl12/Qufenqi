@@ -164,7 +164,7 @@ public class GoodsController {
      */
 	@RequestMapping(value = "/searchAll")
 	public String searchAll(@RequestParam(value = "searchContent") String searchContent,PageModel<GoodsPack> pageModel,Map<String, Object> map,HttpSession session){
-		if(searchContent==null){
+		if(searchContent==null||searchContent==""){
 			session.setAttribute("haveRes", "no");
 			return "goodsPage/goodsView";
 		}
@@ -173,7 +173,7 @@ public class GoodsController {
 			pageModel = new PageModel<GoodsPack>();
 		}
 		
-		pageModel.setPagesize(10);
+		pageModel.setPagesize(2);
 		
 		List<GoodsPack> goodsList = goodsService.searchAll(pageModel,searchContent);
 		if(goodsList==null){
@@ -186,6 +186,7 @@ public class GoodsController {
 		session.setAttribute("haveRes", "yes");
 		map.put("goodsList", goodsList);
 		map.put("pageModel", pageModel);
+		map.put("searchContent",searchContent);
 		
 		return "goodsPage/goodsView";
 	}

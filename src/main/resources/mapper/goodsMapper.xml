@@ -83,7 +83,7 @@
 		SELECT * FROM goods WHERE goodsName LIKE #{query} or goodsBrand LIKE #{query} or goodsClass LIKE #{query}
 	</select>
 	
-	<select id="searchAllCount" parameterType="String" resultMap="goodsMap">
+	<select id="searchAllCount" parameterType="String" resultType="Integer">
 		SELECT count(*) FROM goods WHERE goodsName LIKE #{query} or goodsBrand LIKE #{query} or goodsClass LIKE #{query}
 	</select>
 </mapper>

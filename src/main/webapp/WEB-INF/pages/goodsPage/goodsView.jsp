@@ -463,50 +463,147 @@
 		transform: scale(1.5);
 	}
 
-figure.effect-ming:hover h2 {
+	figure.effect-ming:hover h2 {
 	-webkit-transform: scale(0.9);
 	transform: scale(0.9);
-}
+	}
 
-figure.effect-ming:hover figcaption::before,
-figure.effect-ming:hover p {
-	opacity: 1;
-	-webkit-transform: scale3d(1,1,1);
-	transform: scale3d(1,1,1);
-}
-
-figure.effect-ming:hover figcaption {
-	background-color: rgba(58,52,42,0);
-}
-
-figure.effect-ming:hover img {
-	opacity: 0.4;
-}
+	figure.effect-ming:hover figcaption::before,
+	figure.effect-ming:hover p {
+		opacity: 1;
+		-webkit-transform: scale3d(1,1,1);
+		transform: scale3d(1,1,1);
+	}
 	
+	figure.effect-ming:hover figcaption {
+		background-color: rgba(58,52,42,0);
+	}
+
+	figure.effect-ming:hover img {
+		opacity: 0.4;
+	}
+	
+	.page_btn{
+ 		border-radius:4px;
+    	border:1px solid #e5e9ef;
+    	background:#fff;
+    	margin-right:10px;
+    	text-align:center;
+    	width:38px;
+    	height:38px;
+    	line-height: 8px;
+    	margin-top:6px;
+    	outline:0;
+ 	}
+ 	
+ 	.page_btn:hover{
+ 		border:1px solid #4f90fb;
+ 		color:#4f90fb;
+ 	}
+ 	
+ 	span.pages_span{
+ 		margin-right:10px;
+ 		width:38px;
+    	height:38px;
+    	position:relative;
+    	top:10px;
+ 	}
+ 	
+ 	.page_box{
+ 	    height: 80px;
+	    padding-left: 27px;
+	    padding-right: 27px;
+	    margin-left: auto;
+	    margin-right: auto;
+	    border-bottom-left-radius: 4px;
+	    border-bottom-right-radius: 4px;
+	    background: #fff;
+	    padding-top:20px;
+	    padding-bottom: 25px;
+ 	}
+	
+	.pages{
+		text-align: center;
+	}
+	
+	ul.pageul{
+		display: inline-block;
+	}
 </style>
 
 <script type="text/javascript">
-
 $(function(){
-	var temp=$('#msgNum').html();
-	if(temp==0)
-		$('#msgNum').hide();
+	
+	var currentPage=Number($("#pageNo").text());
+	var pageNum=Number($("#totalPage").text());
+	
+	$("#page_btn2").text(currentPage-2);
+	$("#page_btn3").text(currentPage-1);
+	$("#page_btn4").text(currentPage);
+	$("#page_btn5").text(currentPage+1);
+	$("#page_btn6").text(currentPage+2);
+	$("#page_btn7").text(pageNum);
+	
+	//改变当前页的button样式
+	$("#page_btn4").css("background-color","#4f90fb");
+	$("#page_btn4").css("border","1px solid #ddd");
+	$("#page_btn4").css("color","#fff");
+	
+	//先处理"上一页"和"下一页"的情况
+	if(currentPage==1)	//如果当前页为首页
+	{
+		$("#prePage").hide();	
+	}
+	
+	if(currentPage==pageNum)	//如果当前页为末页
+	{
+		$("#sufPage").hide();
+	}
+	
+	//处理当前页小于等于3的特殊情况
+	if(currentPage<=3){
+		$("#prePoint").hide();
+		$("#page_btn1").hide();
+	}
+	else if(currentPage==4){
+		$("#prePoint").hide();
+	}
+	
+	if(currentPage==1)
+	{
+		$("#page_btn2").hide();
+		$("#page_btn3").hide();
+	}
+	else if(currentPage==2)
+	{
+		$("#page_btn2").hide();
+	}
+	
+	if(currentPage>=pageNum-2){
+		$("#sufPoint").hide();
+		$("#page_btn7").hide();
+	}
+	else if(currentPage==pageNum-3){
+		$("#sufPoint").hide();
+	}
+	
+	if(currentPage==pageNum)
+	{
+		$("#page_btn5").hide();
+		$("#page_btn6").hide();
+	}
+	
+	if(currentPage==pageNum-1)
+	{
+		$("#page_btn6").hide();
+	}
 });
 
-function showBg() {
-    var bh = $("body").height();
-    var bw = $("body").width();
-    $("#coverbg").css({
-        height: bh,
-        width: bw,
-        display: "block"
-    });
-    $("#dialog").show();
-}
 
 //关闭灰色 jQuery 遮罩
 function closeBg() {
-    $("#coverbg,#dialog").hide();
+    $("#coverbg").hide();
+    $(".dialog").hide();
 }
 </script>
 </head>
@@ -568,69 +665,51 @@ function closeBg() {
 						</a>
 					</div>
 					<div class="header_search_box">
-						<div class="search_box">
-							<input class="header_search" id="search" placeholder="输入关键字">
-						</div>
-						<div class="search_btn_box">
-							<button class="search_btn">搜索</button>
-						</div>
+						<form action="${ctx}/goods/searchAll" method="post">
+							<input class="header_search" type="text" name="searchContent" id="searchContent" placeholder="输入关键字">
+							<input class="search_btn" type="submit" id="search_btn" value="搜索">
+						</form>
 					</div>
 				</div>
 			</div>
 		</div>
-		<div class="main_container" style="background-color:gray;height:100px;">
+		<div class="main_container">
 			<div class="goods_show_box">
-				<table>
-						<thead>
-							<tr>
-								<th width=50px>ID</th>
-  								<th width=100px>商品名</th>
-					  			<th width=150px>商品描述</th>
-					  			<th width=120px>状态</th>
-					  			<th width=150px>品牌</th>
-					  			<th width=80px>所属分区</th>
-					  			<th width=70px></th>
-					  			<th width=70px></th>
-							</tr>
-						</thead>
-						<tbody>
-							<c:forEach items="${pageModel.datas}" var="goods">
-				             <tr class="infoTable">
-				          		<td>${goods.goodsID}</td>
-				  				<td>${goods.goodsName}</td>
-				  				<td><div style="height:20px;overflow:hidden;display:block;">${goods.goodsDescribe}</div></td>
-				  				<td>
-				  					<c:choose>
-				    					<c:when test="${goods.goodsState == '1'}">
-				       						<span style="color:#00b300;">正常</span>
-				   						</c:when>
-				   						<c:when test="${goods.goodsState=='2'}">
-				       						<span style="color: #4d4dff;">已下架</span>
-				   						</c:when>
-									</c:choose>
-				  				</td>
-				  				<td>${goods.goodsBrand}</td>
-				           		<td>${goods.goodsClass}</td>
-				           		<td style="padding:0px 5px 0px 5px">
-				  					<a href="#" class="btn editBtn" id="editBtn" title="${goods.goodsID}">修改</a>
-				  				</td>
-				  				<td style="padding:0px 5px 0px 5px">
-					  				<c:choose>
-					  					<c:when test="${goods.goodsState == '1'}">
-					  						<a href="#" class="btn tryDeleteBtn" id="tryDeleteBtn" title="${goods.goodsID}">下架</a>
-					  					</c:when>
-					  					<c:when test="${goods.goodsState=='2'}">
-					  						<a href="#" class="btn tryReAddBtn" id="tryReaddBtn" title="${goods.goodsID}">上架</a>
-					  					</c:when>
-									</c:choose>
-				  				</td>
-				         	</tr>
-				         </c:forEach>
-				         
-						</tbody>
-					</table>
+				<div>
+				</div>
 			</div>
-			<div class="page_box"></div>
+			<div class="page_box">
+			<%if((String)session.getAttribute("haveRes") == "no"){%>
+			
+			<%}else if((String)session.getAttribute("haveRes") == "yes"){%>
+				<div class="pages" align="center">
+					<ul class="pageul">
+					
+					<a href="${ctx}/goods/searchAll?pageNo=${pageModel.pageNo-1}&&searchContent=${searchContent}"><button class="page_btn" style="width:100px" id="prePage">上一页</button></a>		
+							
+					<a href="${ctx}/goods/searchAll"><button class="page_btn" id="page_btn1">1</button></a>
+							
+					<span class="pages_span" id="prePoint">...</span>
+							
+					<a href="${ctx}/goods/searchAll?pageNo=${pageModel.pageNo-2}&&searchContent=${searchContent}"><button class="page_btn" id="page_btn2"></button></a>
+							
+					<a href="${ctx}/goods/searchAll?pageNo=${pageModel.pageNo-1}&&searchContent=${searchContent}"><button class="page_btn" id="page_btn3"></button></a>
+							
+					<a><button class="page_btn" id="page_btn4"></button></a>
+							
+					<a href="${ctx}/goods/searchAll?pageNo=${pageModel.pageNo+1}&&searchContent=${searchContent}"><button class="page_btn" id="page_btn5"></button></a>
+							
+					<a href="${ctx}/goods/searchAll?pageNo=${pageModel.pageNo+2}&&searchContent=${searchContent}"><button class="page_btn" id="page_btn6"></button></a>
+							
+					<span class="pages_span" id="sufPoint">...</span>
+							
+					<a href="${ctx}/goods/searchAll?pageNo=${pageModel.totalpage}&&searchContent=${searchContent}"><button class="page_btn" id="page_btn7"></button></a>
+							
+					<a href="${ctx}/goods/searchAll?pageNo=${pageModel.pageNo+1}&&searchContent=${searchContent}"><button class="page_btn" style="width:100px;" id="sufPage">下一页</button></a>
+					</ul>
+				</div>
+				<%}%>
+			</div>
 		</div>
 		
 		<div class="footer_container" id="aaa">
@@ -648,6 +727,8 @@ function closeBg() {
 	</div>
 	
 	<!-- 暂存数据用 -->
+	<p style="display:none" id="totalPage">${pageModel.totalpage}</p>
+	<p style="display:none" id="pageNo">${pageModel.pageNo}</p>
 	
 </body>
 </html>

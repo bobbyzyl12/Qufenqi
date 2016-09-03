@@ -663,7 +663,7 @@ function closeBg() {
 								
 							<input class="header_search" type="text" name="searchContent" id="searchContent" placeholder="输入关键字">
 								
-							<input class="search_btn" type="submit" id="search_btn">搜索
+							<input class="search_btn" type="submit" id="search_btn" value="搜索">
 								
 						</form>
 					</div>

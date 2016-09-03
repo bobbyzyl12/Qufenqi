@@ -75,11 +75,12 @@ public class GoodsServiceImpl implements GoodsService{
 		
 		if(goodsList==null){return null;}
 		List<GoodsPack> searchedPack = new  ArrayList<GoodsPack>();
-		
+		//如果数量不足本页pageSize需要处理
 		Integer pageSize =pageModel.getPagesize();
 		Integer pageStart = pageModel.getPagestart();
 		if(pageStart == null){pageStart =0;}
 		for(int i=pageStart;i<(pageSize+pageStart);++i){
+			if(i>=goodsList.size()){break;}
 			Goods temp = goodsList.get(i);
 			GoodsPack tempPack = new GoodsPack();
 			tempPack.setGoodsID(temp.getGoodsID());
@@ -100,6 +101,7 @@ public class GoodsServiceImpl implements GoodsService{
 				tempTagList.add(currentTag);
 			}
 			tempPack.setGoodsTag(tempTagList);
+			
 			searchedPack.add(tempPack);
 		}
 		
@@ -107,6 +109,7 @@ public class GoodsServiceImpl implements GoodsService{
 	}
 	
 	public Integer searchAllCount(PageModel<GoodsPack> pageModel,String searchStr){
+		searchStr = "%"+searchStr+"%";
 		return goodsDao.searchAllCount(searchStr);
 	}
 	
