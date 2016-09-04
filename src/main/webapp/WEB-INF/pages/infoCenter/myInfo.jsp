@@ -463,6 +463,24 @@
 		font-size:20px;
 		margin-top:30px;
 	}
+	
+	.logout_btn{
+		font-size:14px;
+		border:1px solid #ccc;
+		border-radius:5px;
+		padding:0px;
+		height:30px;
+		width:70px;
+		margin-top:10px;
+		background-color:#fff;
+		position:absolute;
+		right:30px;
+	}
+	
+	.logout_btn:hover{
+		color:#4f90fb;
+		border:1px solid #4f90fb;
+	}
 </style>
 
 <script type="text/javascript">
@@ -832,6 +850,7 @@ function closeBg() {
 					<div class="right_title">
 						<span class="tit_b"></span>&nbsp;
 						<span class="tit_text">个人信息</span>
+						<a href="${ctx}/user/logout"><button class="logout_btn"><span style="position:relative;top: -10px;">退出登陆</span></button></a>
 					</div>
 					<div class="right_content">
 						<ul>

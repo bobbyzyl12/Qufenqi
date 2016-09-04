@@ -163,7 +163,7 @@ public class GoodsController {
      * @return
      */
 	@RequestMapping(value = "/goodsDetail")
-	public String goodsDetail(Integer goodsID,Map<String, Object> map){
+	public String goodsDetail(Integer goodsID,Map<String, Object> map,HttpSession session){
 		GoodsPack temp=goodsService.findGoodsPackByID(goodsID);
 		String describe = goodsService.changeToHtml(temp.getGoodsDescribe());
 		temp.setGoodsDescribe(describe);
@@ -172,6 +172,8 @@ public class GoodsController {
 		map.put("defaultStorage", temp.getGoodsTag().get(0).getStorage());
 		Float perMonth =(temp.getGoodsTag().get(0).getPrice());
 		map.put("defaultPerMonth",perMonth);
+		Integer msgNum =(Integer) session.getAttribute("userMsgNum");
+		map.put("msgNum",msgNum);
 		return "goodsPage/goodsDetail";
 	}
 	
@@ -204,6 +206,8 @@ public class GoodsController {
 		session.setAttribute("haveRes", "yes");
 		map.put("goodsList", goodsList);
 		map.put("pageModel", pageModel);
+		Integer msgNum =(Integer) session.getAttribute("userMsgNum");
+		map.put("msgNum",msgNum);
 		map.put("searchContent",searchContent);
 		
 		return "goodsPage/goodsView";
@@ -248,6 +252,8 @@ public class GoodsController {
 		pageModel.setTotalrecode(goodsService.searchByClassCount(pageModel, truecontent));
 		pageModel.setDatas(goodsList);
 		session.setAttribute("haveRes", "yes");
+		Integer msgNum =(Integer) session.getAttribute("userMsgNum");
+		map.put("msgNum",msgNum);
 		map.put("goodsList", goodsList);
 		map.put("pageModel", pageModel);
 		map.put("searchContent",searchContent);

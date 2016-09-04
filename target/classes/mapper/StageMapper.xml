@@ -15,6 +15,9 @@
 		<result column="minLevelUp" property="minLevelUp"/>
 	</resultMap>
 	
+	<resultMap type="Float" id="stageChargeMap">
+		<result column="stageCharge" property="stageCharge"/>
+	</resultMap>
 	<select id="findAllCredit" parameterType="PageModel" resultMap="creditMap">
 		select * from credit
 		limit #{pagestart},#{pagesize}
@@ -26,6 +29,14 @@
 	
 	<select id="findCreditByID" parameterType="Integer" resultType="Credit">
 		select * from credit where creditID=#{creditID}
+	</select>
+	
+	<select id="findStageChargeByCreditID" parameterType="Integer" resultMap="stageChargeMap">
+		select * from creditstage where creditID=#{creditID}
+	</select>
+	
+	<select id="findStageChargeByID" parameterType="CreditStage" resultType="Float">
+		select * from creditstage where creditID=#{creditID} and stageID=#{stageID}
 	</select>
 	
 	<select id="findCreditCountByName" parameterType="String" resultType="Integer">

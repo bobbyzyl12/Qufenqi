@@ -3,6 +3,7 @@ package com.ssss.dao;
 import java.util.List;
 
 import com.ssss.entity.Credit;
+import com.ssss.entity.CreditStage;
 import com.ssss.entity.PageModel;
 import com.ssss.entity.User;
 
@@ -33,4 +34,7 @@ public interface StageDao {
 
 	void updateCredit(Credit credit);
 	
+	List<Float> findStageChargeByCreditID(Integer creditID);
+	
+	Float findStageChargeByID(CreditStage creditStage);
 }

@@ -449,6 +449,75 @@
 		margin-right:10px;
 	}
 	
+ 	.btn{
+		  padding:0;
+		  height:25px;
+		  width:70px;
+		  color:#ffffff;
+		  background-color:#4f90fb;
+		  font-size:14px;
+		  font-weight:normal;
+		  border:1px solid #1647e9;
+		  -webkit-border-top-left-radius:2px;
+		  -moz-border-radius-topleft:2px;
+		  border-top-left-radius:2px;
+		  -webkit-border-top-right-radius:2px;
+		  -moz-border-radius-topright:2px;
+		  border-top-right-radius:2px;
+		  -webkit-border-bottom-left-radius:2px;
+		  -moz-border-radius-bottomleft:2px;
+		  border-bottom-left-radius:2px;
+		  -webkit-border-bottom-right-radius:2px;
+		  -moz-border-radius-bottomright:2px;
+		  border-bottom-right-radius:2px;
+		  -moz-box-shadow: inset 0px 0px 0px 0px #ffffff;
+		  -webkit-box-shadow: inset 0px 0px 0px 0px #ffffff;
+		  box-shadow: inset 0px 0px 0px 0px #ffffff;
+		  text-align:center;
+		  display:inline-block;
+		  text-decoration:none;
+		}
+		
+	.btn:hover{
+		background-color:#9bc0fd;
+		color:#fff;
+	}
+	
+	.btn_cancel{
+		  padding:0;
+		  margin-left:10px;
+		  margin-right:10px;
+		  height:40px;
+		  width:180px;
+		  color:#000;
+		  background-color:#fff;
+		  font-size:18px;
+		  font-weight:normal;
+		  border:1px solid #dcdcdc;
+		  -webkit-border-top-left-radius:2px;
+		  -moz-border-radius-topleft:2px;
+		  border-top-left-radius:2px;
+		  -webkit-border-top-right-radius:2px;
+		  -moz-border-radius-topright:2px;
+		  border-top-right-radius:2px;
+		  -webkit-border-bottom-left-radius:2px;
+		  -moz-border-radius-bottomleft:2px;
+		  border-bottom-left-radius:2px;
+		  -webkit-border-bottom-right-radius:2px;
+		  -moz-border-radius-bottomright:2px;
+		  border-bottom-right-radius:2px;
+		  -moz-box-shadow: inset 0px 0px 0px 0px #ffffff;
+		  -webkit-box-shadow: inset 0px 0px 0px 0px #ffffff;
+		  box-shadow: inset 0px 0px 0px 0px #ffffff;
+		  text-align:center;
+		  display:inline-block;
+		  text-decoration:none;
+		}
+		
+	.btn_cancel:hover{
+		color:#ff6384;
+	}
+	
 	.buyBtn{
 		  padding:0;
 		  margin-left:30px;
@@ -490,6 +559,7 @@
 		height:30px;
 		width:60px;
 		text-align:center;
+		line-height: 30px;
 	}
 	
 	.l_title{
@@ -516,6 +586,34 @@
 	.tagPrice,.tagStorage{
 		display:none;
 	}
+	
+	.dialog{
+		display: none;
+		z-index: 5;
+		
+		height:150px;
+		width:400px;
+		background-color: #FFF;
+		border: 1px solid #888;
+		
+		position: fixed !important; /* 浮动对话框 */
+		top: 40%;
+		left:35%;
+		text-align:center;
+		margin-left:auto; 
+		margin-right:auto;
+		
+		-moz-border-radius: 10px;
+		-webkit-border-radius: 10px;
+		border-radius: 10px;
+		
+		border:2px solid #4f90fb;
+	}
+	
+	.dialog_msg{
+		font-size:16px;
+		margin-top:30px;
+	}
 </style>
 
 <script type="text/javascript">
@@ -524,6 +622,7 @@ $(function(){
 	$("#goodsNum").val(Number(1));
 	
 	//初始化
+	
 	var tagPrice=$("#current_price").html();
 	tagPrice = Number(tagPrice).toFixed(2);
 	$("#current_price").html(tagPrice);
@@ -534,12 +633,15 @@ $(function(){
 	//选项初始都选择第一个
 	$(".tagLi :first").css("border","2px solid #4f90fb");
 	$(".stageLi :first").css("border","2px solid #4f90fb");
+	var tag=$(".tagLi :first").children(":eq(2)").html();
+	
 	$(".tagLi").click(function(){
 		$(".tagLi").css("border","1px solid #666");
 		$(this).css("border","2px solid #4f90fb");
 		tagPrice = $(this).children(":eq(0)").html();
 		tagPrice = Number(tagPrice).toFixed(2);
 		tagStorage = $(this).children(":eq(1)").html();
+		tag = $(this).children(":eq(2)").html();
 		$("#current_price").html(tagPrice);
 		$("#current_storage").html(tagStorage);
 		var perMonth = Number(tagPrice)/Number(stage);
@@ -555,6 +657,48 @@ $(function(){
 		var perMonth = Number(tagPrice)/Number(stage);
 		perMonth = Number(perMonth).toFixed(2);
 		$("#current_per_month").html(perMonth);
+	});
+	
+	$("#addCart").click(function(){
+		var goodsID= $("#goodsID").html();
+		var currentNum = $("#goodsNum").val();
+		$.ajax({                           	  
+			url: '${ctx}/order/addCart',       //处理测试页面                 
+			type: 'POST',                  
+			data: {goodsID:goodsID,quantity:currentNum,tag:tag,stageID:stage},                
+			success: function (msg){
+				if(msg=="unlogged"){
+					var bh = $(".wrapper").height();
+				    var bw = $(".wrapper").width();
+				    $("#coverbg").css({
+				        height: bh,
+				        width: bw,
+				        display: "block"
+				    });
+                	$("#unloggedDialog").show();
+				}
+				else if(msg=="lock"){
+					var bh = $(".wrapper").height();
+				    var bw = $(".wrapper").width();
+				    $("#coverbg").css({
+				        height: bh,
+				        width: bw,
+				        display: "block"
+				    });
+                	$("#lockDialog").show();
+				}
+				else if(msg=="success"){
+					var bh = $(".wrapper").height();
+				    var bw = $(".wrapper").width();
+				    $("#coverbg").css({
+				        height: bh,
+				        width: bw,
+				        display: "block"
+				    });
+                	$("#successDialog").show();
+				}
+			}
+		});
 	});
 });
 
@@ -742,7 +886,7 @@ function closeBg() {
 							</div>
 							<div class="input_area" style="height:50px;">
 								<span class="l_title" style="margin-right:10px;">数&nbsp;&nbsp;量：</span>
-								<img  onclick="minus()" src="${ctx}/img/minus.jpg" style="position: relative;left: 3.8px;top: -1.6px;">
+								<img  onclick="minus()" src="${ctx}/img/minus.jpg" style="position: relative;left: 4.3px;top: -1.6px;">
 								<input class="goodsNum" type="text" id="goodsNum" onchange="checkIsNum()">
 								
 								<img onclick="plus()" src="${ctx}/img/plus.jpg" style="position: relative;left:-4.7px;top: -1.6px;">
@@ -777,10 +921,25 @@ function closeBg() {
 	<div id="coverbg" class="coverbg"></div>
 	
 	<!-- 这里存放dialogs -->
-	<div id="dialog" class="dialog">
+	<div id="unloggedDialog" class="dialog">
+		<p class="dialog_msg">请先登陆</p>
+		<a href="${ctx}/page/jumpToLogin"><button class="btn" style="width:120px;height:35px;font-size:18px;position:relative;left:27.5px;">前往登陆</button></a>
+  		<a href="#" onclick="closeBg();"><button class="btn_cancel" style="width:30px;height:30px;font-size:14px;color:#aaa;position:relative;left:110px;top:-60px">x</button></a>
+	</div>
+	
+	<div id="lockDialog" class="dialog">
+		<p class="dialog_msg">您未进行实名认证，不能分期付款</p>
+		<a href="${ctx}/page/jumpToMyInfo"><button class="btn" style="width:120px;height:35px;font-size:18px;position:relative;left:27.5px;">前往提交</button></a>
+  		<a href="#" onclick="closeBg();"><button class="btn_cancel" style="width:30px;height:30px;font-size:14px;color:#aaa;position:relative;left:110px;top:-60px">x</button></a>
+	</div>
+	
+	<div id="successDialog" class="dialog">
+		<p class="dialog_msg">添加成功</p>
+		<a href="${ctx}/page/jumpToHomePage"><button class="btn" style="width:120px;height:35px;font-size:18px;position:relative;left:27.5px;">返回首页</button></a>
+  		<a href="#" onclick="closeBg();"><button class="btn_cancel" style="width:30px;height:30px;font-size:14px;color:#aaa;position:relative;left:110px;top:-60px">x</button></a>
 	</div>
 	
 	<!-- 暂存数据用 -->
-	
+	<p id="goodsID" style="display:none">${goodsPack.goodsID}</p>
 </body>
 </html>
