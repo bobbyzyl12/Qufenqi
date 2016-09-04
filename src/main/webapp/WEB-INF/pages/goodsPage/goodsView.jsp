@@ -522,6 +522,15 @@ figure.effect-julia:hover p {
 		border:2px solid #ccc;
 	}
 	
+	.no_res{
+		height:500px;
+		width:1000px;
+		border-radius:10px;
+		margin-left:auto;
+		margin-right:auto;
+		text-align:center;
+		border:3px solid #ddd;
+	}
 </style>
 
 <script type="text/javascript">
@@ -593,6 +602,14 @@ $(function(){
 });
 
 
+$(function(){
+	$(".tagPrice").each(function(){
+		var price = $(this).html();
+		price = Number(price).toFixed(2);
+		$(this).html(price);
+	});
+});
+
 //关闭灰色 jQuery 遮罩
 function closeBg() {
     $("#coverbg").hide();
@@ -653,7 +670,7 @@ function closeBg() {
 			<div class="header_under">
 				<div class="header_under_center">
 					<div class="header_logo_box">
-						<a href="">
+						<a href="${ctx}/page/jumpToHomePage">
 							<img class="header_logo" src="${ctx}/img/logo.png">
 						</a>
 					</div>
@@ -667,15 +684,21 @@ function closeBg() {
 			</div>
 		</div>
 		<div class="main_container" style="overflow:auto;">
+		<%if((String)session.getAttribute("haveRes") == "no"){%>
+			<div class="no_res">
+				<center><p style="font-size: 25px;color: #777;margin-top:235px;">没有相关数据</p></center>		
+			</div>
+			<%}else if((String)session.getAttribute("haveRes") == "yes"){%>
 			<div class="goods_show_box" style="overflow:auto;"> 
 				<c:forEach items="${pageModel.datas}" var="goods">
 				<div class="goodsDiv grid">
+					<a href = "${ctx}/goods/goodsDetail?goodsID=${goods.goodsID}">
 					<figure class="effect-julia">
 						<img src="${ctx}/img/biscuit.jpg" style="height:220px;" alt="img11"/>
 						<figcaption>
 							<h2 style="font-size:22px;position:relative;left:10px;font-weight: 900;-webkit-text-stroke: 0.8px #000;">${goods.goodsName}</h2>
 								<c:forEach items="${goods.goodsTag}" var="tags">
-									<p>${tags.tag}:￥${tags.price}</p>
+									<p>${tags.tag}:￥<span class="tagPrice">${tags.price}</span></p>
 								</c:forEach>
 								
 								<p>
@@ -684,9 +707,12 @@ function closeBg() {
 								</c:forEach>
 								</p>
 						</figcaption>	
+					</figure>
+					</a>
 				</div>
 				</c:forEach>
 			</div>
+			<%}%>			
 			<div class="page_box">
 			<%if((String)session.getAttribute("haveRes") == "no"){%>
 			

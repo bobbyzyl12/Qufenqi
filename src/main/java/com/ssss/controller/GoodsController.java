@@ -159,6 +159,24 @@ public class GoodsController {
 	
 	/**
      * 
+     * @param goodsID
+     * @return
+     */
+	@RequestMapping(value = "/goodsDetail")
+	public String goodsDetail(Integer goodsID,Map<String, Object> map){
+		GoodsPack temp=goodsService.findGoodsPackByID(goodsID);
+		String describe = goodsService.changeToHtml(temp.getGoodsDescribe());
+		temp.setGoodsDescribe(describe);
+		map.put("goodsPack", temp);
+		map.put("defaultPrice", temp.getGoodsTag().get(0).getPrice());
+		map.put("defaultStorage", temp.getGoodsTag().get(0).getStorage());
+		Float perMonth =(temp.getGoodsTag().get(0).getPrice());
+		map.put("defaultPerMonth",perMonth);
+		return "goodsPage/goodsDetail";
+	}
+	
+	/**
+     * 
      * @param searchContent
      * @return
      */
@@ -209,6 +227,7 @@ public class GoodsController {
 		
 		pageModel.setPagesize(20);
 		String truecontent = new String();
+		
 		if(searchContent.equals("1")){truecontent="手机通讯";}
 		else if(searchContent.equals("2")){truecontent="电脑平板";}
 		else if(searchContent.equals("3")){truecontent="腕表饰品";}
