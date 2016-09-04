@@ -674,52 +674,52 @@ function closeBg() {
 						商品分类
 					</li>
 					<li	class="index_li">
-						<a href="#">
+						<a href="${ctx}/goods/searchByClass?searchContent=1">
 							<span class="index_title">手机通讯</span>
 						</a>
 					</li>
 					<li	class="index_li">
-						<a href="#">
+						<a href="${ctx}/goods/searchByClass?searchContent=2">
 							<span class="index_title">电脑平板</span>
 						</a>
 					</li>
 					<li	class="index_li">
-						<a href="#">
+						<a href="${ctx}/goods/searchByClass?searchContent=3">
 							<span class="index_title">腕表饰品</span>
 						</a>
 					</li>
 					<li	class="index_li">
-						<a href="#">
+						<a href="${ctx}/goods/searchByClass?searchContent=4">
 							<span class="index_title">数码家电</span>
 						</a>
 					</li>
 					<li	class="index_li">
-						<a href="#">
+						<a href="${ctx}/goods/searchByClass?searchContent=5">
 							<span class="index_title">家具家饰</span>
 						</a>
 					</li>
 					<li	class="index_li">
-						<a href="#">
+						<a href="${ctx}/goods/searchByClass?searchContent=6">
 							<span class="index_title">家装建材</span>
 						</a>
 					</li>
 					<li	class="index_li">
-						<a href="#">
+						<a href="${ctx}/goods/searchByClass?searchContent=7">
 							<span class="index_title">食品饮料</span>
 						</a>
 					</li>
 					<li	class="index_li">
-						<a href="#">
+						<a href="${ctx}/goods/searchByClass?searchContent=8">
 							<span class="index_title">衣装服饰</span>
 						</a>
 					</li>
 					<li	class="index_li">
-						<a href="#">
+						<a href="${ctx}/goods/searchByClass?searchContent=9">
 							<span class="index_title">鞋靴箱包</span>
 						</a>
 					</li>
 					<li	class="index_li">
-						<a href="#">
+						<a href="${ctx}/goods/searchByClass?searchContent=10">
 							<span class="index_title">图书百货</span>
 						</a>
 					</li>

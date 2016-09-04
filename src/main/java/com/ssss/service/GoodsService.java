@@ -18,6 +18,10 @@ public interface GoodsService {
 	
 	public Integer searchAllCount(PageModel<GoodsPack> pageModel,String searchStr);
 	
+	public List<GoodsPack> searchByClass(PageModel<GoodsPack> pageModel,String searchStr);
+	
+	public Integer searchByClassCount(PageModel<GoodsPack> pageModel,String searchStr);
+	
 	public Goods findSameName(Goods goods);
 	
 	public String addGoods(Goods goods);
@@ -41,4 +45,6 @@ public interface GoodsService {
 	public String changeToHtml(String describe);
 	
 	public String changeToText(String describe);
+	
+	public GoodsPack packGoods(Goods goods);
 }

@@ -37,6 +37,10 @@ public interface GoodsDao {
 	
 	Integer searchAllCount(String query);
 	
+	List<Goods> searchByClass(String query);
+	
+	Integer searchByClassCount(String query);
+	
 	List<Goods> findAllGoods();
 	
 }

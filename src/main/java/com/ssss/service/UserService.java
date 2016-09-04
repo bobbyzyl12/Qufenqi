@@ -41,4 +41,5 @@ public interface UserService{
 	public Integer findAllCount(PageModel<User> pageModel);
 	
 	public String updateUser(User user);
+	
 }

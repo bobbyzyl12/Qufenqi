@@ -69,6 +69,56 @@ public class GoodsServiceImpl implements GoodsService{
 		return goodsPack;
 	}
 	
+	public List<GoodsPack> searchByClass(PageModel<GoodsPack> pageModel,String searchStr){
+		List<Goods> goodsList = goodsDao.searchByClass(searchStr);
+		
+		if(goodsList==null){return null;}
+		List<GoodsPack> searchedPack = new  ArrayList<GoodsPack>();
+		//如果数量不足本页pageSize需要处理
+		Integer pageSize =pageModel.getPagesize();
+		Integer pageStart = pageModel.getPagestart();
+		if(pageStart == null){pageStart =0;}
+		for(int i=pageStart;i<(pageSize+pageStart);++i){
+			if(i>=goodsList.size()){break;}
+			Goods temp = goodsList.get(i);
+			GoodsPack tempPack = new GoodsPack();
+			tempPack.setGoodsID(temp.getGoodsID());
+			tempPack.setGoodsBrand(temp.getGoodsBrand());
+			tempPack.setGoodsClass(temp.getGoodsClass());
+			tempPack.setGoodsDescribe(temp.getGoodsDescribe());
+			tempPack.setGoodsName(temp.getGoodsName());
+			tempPack.setGoodsState(temp.getGoodsState());
+			Integer tempGoodsID = temp.getGoodsID();
+			tempPack.setGoodsStage(goodsDao.findAllStages(tempGoodsID));
+			
+			List<Tag> tempTagList = new ArrayList<Tag>();
+			
+			List<Tag> resList = goodsDao.findTagsByID(temp.getGoodsID());
+			for(int j=0;j<resList.size();++j)
+			{
+				Tag currentTag = resList.get(j);
+				tempTagList.add(currentTag);
+			}
+			tempPack.setGoodsTag(tempTagList);
+			
+			searchedPack.add(tempPack);
+		}
+		
+		return searchedPack;
+	}
+	
+	public Integer searchByClassCount(PageModel<GoodsPack> pageModel,String searchStr){
+		return goodsDao.searchByClassCount(searchStr);
+	}
+	
+	@Transactional
+	public Integer findAllCount(PageModel<GoodsPack> pageModel) {
+		PageModel<Goods> goodsPageModel= new PageModel<Goods>();
+		goodsPageModel.setPagesize(pageModel.getPagesize());
+		goodsPageModel.setPagestart(pageModel.getPagestart());
+		return goodsDao.findAllCount(goodsPageModel);
+	}
+	
 	public List<GoodsPack> searchAll(PageModel<GoodsPack> pageModel,String searchStr){
 		searchStr = "%"+searchStr+"%";
 		List<Goods> goodsList = goodsDao.searchAll(searchStr);
@@ -111,14 +161,6 @@ public class GoodsServiceImpl implements GoodsService{
 	public Integer searchAllCount(PageModel<GoodsPack> pageModel,String searchStr){
 		searchStr = "%"+searchStr+"%";
 		return goodsDao.searchAllCount(searchStr);
-	}
-	
-	@Transactional
-	public Integer findAllCount(PageModel<GoodsPack> pageModel) {
-		PageModel<Goods> goodsPageModel= new PageModel<Goods>();
-		goodsPageModel.setPagesize(pageModel.getPagesize());
-		goodsPageModel.setPagestart(pageModel.getPagestart());
-		return goodsDao.findAllCount(goodsPageModel);
 	}
 	
 	
@@ -206,5 +248,21 @@ public class GoodsServiceImpl implements GoodsService{
 	public String changeToText(String describe){
 		describe =describe.replace("<br>", "\n");
 		return describe;
+	}
+	
+	public GoodsPack packGoods(Goods goods){
+		GoodsPack goodsPack = new GoodsPack();
+		List<Tag> tagList = goodsDao.findTagsByID(goods.getGoodsID());
+		
+		goodsPack.setGoodsBrand(goods.getGoodsBrand());
+		goodsPack.setGoodsClass(goods.getGoodsClass());
+		goodsPack.setGoodsDescribe(changeToText(goods.getGoodsDescribe()));
+		goodsPack.setGoodsID(goods.getGoodsID());
+		goodsPack.setGoodsName(goods.getGoodsName());
+		goodsPack.setGoodsState(goods.getGoodsState());
+		goodsPack.setGoodsTag(tagList);
+		goodsPack.setGoodsStage(goodsDao.findAllStages(goods.getGoodsID()));
+		
+		return goodsPack;
 	}
 }

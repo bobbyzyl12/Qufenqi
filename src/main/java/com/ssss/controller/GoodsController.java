@@ -173,10 +173,10 @@ public class GoodsController {
 			pageModel = new PageModel<GoodsPack>();
 		}
 		
-		pageModel.setPagesize(2);
+		pageModel.setPagesize(20);
 		
 		List<GoodsPack> goodsList = goodsService.searchAll(pageModel,searchContent);
-		if(goodsList==null){
+		if(goodsList.isEmpty()){
 			session.setAttribute("haveRes", "no");
 			return "goodsPage/goodsView";
 		}
@@ -189,5 +189,50 @@ public class GoodsController {
 		map.put("searchContent",searchContent);
 		
 		return "goodsPage/goodsView";
+	}
+	
+	/**
+     * 
+     * @param searchContent
+     * @return
+     */
+	@RequestMapping(value = "/searchByClass")
+	public String searchByClass(@RequestParam(value = "searchContent")String searchContent,PageModel<GoodsPack> pageModel,Map<String, Object> map,HttpSession session){
+		if(searchContent==null||searchContent==""){
+			session.setAttribute("haveRes", "no");
+			return "goodsPage/goodsViewClass";
+		}
+		
+		if (pageModel == null) {
+			pageModel = new PageModel<GoodsPack>();
+		}
+		
+		pageModel.setPagesize(20);
+		String truecontent = new String();
+		if(searchContent.equals("1")){truecontent="手机通讯";}
+		else if(searchContent.equals("2")){truecontent="电脑平板";}
+		else if(searchContent.equals("3")){truecontent="腕表饰品";}
+		else if(searchContent.equals("4")){truecontent="数码家电";}
+		else if(searchContent.equals("5")){truecontent="家居家饰";}
+		else if(searchContent.equals("6")){truecontent="家装建材";}
+		else if(searchContent.equals("7")){truecontent="食品饮料";}
+		else if(searchContent.equals("8")){truecontent="衣装服饰";}
+		else if(searchContent.equals("9")){truecontent="鞋靴箱包";}
+		else if(searchContent.equals("10")){truecontent="图书百货";}
+		
+		List<GoodsPack> goodsList = goodsService.searchByClass(pageModel,truecontent);
+		if(goodsList.isEmpty()){
+			session.setAttribute("haveRes", "no");
+			return "goodsPage/goodsViewClass";
+		}
+		
+		pageModel.setTotalrecode(goodsService.searchByClassCount(pageModel, truecontent));
+		pageModel.setDatas(goodsList);
+		session.setAttribute("haveRes", "yes");
+		map.put("goodsList", goodsList);
+		map.put("pageModel", pageModel);
+		map.put("searchContent",searchContent);
+		
+		return "goodsPage/goodsViewClass";
 	}
 }
