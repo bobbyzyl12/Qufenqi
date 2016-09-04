@@ -95,11 +95,33 @@
 		SELECT count(*) FROM goods WHERE goodsClass = #{query}
 	</select>
 	
-	<insert id="addPicture" parameterType="Picture">
+	<insert id="addPicture" parameterType="Picture" useGeneratedKeys="true" keyProperty="pictureID">
 		insert into picture(pictureID,data,goodsID,state) values(null,#{data,jdbcType=BLOB},#{goodsID},#{state})
 	</insert>
 	
 	<select id="findPictureByID" parameterType="Integer" resultType="Picture">
 		select * from picture where pictureID=#{pictureID}
+	</select>
+	
+	<delete id="deleteAllGoodsPicture" parameterType="Integer">
+		delete from  picture  where goodsID=#{goodsID}
+	</delete>
+	
+	<update id="updatePicture" parameterType="Picture">
+		update picture set goodsID=#{goodsID},state=#{state}
+    where pictureID = #{pictureID}
+	</update>
+	
+	<update id="lockPicture" parameterType="Integer">
+		update picture set state = "2"
+    where goodsID = #{goodsID}
+	</update>
+	
+	<select id="findPictureByGoodsID" parameterType="Integer" resultType="Picture">
+		select * from picture where goodsID=#{goodsID} and state="1"
+	</select>
+	
+	<select id="findPictureIDByGoodsID" parameterType="Integer" resultType="Integer">
+		select pictureID from picture where goodsID=#{goodsID} and state="1"
 	</select>
 </mapper>

@@ -61,6 +61,7 @@ public class GoodsController {
 		goodsService.addGoods(tempGoods);
 		Goods currentGoods = goodsService.findSameName(tempGoods);
 		Integer newGoodsID = currentGoods.getGoodsID();
+		
 		session.setAttribute("goodsID", newGoodsID);
 		return "success";
 	}
@@ -269,10 +270,18 @@ public class GoodsController {
 	}
 	
 	@RequestMapping(value = "/addPicture")
-	public String addPicture(MultipartFile uploadPhoto1,Model model) throws IOException{
-		goodsService.addPicture(uploadPhoto1);
-		
-		return"homePage";
+	public String addPicture(MultipartFile photo,Integer imgGoodsID,Model model,HttpSession session) throws IOException{
+		goodsService.lockPicture(imgGoodsID);
+		Integer picID = goodsService.addPicture(photo,imgGoodsID);
+		return "redirect:/page/jumpToGoodsAdmin?pageNo=1";
+	}
+	
+	@RequestMapping(value = "/getPictureID")
+	@ResponseBody
+	public Integer getPictureID(Integer goodsID){
+		Integer picID = goodsService.findPictureIDByGoodsID(goodsID);
+		if(picID==null){picID=0;}
+		return picID;
 	}
 	
 	@RequestMapping(value = "/readPicture")

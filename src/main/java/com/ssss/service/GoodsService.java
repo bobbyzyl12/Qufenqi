@@ -52,7 +52,13 @@ public interface GoodsService {
 	
 	public GoodsPack packGoods(Goods goods);
 	
-	public void addPicture(MultipartFile pic1) throws IOException;
+	public Integer addPicture(MultipartFile pic1,Integer goodsID) throws IOException;
 	
 	public Picture findPicture(Integer pictureID);
+	
+	public Integer findPictureIDByGoodsID(Integer goodsID);
+	
+	public void lockPicture(Integer goodsID);
+	
+	public String updatePicture(Picture pic);
 }

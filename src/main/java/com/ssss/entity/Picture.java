@@ -37,10 +37,10 @@ public class Picture {
 		return goodsID;
 	}
 	/**
-	 * @param goodsID the goodsID to set
+	 * @param i the goodsID to set
 	 */
-	public void setGoodsID(Integer goodsID) {
-		this.goodsID = goodsID;
+	public void setGoodsID(Integer i) {
+		this.goodsID = i;
 	}
 	/**
 	 * @return the state

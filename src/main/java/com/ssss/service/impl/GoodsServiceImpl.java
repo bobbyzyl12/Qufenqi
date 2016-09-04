@@ -270,14 +270,30 @@ public class GoodsServiceImpl implements GoodsService{
 		return goodsPack;
 	}
 	
-	public void addPicture(MultipartFile pic1) throws IOException{
+	public Integer addPicture(MultipartFile pic1,Integer goodsID) throws IOException{
 		byte[] b1 = pic1.getBytes();
 		Picture pic = new Picture();
+		pic.setGoodsID(goodsID);
+		pic.setState("1");
 		pic.setData(b1);
 		goodsDao.addPicture(pic);
+		return pic.getPictureID();
 	}
 	
 	public Picture findPicture(Integer pictureID){
 		return goodsDao.findPictureByID(pictureID);
+	}
+	
+	public Integer findPictureIDByGoodsID(Integer goodsID){
+		return goodsDao.findPictureIDByGoodsID(goodsID);
+	}
+	
+	public void lockPicture(Integer goodsID){
+		goodsDao.lockPicture(goodsID);
+	}
+	
+	public String updatePicture(Picture pic){
+		goodsDao.updatePicture(pic);
+		return "success";
 	}
 }

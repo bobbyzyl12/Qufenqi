@@ -1428,7 +1428,37 @@ $(function(){
 	});
 });
 
-
+$(function(){
+	$(".pictureBtn").click(function(){
+		var goodsID = $(this).attr('title');
+		var bh = $(".wrapper").height();
+	    var bw = $(".wrapper").width();
+	    $("#coverbg").css({
+	        height: bh,
+	        width: bw,
+	        display: "block"
+	    });
+	    $("#registerForm").hide();
+	    $("#pictureDialog").show();
+		$("#a_msg").show();
+		$("#imgGoodsID").val(goodsID);
+	    $.ajax({
+			url: '${ctx}/goods/getPictureID',
+			type: 'POST',
+			data: {goodsID:goodsID},
+			success: function (msg){
+				var src="${ctx}/goods/readPicture?pictureID="+msg;
+				$("#goodsImg").attr("src",src);
+			} 
+		});
+	    
+	    $("#showEditPicBtn").click(function(){
+	    	$("#registerForm").show();
+	    	$("#showEditPicBtn").hide();
+	    	$("#a_msg").hide();
+	    });
+	})
+});
 function closeBg() {
 	    $("#coverbg").hide();
 	    $(".dialog").hide();
@@ -1499,8 +1529,9 @@ function closeBg() {
   								<th width=100px>商品名</th>
 					  			<th width=150px>商品描述</th>
 					  			<th width=120px>状态</th>
-					  			<th width=150px>品牌</th>
+					  			<th width=120px>品牌</th>
 					  			<th width=80px>所属分区</th>
+					  			<th width=70px></th>
 					  			<th width=70px></th>
 					  			<th width=70px></th>
 							</tr>
@@ -1535,6 +1566,9 @@ function closeBg() {
 					  						<a href="#" class="btn tryReAddBtn" id="tryReaddBtn" title="${goods.goodsID}">上架</a>
 					  					</c:when>
 									</c:choose>
+				  				</td>
+				  				<td style="padding:0px 5px 0px 5px">
+				  					<a href="#" class="btn pictureBtn" id="pictureBtn" title="${goods.goodsID}">图片信息</a>
 				  				</td>
 				         	</tr>
 				         </c:forEach>
@@ -1620,11 +1654,6 @@ function closeBg() {
 				<option value="图书百货">图书百货</option>
 			</select>
 			<span class="alert_msg" id="goodsClassError">*请选择商品分类</span>
-			</p>
-						
-			<p class="login_title">
-				<span class="title_name">商品图片:</span>
-				<button class="btn_cancel" style="width:50px;height:25px;font-size:10px;">上传</button>
 			</p>
 			
 			<p class="login_title">
@@ -1781,6 +1810,23 @@ function closeBg() {
 	  			<a href="#" onclick="closeBg();"><button class="btn_cancel" style="width:100px;height:35px;font-size:16px;">取消</button></a>
 			</div>
 		</div>
+	</div>
+	
+	<div id="pictureDialog" class="dialog" style="top:10%;min-height:300px;height:auto;padding-bottom:30px;overflow:auto;">
+		<a href="${ctx}/page/jumpToGoodsAdmin?pageNo=${pageModel.pageNo}" onclick="closeBg();"><button class="btn_cancel" style="width:30px;height:30px;font-size:14px;color:#aaa;position:relative;left:170px;top:10px">x</button></a>
+		<p class="dialog_msg">当前图片</p>
+		<img id="goodsImg" src="${ctx}/goods/readPicture?pictureID=3" width=200px>
+		<br>
+		<button class="btn" id="showEditPicBtn" onclick="addTag()" style="width:120px;height:40px;font-size:16px;margin:15px;">上传新图片</button>
+		<p><span id="a_msg" style="font-size:12px;color:#4f90fb;margin:10px;">*旧图片会被替代</span></p>
+		<div style="padding:5px 30px 5px 30px;text-align:left;margin-top:10px;">
+		<form id="registerForm" action="${ctx}/goods/addPicture" method="post" enctype="multipart/form-data">
+   			<input type="file" id="photo" name="photo">
+   			<p></p>
+   			<input type="text" id="imgGoodsID" name="imgGoodsID" style="display:none">
+        	<input type="submit" class="btn">
+        </form>
+        </div>
 	</div>
 	
 	<div id="addSuccessDialog" class="dialog">

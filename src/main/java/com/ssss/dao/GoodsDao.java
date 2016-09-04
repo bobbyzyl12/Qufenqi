@@ -44,7 +44,17 @@ public interface GoodsDao {
 	
 	List<Goods> findAllGoods();
 	
-	void addPicture(Picture pic);
+	Integer addPicture(Picture pic);
 	
 	Picture findPictureByID(Integer pictureID);
+	
+	void deleteAllGoodsPicture(Integer goodsID);
+	
+	void lockPicture(Integer goodsID);
+	
+	void updatePicture(Picture pic);
+	
+	Picture findPictureByGoodsID(Integer goodsID);
+	
+	Integer findPictureIDByGoodsID(Integer goodsID);
 }
