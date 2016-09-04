@@ -837,7 +837,7 @@ function closeBg() {
 				<div class="goods_top_area">
 					<div class="picture_area">
 						<div class="picture_box">
-							<img src="${ctx}/img/biscuit.jpg" height=350px alt="img11"/>
+							<img src="${ctx}/goods/readPicture?pictureID=${goodsPack.goodsPictureID}" style="height:350px;" alt="img"/>
 						</div>
 					</div>
 					

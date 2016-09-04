@@ -54,7 +54,7 @@ public class GoodsServiceImpl implements GoodsService{
 			tempPack.setGoodsState(temp.getGoodsState());
 			Integer tempGoodsID = temp.getGoodsID();
 			tempPack.setGoodsStage(goodsDao.findAllStages(tempGoodsID));
-			
+			tempPack.setGoodsPictureID(goodsDao.findPictureByGoodsID(tempGoodsID).getPictureID());
 			List<Tag> tempTagList = new ArrayList<Tag>();
 			
 			List<Tag> resList = goodsDao.findTagsByID(temp.getGoodsID());
@@ -94,6 +94,7 @@ public class GoodsServiceImpl implements GoodsService{
 			tempPack.setGoodsState(temp.getGoodsState());
 			Integer tempGoodsID = temp.getGoodsID();
 			tempPack.setGoodsStage(goodsDao.findAllStages(tempGoodsID));
+			tempPack.setGoodsPictureID(goodsDao.findPictureByGoodsID(tempGoodsID).getPictureID());
 			
 			List<Tag> tempTagList = new ArrayList<Tag>();
 			
@@ -145,6 +146,7 @@ public class GoodsServiceImpl implements GoodsService{
 			tempPack.setGoodsState(temp.getGoodsState());
 			Integer tempGoodsID = temp.getGoodsID();
 			tempPack.setGoodsStage(goodsDao.findAllStages(tempGoodsID));
+			tempPack.setGoodsPictureID(goodsDao.findPictureByGoodsID(tempGoodsID).getPictureID());
 			
 			List<Tag> tempTagList = new ArrayList<Tag>();
 			
@@ -227,7 +229,7 @@ public class GoodsServiceImpl implements GoodsService{
 		goodsPack.setGoodsState(goods.getGoodsState());
 		goodsPack.setGoodsTag(tagList);
 		goodsPack.setGoodsStage(goodsDao.findAllStages(goodsID));
-		
+		goodsPack.setGoodsPictureID(goodsDao.findPictureByGoodsID(goodsID).getPictureID());
 		return goodsPack;
 	}
 	

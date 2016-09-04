@@ -290,7 +290,7 @@ public class GoodsController {
 		Picture picture = goodsService.findPicture(pictureID);
 		byte[] data = picture.getData();
 		response.setContentType("image/jpeg");  
-	    response.setCharacterEncoding("UTF-8");  
+	    response.setCharacterEncoding("UTF-8");
 	    OutputStream outputSream = response.getOutputStream();  
 	    InputStream in = new ByteArrayInputStream(data);  
 	    int len = 0;  
@@ -300,6 +300,6 @@ public class GoodsController {
 	    }  
 	    outputSream.close();  
 	    
-		return"test";
+		return null;
 	}
 }

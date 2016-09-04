@@ -317,10 +317,10 @@
 		background: #3085a3;
 		text-align: center;
 		cursor: pointer;
-		min-width: 220px;
-		min-height:220px;
-		max-width: 220px;
-		max-height: 220px;
+		min-width: 210px;
+		min-height:210px;
+		max-width: 210px;
+		max-height: 210px;
 	}
 	
 	.grid figure figcaption {
@@ -514,12 +514,12 @@ figure.effect-julia:hover p {
 	}
 	
 	.goodsDiv{
-		height:220px;
-		width:220px;
+		height:235px;
+		width:230px;
 		float:left;
-		margin:15px 15px 15px 15px;
-		background-color:red;
-		border:2px solid #ccc;
+		margin:10px;
+		padding:10px;
+		border:1px dashed #ccc;
 	}
 	
 	.no_res{
@@ -694,7 +694,7 @@ function closeBg() {
 				<div class="goodsDiv grid">
 					<a href = "${ctx}/goods/goodsDetail?goodsID=${goods.goodsID}">
 					<figure class="effect-julia">
-						<img src="${ctx}/img/biscuit.jpg" style="height:220px;" alt="img11"/>
+						<img src="${ctx}/goods/readPicture?pictureID=${goods.goodsPictureID}" style="height:210px;" alt="img"/>
 						<figcaption>
 							<h2 style="font-size:22px;position:relative;left:10px;font-weight: 900;-webkit-text-stroke: 0.8px #000;">${goods.goodsName}</h2>
 								<c:forEach items="${goods.goodsTag}" var="tags">
@@ -764,6 +764,6 @@ function closeBg() {
 	<!-- 暂存数据用 -->
 	<p style="display:none" id="totalPage">${pageModel.totalpage}</p>
 	<p style="display:none" id="pageNo">${pageModel.pageNo}</p>
-	
+
 </body>
 </html>

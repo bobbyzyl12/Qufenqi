@@ -22,6 +22,7 @@
         <input type="submit">
 </form>
 
-<img src="${ctx}/goods/readPicture?id=3"/>  
+<img src="${ctx}/goods/readPicture?pictureID=3"/> 
+
  </body>
 </html>

@@ -10,7 +10,7 @@ public class GoodsPack {
 	private String goodsBrand;
 	private String goodsClass;
 	private List<Tag> goodsTag;
-	private String goodsPicture;
+	private Integer goodsPictureID;
 	private List<Integer> goodsStage;
 	/**
 	 * @return the goodsID
@@ -86,18 +86,7 @@ public class GoodsPack {
 	public void setGoodsState(String goodsState) {
 		this.goodsState = goodsState;
 	}
-	/**
-	 * @return the goodsPicture
-	 */
-	public String getGoodsPicture() {
-		return goodsPicture;
-	}
-	/**
-	 * @param goodsPicture the goodsPicture to set
-	 */
-	public void setGoodsPicture(String goodsPicture) {
-		this.goodsPicture = goodsPicture;
-	}
+	
 	/**
 	 * @return the goodsTag
 	 */
@@ -121,6 +110,18 @@ public class GoodsPack {
 	 */
 	public void setGoodsStage(List<Integer> goodsStage) {
 		this.goodsStage = goodsStage;
+	}
+	/**
+	 * @return the goodsPictureID
+	 */
+	public Integer getGoodsPictureID() {
+		return goodsPictureID;
+	}
+	/**
+	 * @param goodsPictureID the goodsPictureID to set
+	 */
+	public void setGoodsPictureID(Integer goodsPictureID) {
+		this.goodsPictureID = goodsPictureID;
 	}
 	
 }
