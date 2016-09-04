@@ -94,4 +94,12 @@
 	<select id="searchByClassCount" parameterType="String" resultType="Integer">
 		SELECT count(*) FROM goods WHERE goodsClass = #{query}
 	</select>
+	
+	<insert id="addPicture" parameterType="Picture">
+		insert into picture(pictureID,data,goodsID,state) values(null,#{data,jdbcType=BLOB},#{goodsID},#{state})
+	</insert>
+	
+	<select id="findPictureByID" parameterType="Integer" resultType="Picture">
+		select * from picture where pictureID=#{pictureID}
+	</select>
 </mapper>

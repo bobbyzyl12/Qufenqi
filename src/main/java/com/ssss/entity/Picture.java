@@ -1,19 +1,58 @@
 package com.ssss.entity;
 
 public class Picture {
-	private byte[] photo_Byte;
-
+	private Integer pictureID;
+	private byte[] data;
+	private Integer goodsID;
+	private String state;
+	
 	/**
-	 * @return the photo_Byte
+	 * @return the pictureID
 	 */
-	public byte[] getPhoto_Byte() {
-		return photo_Byte;
+	public Integer getPictureID() {
+		return pictureID;
+	}
+	/**
+	 * @param pictureID the pictureID to set
+	 */
+	public void setPictureID(Integer pictureID) {
+		this.pictureID = pictureID;
+	}
+	/**
+	 * @return the data
+	 */
+	public byte[] getData() {
+		return data;
+	}
+	/**
+	 * @param data the data to set
+	 */
+	public void setData(byte[] data) {
+		this.data = data;
+	}
+	/**
+	 * @return the goodsID
+	 */
+	public Integer getGoodsID() {
+		return goodsID;
+	}
+	/**
+	 * @param goodsID the goodsID to set
+	 */
+	public void setGoodsID(Integer goodsID) {
+		this.goodsID = goodsID;
+	}
+	/**
+	 * @return the state
+	 */
+	public String getState() {
+		return state;
+	}
+	/**
+	 * @param state the state to set
+	 */
+	public void setState(String state) {
+		this.state = state;
 	}
 
-	/**
-	 * @param photo_Byte the photo_Byte to set
-	 */
-	public void setPhoto_Byte(byte[] photo_Byte) {
-		this.photo_Byte = photo_Byte;
-	} 
 }

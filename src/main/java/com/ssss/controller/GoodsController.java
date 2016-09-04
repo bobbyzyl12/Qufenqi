@@ -1,12 +1,18 @@
 package com.ssss.controller;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,6 +23,7 @@ import com.ssss.entity.Goods;
 import com.ssss.entity.GoodsPack;
 import com.ssss.entity.GoodsStage;
 import com.ssss.entity.PageModel;
+import com.ssss.entity.Picture;
 import com.ssss.entity.Tag;
 import com.ssss.entity.User;
 import com.ssss.service.GoodsService;
@@ -259,5 +266,31 @@ public class GoodsController {
 		map.put("searchContent",searchContent);
 		
 		return "goodsPage/goodsViewClass";
+	}
+	
+	@RequestMapping(value = "/addPicture")
+	public String addPicture(MultipartFile uploadPhoto1,Model model) throws IOException{
+		goodsService.addPicture(uploadPhoto1);
+		
+		return"homePage";
+	}
+	
+	@RequestMapping(value = "/readPicture")
+	public String readPicture(Integer pictureID,final HttpServletResponse response,Map<String, Object> map) throws IOException{
+		
+		Picture picture = goodsService.findPicture(pictureID);
+		byte[] data = picture.getData();
+		response.setContentType("image/jpeg");  
+	    response.setCharacterEncoding("UTF-8");  
+	    OutputStream outputSream = response.getOutputStream();  
+	    InputStream in = new ByteArrayInputStream(data);  
+	    int len = 0;  
+	    byte[] buf = new byte[1024];  
+	    while ((len = in.read(buf, 0, 1024)) != -1) {  
+	        outputSream.write(buf, 0, len);  
+	    }  
+	    outputSream.close();  
+	    
+		return"test";
 	}
 }

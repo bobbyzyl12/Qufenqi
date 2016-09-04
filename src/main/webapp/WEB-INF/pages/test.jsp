@@ -13,21 +13,15 @@
 	<script type="text/javascript" src="${ctx}/js/bootstrap.min.js"></script>
 <title>Insert title here</title>
 <script type="text/javascript">
-$(document).ready(function(){
-	$(document).on("click",'.bbb',function(){
-	    alert(1);
-	})
-	$("#aaa").click(function(){
-		var txt1 = "<p id=k class=bbb>added item</p>";
-		$(this).after(txt1);
-	});
-	  
-	  
-	});
+
 </script>
 </head>
 <body>
-<p id='aaa' class="ddd">Click this paragraph.</p>
+<form id="registerForm" action="${ctx}/goods/addPicture" method="post" enctype="multipart/form-data">  
+        上传头像 <input type="file" id="uploadPhoto" name="uploadPhoto1">
+        <input type="submit">
+</form>
 
+<img src="${ctx}/goods/readPicture?id=3"/>  
  </body>
 </html>

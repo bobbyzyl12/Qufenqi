@@ -1,5 +1,7 @@
 package com.ssss.service.impl;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,12 +9,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.ssss.dao.GoodsDao;
 import com.ssss.entity.Goods;
 import com.ssss.entity.GoodsPack;
 import com.ssss.entity.GoodsStage;
 import com.ssss.entity.PageModel;
+import com.ssss.entity.Picture;
 import com.ssss.entity.Tag;
 import com.ssss.entity.User;
 import com.ssss.service.GoodsService;
@@ -264,5 +268,16 @@ public class GoodsServiceImpl implements GoodsService{
 		goodsPack.setGoodsStage(goodsDao.findAllStages(goods.getGoodsID()));
 		
 		return goodsPack;
+	}
+	
+	public void addPicture(MultipartFile pic1) throws IOException{
+		byte[] b1 = pic1.getBytes();
+		Picture pic = new Picture();
+		pic.setData(b1);
+		goodsDao.addPicture(pic);
+	}
+	
+	public Picture findPicture(Integer pictureID){
+		return goodsDao.findPictureByID(pictureID);
 	}
 }

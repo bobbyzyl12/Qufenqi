@@ -168,6 +168,7 @@
 		padding:20px 10px 20px 10px;
 		margin:0;
 		float:left;
+		background-image:url(${ctx}/img/loginPic.jpg);
 	}
 	
 	div.input_box{
@@ -440,7 +441,6 @@ function closeBg() {
 		<div class="main_container">
 			<div class="main_container_box" style="background-color:#ccc;">
 				<div class="login_img_box">
-					<img src="${ctx}/img/ad.jpg">
 				</div>
 				<div class="login_form_box">
 					<div class="input_box">

@@ -1,11 +1,15 @@
 package com.ssss.service;
 
+import java.io.IOException;
 import java.util.List;
+
+import org.springframework.web.multipart.MultipartFile;
 
 import com.ssss.entity.Goods;
 import com.ssss.entity.GoodsPack;
 import com.ssss.entity.GoodsStage;
 import com.ssss.entity.PageModel;
+import com.ssss.entity.Picture;
 import com.ssss.entity.Tag;
 import com.ssss.entity.User;
 
@@ -47,4 +51,8 @@ public interface GoodsService {
 	public String changeToText(String describe);
 	
 	public GoodsPack packGoods(Goods goods);
+	
+	public void addPicture(MultipartFile pic1) throws IOException;
+	
+	public Picture findPicture(Integer pictureID);
 }

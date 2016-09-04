@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.ssss.entity.Goods;
 import com.ssss.entity.PageModel;
+import com.ssss.entity.Picture;
 import com.ssss.entity.Tag;
 import com.ssss.entity.User;
 import com.ssss.entity.GoodsStage;
@@ -43,4 +44,7 @@ public interface GoodsDao {
 	
 	List<Goods> findAllGoods();
 	
+	void addPicture(Picture pic);
+	
+	Picture findPictureByID(Integer pictureID);
 }
