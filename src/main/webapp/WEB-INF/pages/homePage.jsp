@@ -660,11 +660,8 @@ function closeBg() {
 					</div>
 					<div class="header_search_box">
 						<form action="${ctx}/goods/searchAll" method="post">
-								
 							<input class="header_search" type="text" name="searchContent" id="searchContent" placeholder="输入关键字">
-								
 							<input class="search_btn" type="submit" id="search_btn" value="搜索">
-								
 						</form>
 					</div>
 				</div>
