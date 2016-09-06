@@ -62,4 +62,8 @@ public class StageServiceImpl  implements StageService{
 	public Credit findCreditByID(Integer creditID){
 		return stageDao.findCreditByID(creditID);
 	}
+	
+	public List<Float> findStageChargeByCreditID(Integer creditID){
+		return stageDao.findStageChargeByCreditID(creditID);
+	}
 }

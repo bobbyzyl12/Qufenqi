@@ -36,7 +36,7 @@
 	</select>
 	
 	<select id="findStageChargeByID" parameterType="CreditStage" resultType="Float">
-		select * from creditstage where creditID=#{creditID} and stageID=#{stageID}
+		select stageCharge from creditstage where creditID=#{creditID} and stageID=#{stageID}
 	</select>
 	
 	<select id="findCreditCountByName" parameterType="String" resultType="Integer">

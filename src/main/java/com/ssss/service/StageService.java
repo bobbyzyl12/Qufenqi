@@ -18,5 +18,6 @@ public interface StageService {
 	
 	public String updateCredit(Credit credit);
 	
+	public List<Float> findStageChargeByCreditID(Integer creditID);
 	
 }

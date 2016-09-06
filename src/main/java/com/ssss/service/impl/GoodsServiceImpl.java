@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.ssss.dao.GoodsDao;
 import com.ssss.entity.Goods;
+import com.ssss.entity.GoodsInCart;
 import com.ssss.entity.GoodsPack;
 import com.ssss.entity.GoodsStage;
 import com.ssss.entity.PageModel;
@@ -298,4 +299,6 @@ public class GoodsServiceImpl implements GoodsService{
 		goodsDao.updatePicture(pic);
 		return "success";
 	}
+	
+	
 }

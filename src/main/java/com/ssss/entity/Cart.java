@@ -54,6 +54,7 @@ public class Cart {
 	public void setStageID(Integer stageID) {
 		this.stageID = stageID;
 	}
+	
 	/**
 	 * @return the tag
 	 */

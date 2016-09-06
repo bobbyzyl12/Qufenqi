@@ -15,10 +15,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ssss.entity.Credit;
 import com.ssss.entity.Goods;
+import com.ssss.entity.GoodsInCart;
 import com.ssss.entity.GoodsPack;
 import com.ssss.entity.PageModel;
 import com.ssss.entity.User;
 import com.ssss.service.GoodsService;
+import com.ssss.service.OrderService;
 import com.ssss.service.StageService;
 import com.ssss.service.UserService;
 
@@ -44,6 +46,9 @@ public class PageController {
 	
 	@Autowired
 	private GoodsService goodsService;
+	
+	@Autowired
+	private OrderService orderService;
 	/**
      * Ìø×ªµ½Ö÷Ò³
      * @param
@@ -130,6 +135,8 @@ public class PageController {
 		map.put("userInfo",currentUser);
 		String userCreditName = stageService.findCreditNameByID(currentUser.getUserCredit());
 		map.put("userCreditName",userCreditName);
+		List<Float> stageChargeList = stageService.findStageChargeByCreditID(currentUser.getUserCredit());
+		map.put("chargeList", stageChargeList);
 		return "infoCenter/myInfo";
 	}
 	
@@ -161,7 +168,10 @@ public class PageController {
      * @return
      */
 	@RequestMapping(value = "/jumpToMyChart")
-	public String jumpToMyChart(){
+	public String jumpToMyChart(Map<String, Object> map,HttpSession session){
+		Integer userID = (Integer)session.getAttribute("userID");
+		List<GoodsInCart> goodsInCart=orderService.findGoodsInCart(userID);
+		map.put("goodsInCartList", goodsInCart);
 		return "infoCenter/myChart";
 	}
 	

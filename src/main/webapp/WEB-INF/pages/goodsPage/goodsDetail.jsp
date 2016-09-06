@@ -888,7 +888,6 @@ function closeBg() {
 								<span class="l_title" style="margin-right:10px;">数&nbsp;&nbsp;量：</span>
 								<img  onclick="minus()" src="${ctx}/img/minus.jpg" style="position: relative;left: 4.3px;top: -1.6px;">
 								<input class="goodsNum" type="text" id="goodsNum" onchange="checkIsNum()">
-								
 								<img onclick="plus()" src="${ctx}/img/plus.jpg" style="position: relative;left:-4.7px;top: -1.6px;">
 								<span class="storage_span" style="margin-left:10px;">库&nbsp;存：</span>
 								<span id="current_storage" class="storage_span">${defaultStorage}</span>

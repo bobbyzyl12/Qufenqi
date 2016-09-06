@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ssss.entity.Goods;
+import com.ssss.entity.GoodsInCart;
 import com.ssss.entity.GoodsPack;
 import com.ssss.entity.GoodsStage;
 import com.ssss.entity.PageModel;

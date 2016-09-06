@@ -350,7 +350,7 @@
 	}
 	
 	.right_content{
-		width:700px;
+		width:760px;
 		margin-left:20px;
 		margin-top:30px;
 		font-size:14px;
@@ -435,11 +435,217 @@
 		background-color:#9bc0fd;
 		color:#fff;
 	}
+	
+	table {
+		overflow:hidden;
+		border:1px solid #d3d3d3;
+		background:#fefefe;
+		width:100%;
+		-moz-border-radius:5px; /* FF1+ */
+		-webkit-border-radius:5px; /* Saf3-4 */
+		border-radius:5px;
+		-moz-box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+		-webkit-box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+		table-layout:fixed;
+	}
+	
+	th, td {padding:5px 10px 5px; text-align:center; }
+	
+	th {padding-top:8px; text-shadow: 1px 1px 1px #fff; background:#e8eaeb;}
+	
+	td {border-top:1px solid #e0e0e0; border-right:1px solid #e0e0e0;}
+	
+	tr.odd-row td {background:#f6f6f6;}
+	
+	td.first, th.first {text-align:left}
+	
+	td.last {border-right:none;}
+	
+	/*
+	Background gradients are completely unnecessary but a neat effect.
+	*/
+	
+	td {
+		background: -moz-linear-gradient(100% 25% 90deg, #fefefe, #f9f9f9);
+		background: -webkit-gradient(linear, 0% 0%, 0% 25%, from(#f9f9f9), to(#fefefe));
+	}
+	
+	tr.odd-row td {
+		background: -moz-linear-gradient(100% 25% 90deg, #f6f6f6, #f1f1f1);
+		background: -webkit-gradient(linear, 0% 0%, 0% 25%, from(#f1f1f1), to(#f6f6f6));
+	}
+	
+	th {
+		background: -moz-linear-gradient(100% 20% 90deg, #e8eaeb, #ededed);
+		background: -webkit-gradient(linear, 0% 0%, 0% 20%, from(#ededed), to(#e8eaeb));
+	}
+	
+	/*
+	I know this is annoying, but we need additional styling so webkit will recognize rounded corners on background elements.
+	Nice write up of this issue: http://www.onenaught.com/posts/266/css-inner-elements-breaking-border-radius
+	
+	And, since we've applied the background colors to td/th element because of IE, Gecko browsers also need it.
+	*/
+	
+	tr:first-child th.first {
+		-moz-border-radius-topleft:5px;
+		-webkit-border-top-left-radius:5px; /* Saf3-4 */
+	}
+	
+	tr:first-child th.last {
+		-moz-border-radius-topright:5px;
+		-webkit-border-top-right-radius:5px; /* Saf3-4 */
+	}
+	
+	tr:last-child td.first {
+		-moz-border-radius-bottomleft:5px;
+		-webkit-border-bottom-left-radius:5px; /* Saf3-4 */
+	}
+	
+	tr:last-child td.last {
+		-moz-border-radius-bottomright:5px;
+		-webkit-border-bottom-right-radius:5px; /* Saf3-4 */
+	}
+	
+	
+	.count_area{
+		margin-top:10px;
+		padding-top:30px;
+		padding-left:30px;
+		border:3px dashed #aaa;
+		height:100px;
+		text-align:right;
+		padding-right:30px;
+	}
+	
+	.goodsNum{
+		width:40px;
+		height:25px;
+		text-align:center;
+	}
+	
+	.deleteGoodsInCart{
+		font-size:10px;
+		margin:0px;
+	}
+	
+	.deleteGoodsInCart:hover{
+		color:#ff6384;
+	}
 </style>
 
 <script type="text/javascript">
 
 $(function(){
+	//初始化：包括各类价格的格式，一些数量
+	var totalPrice = Number(0);
+	$(".success_msg").hide();
+	$(".perPrice").each(function(){
+		var eachPrice = $(this).html();
+		eachPrice = Number(eachPrice).toFixed(2);
+		$(this).html(eachPrice);
+	});
+	
+	$(".eachTotoalPrice").each(function(){
+		var eachPrice = $(this).html();
+		eachPrice = Number(eachPrice).toFixed(2);
+		$(this).attr("title",eachPrice);
+		var quantity = $(this).prevAll(':eq(2)').find(".goodsNum").val();
+		var finalPrice =Number(eachPrice)*Number(quantity);
+		finalPrice = Number(finalPrice).toFixed(2);
+		$(this).html(finalPrice);
+		totalPrice = Number(totalPrice)+Number(finalPrice);
+	});
+	
+	//设置总价
+	totalPrice= Number( totalPrice).toFixed(2);
+	$("#totalPrice").html( totalPrice);
+	
+	$(".deleteGoodsInCart").click(function(){
+		var goodsID = $(this).closest("tr").attr("title");
+		var tag = $(this).parent().prev().html();
+		var stageID = $(this).parent().next().find(".stages").html();
+		$.ajax({                           	  
+			url: '${ctx}/order/deleteCartByAll',       //处理测试页面                 
+			type: 'POST',                  
+			data: {goodsID:goodsID,tag:tag,stageID:stageID},                
+			success: function (msg){
+				if(msg=="success"){
+					window.location.href='${ctx}/page/jumpToMyChart';
+				}
+			}
+		});
+	});
+	
+	$(".minusQuantity").click(function(){
+		var currentNum = $(this).next().val();
+		if(currentNum==1){}
+		else{currentNum = Number(currentNum)-Number(1);
+			$(this).next().val(currentNum);
+			var goodsID = $(this).closest("tr").attr("title");
+			var tag = $(this).parent().prev().html();
+			var stageID = $(this).parent().next().find(".stages").html();
+			$(this).closest("td").find(".success_msg").show();
+			$(this).closest("td").find(".success_msg").delay(400).hide(0);
+			$.ajax({                           	  
+				url: '${ctx}/order/updateCart',       //处理测试页面                 
+				type: 'POST',                  
+				data: {goodsID:goodsID,tag:tag,quantity:currentNum,stageID:stageID},                
+				success: function (msg){
+					if(msg=="success"){
+					}
+				}
+			});
+		}
+	});
+	
+	$(".plusQuantity").click(function(){
+		var currentNum = $(this).prev().val();
+		currentNum = Number(currentNum)+Number(1);
+		$(this).prev().val(currentNum);
+		var goodsID = $(this).closest("tr").attr("title");
+		var tag = $(this).parent().prev().html();
+		var stageID = $(this).parent().next().find(".stages").html();
+		$(this).closest("td").find(".success_msg").show();
+		$(this).closest("td").find(".success_msg").delay(400).hide(0);
+		$.ajax({                           	  
+			url: '${ctx}/order/updateCart',       //处理测试页面                 
+			type: 'POST',                  
+			data: {goodsID:goodsID,tag:tag,quantity:currentNum,stageID:stageID},                
+			success: function (msg){
+				if(msg=="success"){
+				}
+			}
+		});
+	});
+	
+	$(".goodsNum").change(function(){
+		var currentNum = $(this).val();
+		
+		var reg=/^[1-9]\d*|0$/;
+		if(!reg.test(currentNum)){
+			$(this).val(Number(1));
+		}
+		else{
+			var goodsID = $(this).closest("tr").attr("title");
+			var tag = $(this).parent().prev().html();
+			var stageID = $(this).parent().next().find(".stages").html();
+			$(this).closest("td").find(".success_msg").show();
+			$(this).closest("td").find(".success_msg").delay(400).hide(0);
+			var tempCart={'goodsID':goodsID,'tag':tag,'quantity':currentNum,'stageID':stageID };
+			
+			$.ajax({                           	  
+				url: '${ctx}/order/updateCart',       //处理测试页面                 
+				type: 'POST',                  
+				data: {goodsID:goodsID,tag:tag,quantity:currentNum,stageID:stageID},                
+				success: function (msg){
+					if(msg=="success"){
+					}
+				}
+			});
+			
+		}
+	});
 	
 });
 
@@ -503,10 +709,51 @@ function closeBg() {
 				<div class="info_right">
 					<div class="right_title">
 						<span class="tit_b"></span>&nbsp;
-						<span class="tit_text">消息中心</span>
+						<span class="tit_text">我的购物车</span>
 					</div>
 					<div class="right_content">
-						
+						<div style="overflow:auto;max-height:600px;">
+							<table>
+							<tr>
+								<th width=40px></th>
+								<th width=120px>图片与名称</th>
+								<th width=120px>品牌</th>
+								<th width=60px>类型</th>
+								<th width=120px>数量</th>
+								<th width=60px>分期</th>
+								<th width=90px>实价</th>
+								<th width=90px>小计<br><span style="font-size:8px;">(含手续费)</span></th>
+							</tr>
+							 <c:forEach items="${goodsInCartList}" var="goods">
+							 	<tr title="${goods.goods.goodsID}">
+							 		<td><input checked="checked" type="checkbox" style="margin-left: 5px;margin-right: 15px;"></td>
+							 		<td style="padding-top:5px;">
+							 			<img src="${ctx}/goods/readPicture?pictureID=${goods.pictureID}" style="height:80px;margin-top:5px;" alt="img"/>
+							 			<p style="margin:0px;">${goods.goods.goodsName}</p>
+							 		</td>
+									
+							 		<td style="font-size:8px;color:#666;">${goods.goods.goodsClass}<br>${goods.goods.goodsBrand}</td>
+							 		<td>${goods.tag.tag}</td>
+							 		<td class="goodsQuantity" style="padding-top:10px;">
+							 			<div style="height:23px;">
+							 				<p class="success_msg" style='font-size:6px;color:#999;margin:3px;'>修改成功</p>
+							 			</div>
+							 			<a href="#"  class='minusQuantity'><img src="${ctx}/img/minus.jpg" style="height:25px;position: relative;left: 4.3px;top: -1.7px;"></a>
+										<input class="goodsNum" type="text" id="goodsNum" value="${goods.quantity}">
+										<a href="#"  class='plusQuantity' ><img src="${ctx}/img/plus.jpg" style="height:25px;position: relative;left:-4.7px;top: -1.7px;"></a>
+							 			<a href="#" class="deleteGoodsInCart"><p>删除</p> </a>
+							 		</td>
+							 		<td><span class="stages">${goods.goodsStage}</span><span>期</span></td>
+							 		<td class="perPrice">${goods.tag.price}</td>
+							 		<td class="eachTotoalPrice">${goods.goodsTotalPrice}</td>
+							 	</tr>
+							 </c:forEach>
+							</table>
+						</div>
+						<div class="count_area">
+							<p style="color:#4f90fb;font-size:20px;font-weight:600;"><span>总价：</span><span style="font-size:15px;">￥</span>
+								<span  id="totalPrice"></span></p>
+						</div>
 					</div>
 				</div>
 			</div>

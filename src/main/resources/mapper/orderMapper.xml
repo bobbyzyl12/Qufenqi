@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.ssss.dao.OrderDao">
+	
+	<resultMap type="Cart" id="cartMap">
+		<result column="goodsID" property="goodsID"/>
+		<result column="userID" property="userID"/>
+		<result column="tag" property="tag"/>
+		<result column="quantity" property="quantity"/>
+		<result column="stageID" property="stageID"/>
+	</resultMap>
+	
 	<insert id="addCart" parameterType="Cart">
 		insert into cart(goodsID,userID,tag,quantity,stageID) values(#{goodsID},#{userID},#{tag},#{quantity},#{stageID})
 	</insert>
@@ -9,6 +18,14 @@
 		update cart set quantity = #{quantity}
     where userID=#{userID} and goodsID=#{goodsID} and stageID=#{stageID} and tag=#{tag}
 	</update>
+	
+	<select id="findCartByUserID" parameterType="Integer" resultMap="cartMap">
+		select * from cart where userID=#{userID} ORDER BY stageID
+	</select>
+	
+	<select id="findIfExist" parameterType="Cart" resultType="Cart">
+		select * from cart where userID=#{userID} and goodsID=#{goodsID} and tag =#{tag} and stageID=#{stageID}
+	</select>
 	
 	<delete id="deleteCartByID" parameterType="Integer"> 
 		delete from cart where userID=#{userID}

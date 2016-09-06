@@ -49,4 +49,31 @@ public class OrderController {
 			}
 		}
 	}
+	
+	@RequestMapping(value = "/updateCart")
+	@ResponseBody
+	public String updateCart(Integer goodsID,Integer quantity,String tag,Integer stageID,HttpSession session){
+		Integer userID = (Integer)session.getAttribute("userID");
+		Cart cart =new Cart();
+		cart.setGoodsID(goodsID);
+		cart.setQuantity(quantity);
+		cart.setStageID(stageID);
+		cart.setTag(tag);
+		cart.setUserID(userID);
+		orderService.updateCart(cart);
+		return "success";
+	}
+	
+	@RequestMapping(value = "/deleteCartByAll")
+	@ResponseBody
+	public String deleteCartByAll(Integer goodsID,String tag,Integer stageID,HttpSession session){
+		Integer userID = (Integer)session.getAttribute("userID");
+		Cart cart =new Cart();
+		cart.setGoodsID(goodsID);
+		cart.setStageID(stageID);
+		cart.setTag(tag);
+		cart.setUserID(userID);
+		orderService.deleteCartByAll(cart);
+		return "success";
+	}
 }

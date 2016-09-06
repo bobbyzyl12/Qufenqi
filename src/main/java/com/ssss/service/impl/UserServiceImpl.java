@@ -217,6 +217,9 @@ public class UserServiceImpl implements UserService {
 			if(userDao.findByUserIdentify(userIdentify)==null)
 			{
 				oldUser.setUserIdentify(userIdentify);
+				if(oldUser.getUserIdentify()==null){
+					oldUser.setUserCredit(3);
+				}
 			}
 			else
 			{
