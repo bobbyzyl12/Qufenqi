@@ -412,11 +412,11 @@
 		  padding:0;
 		  margin-left:30px;
 		  margin-right:10px;
-		  height:35px;
-		  width:100px;
+		  height:40px;
+		  width:140px;
 		  color:#ffffff;
 		  background-color:#4f90fb;
-		  font-size:16px;
+		  font-size:18px;
 		  font-weight:normal;
 		  border:1px solid #1647e9;
 		  -webkit-border-top-left-radius:2px;
@@ -577,28 +577,109 @@
 		margin-right:20px;
 	}
 	
+	.i_title_s{
+		margin-right:10px;
+	}
+	
 	.count_area{
-		margin-top:10px;
+		margin:30px 10px 10px 10px;
 		padding-top:30px;
 		padding-left:30px;
-		border:1px soild #aaa;
-		height:200px;
+		border: 2px solid #4f90fb;
+		border-radius:10px;
+		height:230px;
 		text-align:right;
 		padding-right:30px;
+	}
+	
+	.btn_cancel{
+		  padding:0;
+		  margin-left:10px;
+		  margin-right:10px;
+		  height:40px;
+		  width:120px;
+		  color:#666;
+		  background-color:#fff;
+		  font-size:16px;
+		  font-weight:normal;
+		  border:1px solid #dcdcdc;
+		  -webkit-border-top-left-radius:2px;
+		  -moz-border-radius-topleft:2px;
+		  border-top-left-radius:2px;
+		  -webkit-border-top-right-radius:2px;
+		  -moz-border-radius-topright:2px;
+		  border-top-right-radius:2px;
+		  -webkit-border-bottom-left-radius:2px;
+		  -moz-border-radius-bottomleft:2px;
+		  border-bottom-left-radius:2px;
+		  -webkit-border-bottom-right-radius:2px;
+		  -moz-border-radius-bottomright:2px;
+		  border-bottom-right-radius:2px;
+		  -moz-box-shadow: inset 0px 0px 0px 0px #ffffff;
+		  -webkit-box-shadow: inset 0px 0px 0px 0px #ffffff;
+		  box-shadow: inset 0px 0px 0px 0px #ffffff;
+		  text-align:center;
+		  display:inline-block;
+		  text-decoration:none;
+		}
+		
+	.btn_cancel:hover{
+		color:#ff6384;
+	}
+	
+	.bottom_title{
+		margin-right:50px;
 	}
 </style>
 
 <script type="text/javascript">
 
 $(function(){
+	var charge = $("#charge").html();
+	
+	var totalStageNum = $("#totalStageNum").html();
+	var doneStageNum = $("#doneStageNum").html();
+	
+	var totalPrice = Number(0);
+	var pri = $("#nextStagePrice").html();
+	pri= Number(pri).toFixed(2);
+	$("#nextStagePrice").html(pri);
+	//初始化
 	$(".price").each(function(){
 		var price = $(this).html();
 		price = Number(price).toFixed(2);
 		$(this).html(price);
+		var quantity = $(this).parent().prev().html();
+		var temp = Number(quantity)*Number(price)*(Number(charge)/Number(100)+Number(1));
+		temp =Number(temp).toFixed(2);
+		totalPrice =Number(temp)+Number(totalPrice);
+		$(this).parent().next().find(".l_price").html(temp);
 	});
+	
+	
+	
+	totalPrice= Number(totalPrice).toFixed(2);
+	$("#totalPrice").html('￥'+totalPrice);
 	var percent = Number($("#doneStageNum").html())/Number($("#totalStageNum").html());
-	var a =percent+"%";
+	//计算已经支付的金额
+	var donePrice =Number(percent) * Number(totalPrice);
+	donePrice= Number(donePrice).toFixed(2);
+	$("#donePrice").html('￥'+donePrice);
+	
+	var leftPrice = Number(totalPrice)-Number(donePrice);
+	leftPrice= Number(leftPrice).toFixed(2);
+	$("#leftPrice").html('￥'+leftPrice);
+	//设置进入条长度
+	var a =percent;
 	$("#progress_bar").css("width",a);
+	
+	$("#bar_msg").hide();
+	
+	$(".progress_bar").mouseover(function(){ $("#bar_msg").show();});
+	$(".progress_bar").mouseout(function(){$("#bar_msg").hide();});
+	$("#bar_msg").mouseover(function(){$("#bar_msg").show();});
+	$("#bar_msg").mouseout(function(){$("#bar_msg").hide(); });
+	
 });
 
 function closeBg() {
@@ -699,49 +780,73 @@ function closeBg() {
 								<div class="progress_bar">
 									<div class="pro-bar" style="font-size:12px;">
 										<small class="progress_bar_title">
-										<span class="progress_number" style="font-size:10px;">${basicInfo.nextNo-1} 期/${basicInfo.totalStageNum} 期</span>
+											<span class="progress_number" style="font-size:10px;">${basicInfo.nextNo-1} 期/${basicInfo.totalStageNum} 期</span>
 										</small>
 										<span id="progress_bar" class="progress-bar-inner" style="background-color: #4f90fb; width:95%;" data-value="95" data-percentage-value="95"></span>
 									</div>
 								</div>
 							</div>
 							<div style="position:relative;left:-400px;position:relative;">
-								<p><span class="i_title">本期截止时间:</span><fmt:formatDate value="${basicInfo.deadline}" pattern="yyyy-MM-dd"/></p>
 								<p><span class="i_title">收件人:</span>${order.reciever}
 									<span class="i_title" style="position:absolute;right:50px;">收件地址:${order.address}</span><span class="i_title" style="position:absolute;right:0px;"></span>
 									<span class="i_title" style="position:absolute;right:-220px;">联系电话:${order.phone}</span>
 								</p>
 							</div>
+							<div style="height:140px;width:180px;padding:0px 10px 10px 10px;background-color:#fff;border:2px solid #4f90fb;border-radius:5px;;position:relative;top:-130px;left:550px;" id="bar_msg">
+								<p><span class="i_title_s">原始总价：</span><span id="totalPrice" style="position:absolute;right:15px;"></span></p>
+								<p><span class="i_title_s">已支付：</span><span id="donePrice" style="position:absolute;right:15px;"></span></p>
+								<p><span class="i_title_s">未支付：</span><span id="leftPrice" style="position:absolute;right:15px;"></span></p>
+							</div>
 						</div>
-						<div style="min-height:300px;margin:0px 10px 0px 10px;max-height:1000px;overflow：auto;">
+						<div style="margin:0px 10px 0px 10px;max-height:1000px;overflow：auto;">
 							<table>
 							<tr>
-								<th width=150px>图片与名称</th>
+								<th width=100px>图片与名称</th>
 								<th width=100px>类型</th>
-								<th width=100px>数量</th>
-								<th width=100px>原始单价</th>
+								<th width=80px>数量</th>
+								<th width=80px>原始单价</th>
+								<th width=80px>小计<br><span style="font-size:8px;">（包含手续费）</span></th>
 							</tr>
 							<c:forEach items="${goodsList}" var="goods">
 							 	<tr>
 							 		<td style="padding-top:10px;">
 							 		<a href="${ctx}/goods/goodsDetail?goodsID=${goods.goodsID}">
-							 			<img src="${ctx}/goods/readPicture?pictureID=${goods.goodsPictureID}" style="height:120px;margin-top:5px;" alt="img"/>
+							 			<img src="${ctx}/goods/readPicture?pictureID=${goods.goodsPictureID}" style="height:80px;margin-top:5px;" alt="img"/>
 							 			</a>
 							 			<p style="margin:10px 0px 0px 0px;">${goods.goodsName}</p>
 							 		</td>
 							 		<td>${goods.tag.tag}</td>
 							 		<td>${goods.quantity}</td>
 							 		<td><span style="font-size:8px">￥</span><span class="price">${goods.tag.price}</span></td>
+							 		<td>￥<span class="l_price"></span></td>
 							 	</tr>	
 							 </c:forEach>
 							 </table>
 						</div>
 						<div class="count_area">
-							<p style="color:#4f90fb;font-size:20px;font-weight:600;padding-right:15px;"><span>总价：</span><span style="font-size:15px;">￥</span><span  id="totalPrice">adsad</span></p>
-							<p style="color:#666;font-size:14px;padding-right:15px;border-bottom:1px dashed #4f90fb;padding-bottom:20px;">(最高月供：<span style="color:#4f90fb;font-size:10px;">￥</span><span id="maxPer" style="color:#4f90fb;font-weight:bold;">11.33</span>)</p>
-							<a href="#"><button class="btn" id="submitBtn">返回</button></a>	
-							<a href="#"><button class="btn" id="submitBtn">支付本期</button></a>
-							<a>${basicInfo.orderTotalPrice}</a>
+							<div style="position:relative;height:120px;padding-right:30px;">
+								<p  style="font-size:14px">本期为第
+									<span style="color:#4d79ff;font-weight:bold;font-size:18px;">${basicInfo.nextNo}</span>
+									期
+									<span style="font-size:12px;">（共</span>
+									<span style="font-size:15px;color:#4d79ff;font-weight:bold;">${basicInfo.totalStageNum}</span>
+									<span style="font-size:12px;">期）</span>
+								</p>
+								<p><span  class="bottom_title" style="font-size:14px;font-weight:100;">无利率支付截止时间:</span>
+									<span style="font-size:16px;font-weight:100;"><fmt:formatDate value="${basicInfo.deadline}" pattern="yyyy-MM-dd"/></span>
+								<p>
+								<p>
+									<span class="bottom_title" style="font-size:18px;font-weight:500;">本期支付:</span>
+									<span style="font-size:16px;font-weight:600;color:#4f90fb"">￥</span><span id="nextStagePrice" style="font-size:22px;font-weight:700;color:#4f90fb">${basicInfo.nextStagePrice}</span>
+								<p>
+								
+								
+							</div>
+							<div style="position:relative;height:70px;padding-top:20px;border-top:1.5px dashed #4f90fb;">
+								<a href="${ctx}/page/jumpToMyOrder"><button class="btn_cancel" id="submitBtn" style="position:absolute;left:30px;">返回</button></a>	
+								<a href="#"><button class="btn" id="submitBtn">支付本期</button></a>
+							</div>
+							
 						</div>
 					</div>
 				</div>
@@ -765,5 +870,6 @@ function closeBg() {
 	<!-- 暂存数据用 -->
 	<p style="display:none" id="doneStageNum">${basicInfo.nextNo-1}</p>
 	<p style="display:none" id="totalStageNum">${basicInfo.totalStageNum}</p>
+	<p style="display:none" id="charge">${charge}</p>
 </body>
 </html>

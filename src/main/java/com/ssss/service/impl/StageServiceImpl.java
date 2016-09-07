@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ssss.dao.StageDao;
 import com.ssss.dao.UserDao;
 import com.ssss.entity.Credit;
+import com.ssss.entity.CreditStage;
 import com.ssss.entity.PageModel;
 import com.ssss.entity.User;
 import com.ssss.service.StageService;
@@ -65,5 +66,12 @@ public class StageServiceImpl  implements StageService{
 	
 	public List<Float> findStageChargeByCreditID(Integer creditID){
 		return stageDao.findStageChargeByCreditID(creditID);
+	}
+	
+	public Float findCharge(Integer creditID,Integer stageID){
+		CreditStage cs = new CreditStage();
+		cs.setCreditID(creditID);
+		cs.setStageID(stageID);
+		return stageDao.findStageChargeByID(cs);
 	}
 }

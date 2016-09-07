@@ -20,4 +20,6 @@ public interface StageService {
 	
 	public List<Float> findStageChargeByCreditID(Integer creditID);
 	
+	public Float findCharge(Integer creditID,Integer stageID);
+	
 }

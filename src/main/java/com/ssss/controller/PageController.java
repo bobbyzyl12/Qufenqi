@@ -180,7 +180,9 @@ public class PageController {
 		List<GoodsDetailInOrder> goodsList = orderService.getGoodsDetail(orderID);
 		MyOrder myOrder = orderService.findBasicInfo(orderID);
 		order = orderService.lockSomeMsg(order);
+		Float charge = stageService.findCharge(order.getOrderCredit(), order.getOrderStage());
 		map.put("basicInfo",myOrder);
+		map.put("charge", charge);
 		map.put("goodsList", goodsList);
 		map.put("order", order);
 		return "infoCenter/orderDetail";
