@@ -53,6 +53,11 @@
 		select * from tag where goodsID = #{goodsID}
 	</select>
 	
+	<update id="updateTag" parameterType="Tag">
+		update tag set storage = #{storage}
+    where goodsID = #{goodsID} and tag = #{tag} and price = #{price}
+	</update>
+	
 	<select id="findAll" parameterType="PageModel" resultMap="goodsMap">
 		select * from goods
 		limit #{pagestart},#{pagesize}

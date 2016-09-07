@@ -78,9 +78,11 @@ public class OrderController {
 	}
 	
 	@RequestMapping(value = "/submitOrder")
+	@ResponseBody
 	public String submitOrder(String person,String address,String phone,HttpSession session){
 		Integer userID = (Integer)session.getAttribute("userID");
-		orderService.submitOrder(person,address,phone,userID);
-		return "success";
+		return orderService.submitOrder(person,address,phone,userID);
 	}
+	
+	
 }

@@ -15,8 +15,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ssss.entity.Credit;
 import com.ssss.entity.Goods;
+import com.ssss.entity.GoodsDetailInOrder;
 import com.ssss.entity.GoodsInCart;
 import com.ssss.entity.GoodsPack;
+import com.ssss.entity.MyOrder;
+import com.ssss.entity.OrderForm;
 import com.ssss.entity.PageModel;
 import com.ssss.entity.User;
 import com.ssss.service.GoodsService;
@@ -158,8 +161,29 @@ public class PageController {
      * @return
      */
 	@RequestMapping(value = "/jumpToMyOrder")
-	public String jumpToMyOrder(){
+	public String jumpToMyOrder(Map<String, Object> map,HttpSession session){
+		Integer userID = (Integer)session.getAttribute("userID");
+		List<MyOrder> myOrderList=orderService.showMyOrder(userID);
+		map.put("myOrderList", myOrderList);
 		return "infoCenter/myOrder";
+	}
+	
+	/**
+     * 跳转到订单中心（我的订单）
+     * @param
+     * @return
+     */
+	@RequestMapping(value = "/jumpToOrderDetail")
+	public String jumpToOrderDetail(Integer orderID,Map<String, Object> map,HttpSession session){
+		Integer userID = (Integer)session.getAttribute("userID");
+		OrderForm order = orderService.findOrderByID(orderID);
+		List<GoodsDetailInOrder> goodsList = orderService.getGoodsDetail(orderID);
+		MyOrder myOrder = orderService.findBasicInfo(orderID);
+		order = orderService.lockSomeMsg(order);
+		map.put("basicInfo",myOrder);
+		map.put("goodsList", goodsList);
+		map.put("order", order);
+		return "infoCenter/orderDetail";
 	}
 	
 	/**

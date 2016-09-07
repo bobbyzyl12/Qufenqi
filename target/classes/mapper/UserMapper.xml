@@ -77,4 +77,9 @@
 	<update id="readMsg" parameterType="Integer">
 		update message set msgState = "2" where msgID = #{msgID}
 	</update>
+	
+	<insert id="addMsg" parameterType="Message">
+		insert into message values(null,#{msgTitle},#{msgContent},#{msgState},#{msgClass},#{userID})
+	</insert>
+	
 </mapper>

@@ -103,5 +103,7 @@ public interface UserDao {
 	 List<User> findAll(PageModel<User> t);
 		
 	 Integer findAllCount(PageModel<User> pageModel);
+	 
+	 void addMsg(Message message);
 }
 

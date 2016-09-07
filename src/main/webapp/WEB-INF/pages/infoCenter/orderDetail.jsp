@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <c:set var="ctx" value="${pageContext.request.contextPath }"></c:set>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -8,16 +9,23 @@
 <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="http://apps.bdimg.com/libs/bootstrap/3.3.0/css/bootstrap.min.css">  
-  
   <script type="text/javascript" src="${ctx}/js/jquery.min.js"></script>
-	<script type="text/javascript" src="${ctx}/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="${ctx}/js/bootstrap.min.js"></script>
 <title>qfenqi home page</title>
 <style type="text/css">
-	html,body,div
+	html,body
 	{
 		margin: 0;
 		padding: 0;
 		height: 100%;
+		-webkit-box-sizing: border-box;
+    	-moz-box-sizing: border-box;
+        box-sizing: border-box;
+        font-family: "Microsoft YaHei",Arial,Helvetica,sans-serif;
+	}
+	div{
+		margin: 0;
+		padding: 0;
 		-webkit-box-sizing: border-box;
     	-moz-box-sizing: border-box;
         box-sizing: border-box;
@@ -80,30 +88,13 @@
 		display: none;
 		z-index: 5;
 		
-		height:300px;
-		width:400px;
 		background-color: #FFF;
 		border: 1px solid #888;
 		
-		position: absolute !important; /* 浮动对话框 */
-		top: 20%;
-		left:35%;
-		text-align:center;
-		margin-left:auto; 
-		margin-right:auto;
-		
-		-moz-border-radius: 10px;
-		-webkit-border-radius: 10px;
-		border-radius: 10px;
-		
-		border:2px solid #4f90fb;
+		position: fixed !important; /* 浮动对话框 */
+		top: 50%;
+		left: 50%;
 	}
-	
-	.dialog_msg{
-		font-size:16px;
-		margin-top:30px;
-	}
-	
 	
 	.coverbg{
     	background-color:#333;
@@ -421,12 +412,12 @@
 		  padding:0;
 		  margin-left:30px;
 		  margin-right:10px;
-		  height:40px;
-		  width:150px;
+		  height:35px;
+		  width:100px;
 		  color:#ffffff;
 		  background-color:#4f90fb;
-		  font-size:20px;
-		  font-weight:600;
+		  font-size:16px;
+		  font-weight:normal;
 		  border:1px solid #1647e9;
 		  -webkit-border-top-left-radius:2px;
 		  -moz-border-radius-topleft:2px;
@@ -452,26 +443,6 @@
 		background-color:#9bc0fd;
 		color:#fff;
 	}
-	
-	input.msg_input{
-		width:300px;
-		height:30px;
-		font-size:15px;
-		margin-bottom:5px;
-		padding-left:20px;
-		border: 1px solid #ddd;
-    	border-radius: 2px;
-    	color: #aaa;
-    	font-size: 14px;
-		outline:none;
-		text-align:left;
-		margin:10px;
-	}
-	
-	input.msg_input：hover,input.msg_input:focus{
-		border: 1px solid #4f90fb;
-	}
-	
 	table {
 		overflow:hidden;
 		border:1px solid #d3d3d3;
@@ -543,6 +514,68 @@
 		-webkit-border-bottom-right-radius:5px; /* Saf3-4 */
 	}
 	
+	.progress_bar .pro-bar {
+		background: hsl(0, 0%, 97%);
+		box-shadow: 0 1px 2px hsla(0, 0%, 0%, 0.1) inset;
+		height:4px;
+		margin-bottom: 12px;
+		margin-top: 50px;
+		position: relative;
+	}
+	.progress_bar .progress_bar_title{
+		color: #000;
+		font-size: 14px;
+		font-weight: 300;
+		position: relative;
+		top: -28px;
+		z-index: 1;
+	}
+	.progress_bar .progress_number{
+		float: right;
+		margin-top: -24px;
+	}
+	.progress_bar .progress-bar-inner {
+		background-color: hsl(0, 0%, 88%);
+		display: block;
+		width: 0;
+		height: 100%;
+		position: absolute;
+		top: 0;
+		left: 0;
+		transition: width 1s linear 0s;
+		animation: animate-positive 2s;
+	}
+	.progress_bar .progress-bar-inner:before {
+		content: "";
+		background-color: hsl(0, 0%, 100%);
+		border-radius: 50%;
+		width: 4px;
+		height: 4px;
+		position: absolute;
+		right: 1px;
+		top: 0;
+		z-index: 1;
+	}
+	.progress_bar .progress-bar-inner:after {
+		content: "";
+		width: 14px;
+		height: 14px;
+		background-color: inherit;
+		border-radius: 50%;
+		position: absolute;
+		right: -4px;
+		top: -5px;
+	}
+	@-webkit-keyframes animate-positive{
+		0% { width: 0%; }
+	}
+	@keyframes animate-positive{
+		0% { width: 0%; }
+	}
+	
+	.i_title{
+		margin-right:20px;
+	}
 	
 	.count_area{
 		margin-top:10px;
@@ -553,240 +586,21 @@
 		text-align:right;
 		padding-right:30px;
 	}
-	
-	.goodsNum{
-		width:40px;
-		height:25px;
-		text-align:center;
-	}
-	
-	.deleteGoodsInCart{
-		font-size:10px;
-		margin:0px;
-	}
-	
-	.deleteGoodsInCart:hover{
-		color:#ff6384;
-	}
-	
 </style>
 
 <script type="text/javascript">
 
 $(function(){
-	//初始化：包括各类价格的格式，一些数量
-	var totalPrice = Number(0);
-	var maxMonth=Number(0);
-	$(".success_msg").hide();
-	$(".perPrice").each(function(){
-		var eachPrice = $(this).html();
-		eachPrice = Number(eachPrice).toFixed(2);
-		$(this).html(eachPrice);
+	$(".price").each(function(){
+		var price = $(this).html();
+		price = Number(price).toFixed(2);
+		$(this).html(price);
 	});
-	
-	$(".eachTotoalPrice").each(function(){
-		var eachPrice = $(this).html();
-		eachPrice = Number(eachPrice).toFixed(2);
-		$(this).attr("title",eachPrice);
-		var quantity = $(this).prevAll(':eq(2)').find(".goodsNum").val();
-		var finalPrice =Number(eachPrice)*Number(quantity);
-		finalPrice = Number(finalPrice).toFixed(2);
-		maxMonth = maxMonth+(finalPrice/($(this).prevAll(':eq(1)').find(":first").html()));
-		$(this).html(finalPrice);
-		totalPrice = Number(totalPrice)+Number(finalPrice);
-	});
-	
-	//设置总价
-	totalPrice= Number( totalPrice).toFixed(2);
-	maxMonth =  Number(maxMonth).toFixed(2);
-	$("#totalPrice").html( totalPrice);
-	$("#maxPer").html(maxMonth);
-	
-	$(".deleteGoodsInCart").click(function(){
-		var goodsID = $(this).closest("tr").attr("title");
-		var tag = $(this).parent().prev().html();
-		var stageID = $(this).parent().next().find(".stages").html();
-		$.ajax({                           	  
-			url: '${ctx}/order/deleteCartByAll',       //处理测试页面                 
-			type: 'POST',                  
-			data: {goodsID:goodsID,tag:tag,stageID:stageID},                
-			success: function (msg){
-				if(msg=="success"){
-					window.location.href='${ctx}/page/jumpToMyChart';
-				}
-			}
-		});
-	});
-	
-	$(".minusQuantity").click(function(){
-		var currentNum = $(this).next().val();
-		if(currentNum==1){}
-		else{currentNum = Number(currentNum)-Number(1);
-			$(this).next().val(currentNum);
-			var goodsID = $(this).closest("tr").attr("title");
-			var tag = $(this).parent().prev().html();
-			var stageID = $(this).parent().next().find(".stages").html();
-			$(this).closest("td").find(".success_msg").show();
-			$(this).closest("td").find(".success_msg").delay(400).hide(0);
-			$.ajax({                           	  
-				url: '${ctx}/order/updateCart',       //处理测试页面                 
-				type: 'POST',                  
-				data: {goodsID:goodsID,tag:tag,quantity:currentNum,stageID:stageID},                
-				success: function (msg){
-					if(msg=="success"){
-						totalPrice = Number(0);
-						maxMonth=Number(0);
-						$(".eachTotoalPrice").each(function(){
-							var eachPrice = $(this).html();
-							eachPrice = $(this).attr("title");
-							eachPrice = Number(eachPrice).toFixed(2);
-							var quantity = $(this).prevAll(':eq(2)').find(".goodsNum").val();
-							var finalPrice =Number(eachPrice)*Number(quantity);
-							finalPrice = Number(finalPrice).toFixed(2);
-							$(this).html(finalPrice);
-							maxMonth = maxMonth+(finalPrice/($(this).prevAll(':eq(1)').find(":first").html()));
-							totalPrice = Number(totalPrice)+Number(finalPrice);
-						});
-						totalPrice= Number( totalPrice).toFixed(2);
-						maxMonth =  Number(maxMonth).toFixed(2);
-						$("#totalPrice").html( totalPrice);
-						$("#maxPer").html(maxMonth);
-					}
-				}
-			});
-		}
-	});
-	
-	$(".plusQuantity").click(function(){
-		var currentNum = $(this).prev().val();
-		currentNum = Number(currentNum)+Number(1);
-		$(this).prev().val(currentNum);
-		var goodsID = $(this).closest("tr").attr("title");
-		var tag = $(this).parent().prev().html();
-		var stageID = $(this).parent().next().find(".stages").html();
-		$(this).closest("td").find(".success_msg").show();
-		$(this).closest("td").find(".success_msg").delay(400).hide(0);
-		$.ajax({                           	  
-			url: '${ctx}/order/updateCart',       //处理测试页面                 
-			type: 'POST',                  
-			data: {goodsID:goodsID,tag:tag,quantity:currentNum,stageID:stageID},                
-			success: function (msg){
-				if(msg=="success"){
-					totalPrice = Number(0);
-					maxMonth=Number(0);
-					$(".eachTotoalPrice").each(function(){
-						var eachPrice = $(this).html();
-						eachPrice = $(this).attr("title");
-						eachPrice = Number(eachPrice).toFixed(2);
-						var quantity = $(this).prevAll(':eq(2)').find(".goodsNum").val();
-						var finalPrice =Number(eachPrice)*Number(quantity);
-						finalPrice = Number(finalPrice).toFixed(2);
-						$(this).html(finalPrice);
-						maxMonth = maxMonth+(finalPrice/($(this).prevAll(':eq(1)').find(":first").html()));
-						totalPrice = Number(totalPrice)+Number(finalPrice);
-					});
-					totalPrice= Number( totalPrice).toFixed(2);
-					maxMonth =  Number(maxMonth).toFixed(2);
-					$("#totalPrice").html( totalPrice);
-					$("#maxPer").html(maxMonth);
-				}
-			}
-		});
-	});
-	
-	$(".goodsNum").change(function(){
-		var currentNum = $(this).val();
-		
-		var reg=/^[1-9]\d*|0$/;
-		if(!reg.test(currentNum)){
-			$(this).val(Number(1));
-		}
-		else{
-			var goodsID = $(this).closest("tr").attr("title");
-			var tag = $(this).parent().prev().html();
-			var stageID = $(this).parent().next().find(".stages").html();
-			$(this).closest("td").find(".success_msg").show();
-			$(this).closest("td").find(".success_msg").delay(400).hide(0);
-			var tempCart={'goodsID':goodsID,'tag':tag,'quantity':currentNum,'stageID':stageID };
-			
-			$.ajax({                           	  
-				url: '${ctx}/order/updateCart',       //处理测试页面                 
-				type: 'POST',                  
-				data: {goodsID:goodsID,tag:tag,quantity:currentNum,stageID:stageID},                
-				success: function (msg){
-					if(msg=="success"){
-						totalPrice = Number(0);
-						maxMonth=Number(0);
-						$(".eachTotoalPrice").each(function(){
-							var eachPrice = $(this).html();
-							eachPrice = $(this).attr("title");
-							eachPrice = Number(eachPrice).toFixed(2);
-							var quantity = $(this).prevAll(':eq(2)').find(".goodsNum").val();
-							var finalPrice =Number(eachPrice)*Number(quantity);
-							finalPrice = Number(finalPrice).toFixed(2);
-							$(this).html(finalPrice);
-							maxMonth = maxMonth+(finalPrice/($(this).prevAll(':eq(1)').find(":first").html()));
-							totalPrice = Number(totalPrice)+Number(finalPrice);
-						});
-						totalPrice= Number( totalPrice).toFixed(2);
-						maxMonth =  Number(maxMonth).toFixed(2);
-						$("#totalPrice").html( totalPrice);
-						$("#maxPer").html(maxMonth);
-					}
-				}
-			});
-			
-		}
-	});
-	$("#submitBtn").click(function(){
-		var bh = $(".wrapper").height();
-	    var bw = $(".wrapper").width();
-	    $("#coverbg").css({
-	        height: bh,
-	        width: bw,
-	        display: "block"
-	    });
-	    $("#msgDialog").show();
-	});
-	
-	$("#confirmBtn").click(function(){
-		var person = $("#receiver").val();
-		var address = $("#address").val();
-		var phone = $("#phoneNum").val();
-		var ok1=false;
-		var ok2=false;
-		var ok3=false;
-		var regPhone=/^1[3|4|5|7|8]\d{9}$/;
-		if(person!=""){ok1=true;}
-		if(address!=""){ok2=true;}
-		
-		if(phone==""){ok3=true;}
-		else{
-			if(regPhone.test(phone)){
-				ok3=true;
-			}
-		}
-		if(ok1&&ok2&&ok3){
-			$.ajax({                           	  
-				url: '${ctx}/order/submitOrder',       //处理测试页面                 
-				type: 'POST',                  
-				data: {person:person,phone:phone,address:address},                
-				success: function (msg){
-					if(msg=="success"){
-						window.location.href='${ctx}/page/jumpToHomePage';
-					}
-					else if(msg=="oweTooMuch"){
-						alert("oweTooMuch");
-					}
-				}
-			});
-		}
-		
-		
-	});
+	var percent = Number($("#doneStageNum").html())/Number($("#totalStageNum").html());
+	var a =percent+"%";
+	$("#progress_bar").css("width",a);
 });
 
-//关闭灰色 jQuery 遮罩
 function closeBg() {
     $("#coverbg").hide();
     $(".dialog").hide();
@@ -822,7 +636,7 @@ function closeBg() {
 									<span class="glyphicon glyphicon-user list_icon"></span>&nbsp;&nbsp;&nbsp;
 									<span>个人信息</span>
 								</li>
-							</a>	
+							</a>
 							<a href="${ctx}/page/jumpToMsgInfo">
 								<li class="f_list_content">
 									<span class="glyphicon glyphicon-envelope list_icon"></span>&nbsp;&nbsp;&nbsp;
@@ -830,15 +644,15 @@ function closeBg() {
 								</li>
 							</a>
 							<a href="${ctx}/page/jumpToMyChart">
-								<li class="f_list_content_current">
-									<span class="glyphicon glyphicon-shopping-cart list_icon_current"></span>&nbsp;&nbsp;&nbsp;
-									<span style="color:white;">购物车</span>
+								<li class="f_list_content">
+									<span class="glyphicon glyphicon-shopping-cart list_icon"></span>&nbsp;&nbsp;&nbsp;
+									<span>购物车</span>
 								</li>
 							</a>
 							<a href="${ctx}/page/jumpToMyOrder">
-								<li class="f_list_content">
-									<span class="glyphicon glyphicon-list-alt list_icon"></span>&nbsp;&nbsp;&nbsp;
-									<span class="">订单中心</span>
+								<li class="f_list_content_current">
+									<span class="glyphicon glyphicon-list-alt list_icon_current"></span>&nbsp;&nbsp;&nbsp;
+									<span style="color:white;">订单中心</span>
 								</li>
 							</a>
 						</ul>
@@ -847,56 +661,88 @@ function closeBg() {
 				<div class="info_right">
 					<div class="right_title">
 						<span class="tit_b"></span>&nbsp;
-						<span class="tit_text">我的购物车</span>
+						<span class="tit_text">订单中心</span>
 					</div>
 					<div class="right_content">
-						<div style="overflow:auto;max-height:600px;">
+						<div style="height:150px;margin:10px;position:relative;">
+							<p><span class="i_title">订单编号:</span>${order.orderID}</p>
+							<p><span class="i_title">订单状态:</span>
+								<c:choose>
+    									<c:when test="${order.state == '1'}">
+						       				<span style="color:#00b300;font-weight:600;">等待支付</span>
+						   				</c:when>
+						    			<c:when test="${order.state=='2'}">
+						       				<span style="color:#aaa;font-weight:600;">已冻结</span>
+						   				</c:when>
+						    			<c:when test="${order.state=='3'}">
+						       				<span style="color:#00b386;font-weight:600;">等待首次支付</span>
+						   				</c:when>
+						   				<c:when test="${order.state=='4'}">
+						       				<span style="color:#e5e600;font-weight:600;">待发货</span>
+						   				</c:when>
+						   				<c:when test="${order.state=='5'}">
+						       				<span style="color:#c6ff1a;font-weight:600;">已发货</span>
+						   				</c:when>
+						   				<c:when test="${order.state=='6'}">
+						       				<span style="color:#FF9C9E;font-weight:600;">等待人工审核</span>
+						   				</c:when>
+						   				<c:when test="${order.state=='7'}">
+						       				<span style="color: #4db8ff;font-weight:600;">支付完成</span>
+						   				</c:when>
+						   				<c:when test="${order.state=='8'}">
+						       				<span style="color: #red;font-weight:600;">已逾期</span>
+						   				</c:when>
+   								</c:choose>
+							</p>
+							<p><span class="i_title">订单支付进度:</span></p>
+							<div style="width:400px;float:left;position:relative;top:-70px;left:120px;">
+								<div class="progress_bar">
+									<div class="pro-bar" style="font-size:12px;">
+										<small class="progress_bar_title">
+										<span class="progress_number" style="font-size:10px;">${basicInfo.nextNo-1} 期/${basicInfo.totalStageNum} 期</span>
+										</small>
+										<span id="progress_bar" class="progress-bar-inner" style="background-color: #4f90fb; width:95%;" data-value="95" data-percentage-value="95"></span>
+									</div>
+								</div>
+							</div>
+							<div style="position:relative;left:-400px;position:relative;">
+								<p><span class="i_title">本期截止时间:</span><fmt:formatDate value="${basicInfo.deadline}" pattern="yyyy-MM-dd"/></p>
+								<p><span class="i_title">收件人:</span>${order.reciever}
+									<span class="i_title" style="position:absolute;right:50px;">收件地址:${order.address}</span><span class="i_title" style="position:absolute;right:0px;"></span>
+									<span class="i_title" style="position:absolute;right:-220px;">联系电话:${order.phone}</span>
+								</p>
+							</div>
+						</div>
+						<div style="min-height:300px;margin:0px 10px 0px 10px;max-height:1000px;overflow：auto;">
 							<table>
 							<tr>
-								<!--<th width=40px></th> -->
-								<th width=120px>图片与名称</th>
-								<th width=120px>品牌</th>
-								<th width=60px>类型</th>
-								<th width=120px>数量</th>
-								<th width=60px>分期</th>
-								<th width=90px>单价</th>
-								<th width=90px>小计<br><span style="font-size:8px;">(含手续费)</span></th>
+								<th width=150px>图片与名称</th>
+								<th width=100px>类型</th>
+								<th width=100px>数量</th>
+								<th width=100px>原始单价</th>
 							</tr>
-							 <c:forEach items="${goodsInCartList}" var="goods">
-							 	<tr title="${goods.goods.goodsID}">
-							 		<!--<td><input checked="checked" type="checkbox" style="margin-left: 5px;margin-right: 15px;"></td> -->
-							 		
-							 		<td style="padding-top:5px;">
-							 		<a href="${ctx}/goods/goodsDetail?goodsID=${goods.goods.goodsID}">
-							 			<img src="${ctx}/goods/readPicture?pictureID=${goods.pictureID}" style="height:80px;margin-top:5px;" alt="img"/>
+							<c:forEach items="${goodsList}" var="goods">
+							 	<tr>
+							 		<td style="padding-top:10px;">
+							 		<a href="${ctx}/goods/goodsDetail?goodsID=${goods.goodsID}">
+							 			<img src="${ctx}/goods/readPicture?pictureID=${goods.goodsPictureID}" style="height:120px;margin-top:5px;" alt="img"/>
 							 			</a>
-							 			<p style="margin:0px;">${goods.goods.goodsName}</p>
+							 			<p style="margin:10px 0px 0px 0px;">${goods.goodsName}</p>
 							 		</td>
-									
-							 		<td style="font-size:8px;color:#666;">${goods.goods.goodsClass}<br>${goods.goods.goodsBrand}</td>
 							 		<td>${goods.tag.tag}</td>
-							 		<td class="goodsQuantity" style="padding-top:10px;">
-							 			<div style="height:23px;">
-							 				<p class="success_msg" style='font-size:6px;color:#999;margin:3px;'>修改成功</p>
-							 			</div>
-							 			<a href="#"  class='minusQuantity'><img src="${ctx}/img/minus.jpg" style="height:25px;position: relative;left: 4.3px;top: -1.7px;"></a>
-										<input class="goodsNum" type="text" id="goodsNum" value="${goods.quantity}">
-										<a href="#"  class='plusQuantity' ><img src="${ctx}/img/plus.jpg" style="height:25px;position: relative;left:-4.7px;top: -1.7px;"></a>
-							 			<a href="#" class="deleteGoodsInCart"><p>删除</p> </a>
-							 		</td>
-							 		<td><span class="stages">${goods.goodsStage}</span><span>期</span></td>
-							 		<td class="perPrice">${goods.tag.price}</td>
-							 		<td class="eachTotoalPrice">${goods.goodsTotalPrice}</td>
-							 	</tr>
+							 		<td>${goods.quantity}</td>
+							 		<td><span style="font-size:8px">￥</span><span class="price">${goods.tag.price}</span></td>
+							 	</tr>	
 							 </c:forEach>
-							</table>
+							 </table>
 						</div>
 						<div class="count_area">
-							<p style="color:#4f90fb;font-size:20px;font-weight:600;padding-right:15px;"><span>总价：</span><span style="font-size:15px;">￥</span><span  id="totalPrice"></span></p>
+							<p style="color:#4f90fb;font-size:20px;font-weight:600;padding-right:15px;"><span>总价：</span><span style="font-size:15px;">￥</span><span  id="totalPrice">adsad</span></p>
 							<p style="color:#666;font-size:14px;padding-right:15px;border-bottom:1px dashed #4f90fb;padding-bottom:20px;">(最高月供：<span style="color:#4f90fb;font-size:10px;">￥</span><span id="maxPer" style="color:#4f90fb;font-weight:bold;">11.33</span>)</p>
-							<a href="#"><button class="btn" id="submitBtn">生成订单</button></a>	
+							<a href="#"><button class="btn" id="submitBtn">返回</button></a>	
+							<a href="#"><button class="btn" id="submitBtn">支付本期</button></a>
+							<a>${basicInfo.orderTotalPrice}</a>
 						</div>
-						
 					</div>
 				</div>
 			</div>
@@ -913,25 +759,11 @@ function closeBg() {
 	<div id="coverbg" class="coverbg"></div>
 	
 	<!-- 这里存放dialogs -->
-	<div id="msgDialog" class="dialog" style="height:330px">
-		<div style="height:230px;text-align:left;margin:10px 20px 10px 20px;">
-			<div class="right_title">
-						<span class="tit_b"></span>&nbsp;
-						<span class="tit_text">请填写收货信息</span>
-			</div>
-			<div style="height:100px;margin:10px;">
-				<p><span>收货人：</span><input id="receiver" class="msg_input" placeholder="收货人" style="width:100px;"></input></p>
-				<p><span>收货地址：</span><input id="address" class="msg_input" placeholder="收货地址" style="width:240px;"></input></p>
-				<p><span>联系电话：</span><input id="phoneNum" class="msg_input" placeholder="联系电话" style="width:150px;"></input></p>
-			</div>
-		</div>
-		<div style="border-top:1px solid #ccc;padding-top:20px;">
-  		<a href="#" id="confirmBtn"><button class="btn" style="width:120px;height:40px;font-size:18px;">确认</button></a>
-		<a href="#" onclick="closeBg();"><button class="btn" style="width:120px;height:40px;font-size:18px;background-color:#fff;color:#666;border-color:#666;">取消</button></a>
-		</div>
+	<div id="dialog" class="dialog">
 	</div>
 	
 	<!-- 暂存数据用 -->
-	
+	<p style="display:none" id="doneStageNum">${basicInfo.nextNo-1}</p>
+	<p style="display:none" id="totalStageNum">${basicInfo.totalStageNum}</p>
 </body>
 </html>

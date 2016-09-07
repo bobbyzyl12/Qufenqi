@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <c:set var="ctx" value="${pageContext.request.contextPath }"></c:set>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -350,7 +351,7 @@
 	}
 	
 	.right_content{
-		width:700px;
+		width:760px;
 		margin-left:20px;
 		margin-top:30px;
 		font-size:14px;
@@ -435,12 +436,90 @@
 		background-color:#9bc0fd;
 		color:#fff;
 	}
+	table {
+		overflow:hidden;
+		border:1px solid #d3d3d3;
+		background:#fefefe;
+		width:100%;
+		-moz-border-radius:5px; /* FF1+ */
+		-webkit-border-radius:5px; /* Saf3-4 */
+		border-radius:5px;
+		-moz-box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+		-webkit-box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+		table-layout:fixed;
+	}
+	
+	th, td {padding:5px 10px 5px; text-align:center; }
+	
+	th {padding-top:8px; text-shadow: 1px 1px 1px #fff; background:#e8eaeb;}
+	
+	td {border-top:1px solid #e0e0e0; border-right:1px solid #e0e0e0;}
+	
+	tr.odd-row td {background:#f6f6f6;}
+	
+	td.first, th.first {text-align:left}
+	
+	td.last {border-right:none;}
+	
+	/*
+	Background gradients are completely unnecessary but a neat effect.
+	*/
+	
+	td {
+		background: -moz-linear-gradient(100% 25% 90deg, #fefefe, #f9f9f9);
+		background: -webkit-gradient(linear, 0% 0%, 0% 25%, from(#f9f9f9), to(#fefefe));
+	}
+	
+	tr.odd-row td {
+		background: -moz-linear-gradient(100% 25% 90deg, #f6f6f6, #f1f1f1);
+		background: -webkit-gradient(linear, 0% 0%, 0% 25%, from(#f1f1f1), to(#f6f6f6));
+	}
+	
+	th {
+		background: -moz-linear-gradient(100% 20% 90deg, #e8eaeb, #ededed);
+		background: -webkit-gradient(linear, 0% 0%, 0% 20%, from(#ededed), to(#e8eaeb));
+	}
+	
+	/*
+	I know this is annoying, but we need additional styling so webkit will recognize rounded corners on background elements.
+	Nice write up of this issue: http://www.onenaught.com/posts/266/css-inner-elements-breaking-border-radius
+	
+	And, since we've applied the background colors to td/th element because of IE, Gecko browsers also need it.
+	*/
+	
+	tr:first-child th.first {
+		-moz-border-radius-topleft:5px;
+		-webkit-border-top-left-radius:5px; /* Saf3-4 */
+	}
+	
+	tr:first-child th.last {
+		-moz-border-radius-topright:5px;
+		-webkit-border-top-right-radius:5px; /* Saf3-4 */
+	}
+	
+	tr:last-child td.first {
+		-moz-border-radius-bottomleft:5px;
+		-webkit-border-bottom-left-radius:5px; /* Saf3-4 */
+	}
+	
+	tr:last-child td.last {
+		-moz-border-radius-bottomright:5px;
+		-webkit-border-bottom-right-radius:5px; /* Saf3-4 */
+	}
 </style>
 
 <script type="text/javascript">
 
 $(function(){
+	$(".price").each(function(){
+		var price = $(this).html();
+		price = Number(price).toFixed(2);
+		$(this).html(price);
+	});
 	
+	$(".time").each(function(){
+		var time = $(this).html();
+	});
 });
 
 //关闭灰色 jQuery 遮罩
@@ -503,10 +582,66 @@ function closeBg() {
 				<div class="info_right">
 					<div class="right_title">
 						<span class="tit_b"></span>&nbsp;
-						<span class="tit_text">消息中心</span>
+						<span class="tit_text">订单中心</span>
 					</div>
 					<div class="right_content">
-						
+						<div style="overflow:auto;max-height:600px;">
+							<table>
+							<tr>
+								<th width=70px>订单编号</th>
+								<th width=110px>总价<br><span style="font-size:8px;">(不含手续费)</span></th>
+								<th width=110px>状态</th>
+								<th width=90px>进度</th>
+								<th width=90px>本期金额</th>
+								<th width=120px>本期期限</th>
+								<th width=90px></th>
+							</tr>
+							 <c:forEach items="${myOrderList}" var="order">
+							 	<tr>
+							 		<td>${order.orderID}</td> 
+							 		<td><span style="font-size:8px;">￥</span><span class="price">${order.orderTotalPrice}</span></td>
+							 		<td>
+										<c:choose>
+    											<c:when test="${order.orderState == '1'}">
+						       						<p style="color:#00b300;font-weight:600;">等待支付</p>
+						   						</c:when>
+						    					<c:when test="${order.orderState=='2'}">
+						       						<p style="color:#aaa;font-weight:600;">已冻结</p>
+						   						</c:when>
+						    					<c:when test="${order.orderState=='3'}">
+						       						<p style="color:#00b386;font-weight:600;">等待首次支付</p>
+						   						</c:when>
+						   						<c:when test="${order.orderState=='4'}">
+						       						<p style="color:#e5e600;font-weight:600;">待发货</p>
+						   						</c:when>
+						   						<c:when test="${order.orderState=='5'}">
+						       						<p style="color:#c6ff1a;font-weight:600;">已发货</p>
+						   						</c:when>
+						   						<c:when test="${order.orderState=='6'}">
+						       						<p style="color:#FF9C9E;font-weight:600;">等待人工审核</p>
+						   						</c:when>
+						   						<c:when test="${order.orderState=='7'}">
+						       						<p style="color: #4db8ff;font-weight:600;">支付完成</p>
+						   						</c:when>
+						   						<c:when test="${order.orderState=='8'}">
+						       						<p style="color: #red;font-weight:600;">已逾期</p>
+						   						</c:when>
+   										</c:choose>
+									</td>
+							 		<td>${order.nextNo}/${order.totalStageNum}期</td>
+							 		<td><span style="font-size:8px;">￥</span><span class="price">${order.nextStagePrice}</span></td>
+							 		<td>
+	 									<fmt:formatDate value="${order.deadline}" pattern="yyyy-MM-dd"/>
+	 								</td>
+	 								<td>
+	 								<a href="${ctx}/page/jumpToOrderDetail?orderID=${order.orderID}">
+	 								<button class="btn" style="width:80px;font-size:14px;height:30px;margin:0px;">订单详情</button>
+	 								</a>
+	 								</td>
+							 	</tr>
+							 </c:forEach>
+							</table>
+						</div>
 					</div>
 				</div>
 			</div>

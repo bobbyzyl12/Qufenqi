@@ -7,7 +7,7 @@ public class OrderForm {
 	private Date orderCreateTime;
 	private Integer orderStage;
 	private Integer orderCredit;
-	private String orderState;
+	private String state;
 	private Date orderSendTime;
 	private Date orderReachTime;
 	private Float orderPrice;
@@ -40,12 +40,7 @@ public class OrderForm {
 	public void setOrderCredit(Integer orderCredit) {
 		this.orderCredit = orderCredit;
 	}
-	public String getOrderState() {
-		return orderState;
-	}
-	public void setOrderState(String orderState) {
-		this.orderState = orderState;
-	}
+	
 	public Date getOrderSendTime() {
 		return orderSendTime;
 	}
@@ -87,6 +82,18 @@ public class OrderForm {
 	}
 	public void setPhone(String phone) {
 		this.phone = phone;
+	}
+	/**
+	 * @return the state
+	 */
+	public String getState() {
+		return state;
+	}
+	/**
+	 * @param state the state to set
+	 */
+	public void setState(String state) {
+		this.state = state;
 	}
 	
 }

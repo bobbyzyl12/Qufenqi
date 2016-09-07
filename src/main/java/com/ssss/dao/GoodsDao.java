@@ -8,6 +8,7 @@ import com.ssss.entity.Picture;
 import com.ssss.entity.Tag;
 import com.ssss.entity.User;
 import com.ssss.entity.GoodsStage;
+import com.ssss.entity.OrderForm;
 
 public interface GoodsDao {
 	void add(Goods goods);
@@ -15,6 +16,8 @@ public interface GoodsDao {
 	void addStage(GoodsStage goodsStage);
 	
 	void addTag(Tag temp);
+	
+	void updateTag(Tag tag);
 	
 	Goods findByID(Integer goodsID);
 	
@@ -57,4 +60,6 @@ public interface GoodsDao {
 	Picture findPictureByGoodsID(Integer goodsID);
 	
 	Integer findPictureIDByGoodsID(Integer goodsID);
+	
+	List<OrderForm> selectOrderByUserID(Integer userID);
 }

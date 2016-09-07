@@ -10,6 +10,40 @@
 		<result column="stageID" property="stageID"/>
 	</resultMap>
 	
+	<resultMap type="OrderForm" id="orderFormMap">
+		<result column="orderID" property="orderID"/>
+		<result column="orderCreateTime" property="orderCreateTime"/>
+		<result column="orderStage" property="orderStage"/>
+		<result column="orderCredit" property="orderCredit"/>
+		<result column="state" property="state"/>
+		<result column="orderSendTime" property="orderSendTime"/>
+		<result column="orderReachTime" property="orderReachTime"/>
+		<result column="orderPrice" property="orderPrice"/>
+		<result column="userID" property="userID"/>
+		<result column="address" property="address"/>
+		<result column="reciever" property="reciever"/>
+		<result column="phone" property="phone"/>
+	</resultMap>
+	
+	<resultMap type="OrderDetail" id="orderDetailMap">
+		<result column="orderID" property="orderID"/>
+		<result column="deadline" property="deadline"/>
+		<result column="stageNo" property="stageNo"/>
+		<result column="state" property="state"/>
+		<result column="stageMoney" property="stageMoney"/>
+		<result column="stagePayTime" property="stagePayTime"/>
+	</resultMap>
+	
+	
+	<resultMap type="GoodsInOrder" id="goodsInOrderMap">
+		<result column="orderID" property="orderID"/>
+		<result column="goodsID" property="goodsID"/>
+		<result column="tag" property="tag"/>
+		<result column="quantity" property="quantity"/>
+		<result column="state" property="state"/>
+		<result column="reason" property="reason"/>
+	</resultMap>
+	
 	<insert id="addCart" parameterType="Cart">
 		insert into cart(goodsID,userID,tag,quantity,stageID) values(#{goodsID},#{userID},#{tag},#{quantity},#{stageID})
 	</insert>
@@ -23,8 +57,29 @@
 		select * from cart where userID=#{userID} ORDER BY stageID
 	</select>
 	
+	<select id="findGoodsInOrderByOrderID" parameterType="GoodsInOrder" resultMap="goodsInOrderMap">
+		select * from goodsinorder where orderID = #{orderID}
+	</select>
+	
 	<select id="findIfExist" parameterType="Cart" resultType="Cart">
 		select * from cart where userID=#{userID} and goodsID=#{goodsID} and tag =#{tag} and stageID=#{stageID}
+	</select>
+	
+	<!--根据userID查找所有该user的所有order-->
+	<select id="selectOrderByUserID" parameterType="Integer" resultMap="orderFormMap">
+		select * from orderform where userID = #{userID} order by state
+	</select>
+	
+	<select id="findDetailByOrderID" parameterType="Integer" resultMap="orderDetailMap">
+		select * from orderdetail where orderID = #{orderID}  order by stageNo
+	</select>
+	
+	<select id="findOrderDetail" parameterType="OrderDetail" resultType="OrderDetail">
+		select * from orderdetail where orderID = #{orderID} and stageNo =#{stageNo}
+	</select>
+	
+	<select id="findByID" parameterType="Integer" resultType="OrderForm">
+		select * from orderform where orderID = #{orderID}
 	</select>
 	
 	<delete id="deleteCartByID" parameterType="Integer"> 
@@ -36,7 +91,7 @@
 	</delete>
 	
 	<insert id="addOrderForm" useGeneratedKeys="true" keyProperty="orderID" parameterType="orderForm">
-		insert into orderform(orderID,orderCreateTime,orderStage,orderCredit,orderState,orderSendTime,orderReachTime,orderPrice,userID,address,reciever,phone) values(null,#{orderCreateTime},#{orderStage},#{orderCredit},#{orderState},#{orderSendTime},#{orderReachTime},#{orderPrice},#{userID},#{address},#{reciever},#{phone})
+		insert into orderform(orderID,orderCreateTime,orderStage,orderCredit,state,orderSendTime,orderReachTime,orderPrice,userID,address,reciever,phone) values(null,#{orderCreateTime},#{orderStage},#{orderCredit},#{state},#{orderSendTime},#{orderReachTime},#{orderPrice},#{userID},#{address},#{reciever},#{phone})
 	</insert>
 	
 	<insert id="addGoodsInOrder" parameterType="GoodsInOrder">
@@ -50,7 +105,7 @@
 	</insert>
 	
 	<update id="updateOrder" parameterType="OrderForm">
-		update orderform set state = #{state},orderSendTime=#{orderSendTime},orderReachTime=#{orderReachTime}  
+		update orderform set state = #{state},orderSendTime=#{orderSendTime},orderReachTime=#{orderReachTime},orderPrice=#{orderPrice}
 		where orderID=#{orderID}
 	</update>
 	
@@ -65,5 +120,9 @@
 	
 	<update id="updateOrderDetailState" parameterType="OrderDetail">
 		update orderdetail set state = #{state}  where orderID=#{orderID} and stageNo=#{stageNo}
+	</update>
+	
+	<update id="updateOrderDetail" parameterType="OrderDetail">
+		update orderdetail set state = #{state},stagePayTime = #{stagePayTime},stageMoney=#{stageMoney} where orderID=#{orderID} and stageNo=#{stageNo}
 	</update>
 </mapper>
