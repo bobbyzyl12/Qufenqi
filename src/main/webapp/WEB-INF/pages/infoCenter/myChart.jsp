@@ -593,6 +593,19 @@ $(function(){
 				data: {goodsID:goodsID,tag:tag,quantity:currentNum,stageID:stageID},                
 				success: function (msg){
 					if(msg=="success"){
+						totalPrice = Number(0);
+						$(".eachTotoalPrice").each(function(){
+							var eachPrice = $(this).html();
+							eachPrice = $(this).attr("title");
+							eachPrice = Number(eachPrice).toFixed(2);
+							var quantity = $(this).prevAll(':eq(2)').find(".goodsNum").val();
+							var finalPrice =Number(eachPrice)*Number(quantity);
+							finalPrice = Number(finalPrice).toFixed(2);
+							$(this).html(finalPrice);
+							totalPrice = Number(totalPrice)+Number(finalPrice);
+						});
+						totalPrice= Number( totalPrice).toFixed(2);
+						$("#totalPrice").html( totalPrice);
 					}
 				}
 			});
@@ -614,6 +627,19 @@ $(function(){
 			data: {goodsID:goodsID,tag:tag,quantity:currentNum,stageID:stageID},                
 			success: function (msg){
 				if(msg=="success"){
+					totalPrice = Number(0);
+					$(".eachTotoalPrice").each(function(){
+						var eachPrice = $(this).html();
+						eachPrice = $(this).attr("title");
+						eachPrice = Number(eachPrice).toFixed(2);
+						var quantity = $(this).prevAll(':eq(2)').find(".goodsNum").val();
+						var finalPrice =Number(eachPrice)*Number(quantity);
+						finalPrice = Number(finalPrice).toFixed(2);
+						$(this).html(finalPrice);
+						totalPrice = Number(totalPrice)+Number(finalPrice);
+					});
+					totalPrice= Number( totalPrice).toFixed(2);
+					$("#totalPrice").html( totalPrice);
 				}
 			}
 		});
@@ -640,6 +666,18 @@ $(function(){
 				data: {goodsID:goodsID,tag:tag,quantity:currentNum,stageID:stageID},                
 				success: function (msg){
 					if(msg=="success"){
+						totalPrice = Number(0);
+						$(".eachTotoalPrice").each(function(){
+							var eachPrice = $(this).html();
+							eachPrice = $(this).attr("title");
+							var quantity = $(this).prevAll(':eq(2)').find(".goodsNum").val();
+							var finalPrice =Number(eachPrice)*Number(quantity);
+							finalPrice = Number(finalPrice).toFixed(2);
+							$(this).html(finalPrice);
+							totalPrice = Number(totalPrice)+Number(finalPrice);
+						});
+						totalPrice= Number( totalPrice).toFixed(2);
+						$("#totalPrice").html( totalPrice);
 					}
 				}
 			});
@@ -715,7 +753,8 @@ function closeBg() {
 						<div style="overflow:auto;max-height:600px;">
 							<table>
 							<tr>
-								<th width=40px></th>
+								<!--<th width=40px></th> -->
+								
 								<th width=120px>图片与名称</th>
 								<th width=120px>品牌</th>
 								<th width=60px>类型</th>
@@ -726,7 +765,7 @@ function closeBg() {
 							</tr>
 							 <c:forEach items="${goodsInCartList}" var="goods">
 							 	<tr title="${goods.goods.goodsID}">
-							 		<td><input checked="checked" type="checkbox" style="margin-left: 5px;margin-right: 15px;"></td>
+							 		<!--<td><input checked="checked" type="checkbox" style="margin-left: 5px;margin-right: 15px;"></td> -->
 							 		<td style="padding-top:5px;">
 							 			<img src="${ctx}/goods/readPicture?pictureID=${goods.pictureID}" style="height:80px;margin-top:5px;" alt="img"/>
 							 			<p style="margin:0px;">${goods.goods.goodsName}</p>
