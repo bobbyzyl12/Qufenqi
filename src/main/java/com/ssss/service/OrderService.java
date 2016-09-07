@@ -12,5 +12,7 @@ public interface OrderService {
 	
 	public void updateCart(Cart cart);
 	
+	public String submitOrder(String person,String address,String phone,Integer userID);
+	
 	public void deleteCartByAll(Cart cart);
 }

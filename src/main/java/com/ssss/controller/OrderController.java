@@ -76,4 +76,11 @@ public class OrderController {
 		orderService.deleteCartByAll(cart);
 		return "success";
 	}
+	
+	@RequestMapping(value = "/submitOrder")
+	public String submitOrder(String person,String address,String phone,HttpSession session){
+		Integer userID = (Integer)session.getAttribute("userID");
+		orderService.submitOrder(person,address,phone,userID);
+		return "success";
+	}
 }

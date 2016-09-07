@@ -90,4 +90,9 @@ public class OrderServiceImpl implements OrderService{
 	public void deleteCartByAll(Cart cart){
 		orderDao.deleteCartByAll(cart);
 	}
+	
+	public String submitOrder(String person,String address,String phone,Integer userID){
+		
+		return "success";
+	}
 }

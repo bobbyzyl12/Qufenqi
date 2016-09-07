@@ -34,4 +34,36 @@
 	<delete id="deleteCartByAll" parameterType="Cart"> 
 		delete from cart where userID=#{userID} and goodsID=#{goodsID} and stageID=#{stageID} and tag=#{tag}
 	</delete>
+	
+	<insert id="addOrderForm" useGeneratedKeys="true" keyProperty="orderID" parameterType="orderForm">
+		insert into orderform(orderID,orderCreateTime,orderStage,orderCredit,orderState,orderSendTime,orderReachTime,orderPrice,userID,address,reciever,phone) values(null,#{orderCreateTime},#{orderStage},#{orderCredit},#{orderState},#{orderSendTime},#{orderReachTime},#{orderPrice},#{userID},#{address},#{reciever},#{phone})
+	</insert>
+	
+	<insert id="addGoodsInOrder" parameterType="GoodsInOrder">
+		insert into goodsinorder(goodsID,orderID,tag,quantity,state,reason) 
+		values(#{goodsID},#{orderID},#{tag},#{quantity},#{state},null)
+	</insert>
+	
+	<insert id="addOrderDetail" parameterType="OrderDetail">
+		insert into orderdetail(orderID,deadline,stageNo,state,stageMoney,stagePayTime) 
+		values(#{orderID},#{deadline},#{stageNo},#{state},#{stageMoney},#{stagePayTime})
+	</insert>
+	
+	<update id="updateOrder" parameterType="OrderForm">
+		update orderform set state = #{state},orderSendTime=#{orderSendTime},orderReachTime=#{orderReachTime}  
+		where orderID=#{orderID}
+	</update>
+	
+	<update id="updateGoodsInOrder" parameterType="GoodsInOrder">
+		update goodsinorder set state = #{state},reason=#{reason}  
+		where orderID=#{orderID} and goodsID=#{goodsID} and tag =#{tag}
+	</update>
+	
+	<update id="updateOrderDetailPayTime" parameterType="OrderDetail">
+		update orderdetail set stagePayTime = #{stagePayTime}  where orderID=#{orderID} and stageNo=#{stageNo}
+	</update>
+	
+	<update id="updateOrderDetailState" parameterType="OrderDetail">
+		update orderdetail set state = #{state}  where orderID=#{orderID} and stageNo=#{stageNo}
+	</update>
 </mapper>

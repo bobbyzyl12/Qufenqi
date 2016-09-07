@@ -80,13 +80,30 @@
 		display: none;
 		z-index: 5;
 		
+		height:300px;
+		width:400px;
 		background-color: #FFF;
 		border: 1px solid #888;
 		
-		position: fixed !important; /* 浮动对话框 */
-		top: 50%;
-		left: 50%;
+		position: absolute !important; /* 浮动对话框 */
+		top: 20%;
+		left:35%;
+		text-align:center;
+		margin-left:auto; 
+		margin-right:auto;
+		
+		-moz-border-radius: 10px;
+		-webkit-border-radius: 10px;
+		border-radius: 10px;
+		
+		border:2px solid #4f90fb;
 	}
+	
+	.dialog_msg{
+		font-size:16px;
+		margin-top:30px;
+	}
+	
 	
 	.coverbg{
     	background-color:#333;
@@ -436,6 +453,25 @@
 		color:#fff;
 	}
 	
+	input.msg_input{
+		width:300px;
+		height:30px;
+		font-size:15px;
+		margin-bottom:5px;
+		padding-left:20px;
+		border: 1px solid #ddd;
+    	border-radius: 2px;
+    	color: #aaa;
+    	font-size: 14px;
+		outline:none;
+		text-align:left;
+		margin:10px;
+	}
+	
+	input.msg_input：hover,input.msg_input:focus{
+		border: 1px solid #4f90fb;
+	}
+	
 	table {
 		overflow:hidden;
 		border:1px solid #d3d3d3;
@@ -532,6 +568,7 @@
 	.deleteGoodsInCart:hover{
 		color:#ff6384;
 	}
+	
 </style>
 
 <script type="text/javascript">
@@ -701,12 +738,55 @@ $(function(){
 			
 		}
 	});
+	$("#submitBtn").click(function(){
+		var bh = $(".wrapper").height();
+	    var bw = $(".wrapper").width();
+	    $("#coverbg").css({
+	        height: bh,
+	        width: bw,
+	        display: "block"
+	    });
+	    $("#msgDialog").show();
+	});
 	
+	$("#confirmBtn").click(function(){
+		var person = $("receiver").val();
+		var address = $("address").val();
+		var phone = $("phoneNum").val();
+		var ok1=false;
+		var ok2=false;
+		var ok3=false;
+		var regPhone=/^1[3|4|5|7|8]\d{9}$/;
+		if(person!=""){ok1=true;}
+		if(address!=""){ok2=true;}
+		
+		if(phone==""){ok3=true;}
+		else{
+			if(regPhone.test(phone)){
+				ok3=true;
+			}
+		}
+		if(ok1&&ok2&&ok3){
+			$.ajax({                           	  
+				url: '${ctx}/order/submitOrder',       //处理测试页面                 
+				type: 'POST',                  
+				data: {person:person,phone:phone,address:address},                
+				success: function (msg){
+					if(msg=="success"){
+						window.location.href='${ctx}/page/jumpToHomePage';
+					}
+				}
+			});
+		}
+		
+		
+	});
 });
 
 //关闭灰色 jQuery 遮罩
 function closeBg() {
-    $("#coverbg,#dialog").hide();
+    $("#coverbg").hide();
+    $(".dialog").hide();
 }
 </script>
 </head>
@@ -809,7 +889,7 @@ function closeBg() {
 						<div class="count_area">
 							<p style="color:#4f90fb;font-size:20px;font-weight:600;padding-right:15px;"><span>总价：</span><span style="font-size:15px;">￥</span><span  id="totalPrice"></span></p>
 							<p style="color:#666;font-size:14px;padding-right:15px;border-bottom:1px dashed #4f90fb;padding-bottom:20px;">(最高月供：<span style="color:#4f90fb;font-size:10px;">￥</span><span id="maxPer" style="color:#4f90fb;font-weight:bold;">11.33</span>)</p>
-							<a href="${ctx}/order/submitOrder"><button class="btn" id="submitBtn">生成订单</button></a>	
+							<a href="#"><button class="btn" id="submitBtn">生成订单</button></a>	
 						</div>
 						
 					</div>
@@ -828,7 +908,22 @@ function closeBg() {
 	<div id="coverbg" class="coverbg"></div>
 	
 	<!-- 这里存放dialogs -->
-	<div id="dialog" class="dialog">
+	<div id="msgDialog" class="dialog" style="height:330px">
+		<div style="height:230px;text-align:left;margin:10px 20px 10px 20px;">
+			<div class="right_title">
+						<span class="tit_b"></span>&nbsp;
+						<span class="tit_text">请填写收货信息</span>
+			</div>
+			<div style="height:100px;margin:10px;">
+				<p><span>收货人：</span><input id="receiver" class="msg_input" placeholder="收货人" style="width:100px;"></input></p>
+				<p><span>收货地址：</span><input id="address" class="msg_input" placeholder="收货地址" style="width:240px;"></input></p>
+				<p><span>联系电话：</span><input id="phoneNum" class="msg_input" placeholder="联系电话" style="width:150px;"></input></p>
+			</div>
+		</div>
+		<div style="border-top:1px solid #ccc;padding-top:20px;">
+  		<a href="#" id="confirmBtn" onclick="closeBg();"><button class="btn" style="width:120px;height:40px;font-size:18px;">确认</button></a>
+		<a href="#" onclick="closeBg();"><button class="btn" style="width:120px;height:40px;font-size:18px;background-color:#fff;color:#666;border-color:#666;">取消</button></a>
+		</div>
 	</div>
 	
 	<!-- 暂存数据用 -->
