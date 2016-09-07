@@ -404,12 +404,12 @@
 		  padding:0;
 		  margin-left:30px;
 		  margin-right:10px;
-		  height:35px;
-		  width:100px;
+		  height:40px;
+		  width:150px;
 		  color:#ffffff;
 		  background-color:#4f90fb;
-		  font-size:16px;
-		  font-weight:normal;
+		  font-size:20px;
+		  font-weight:600;
 		  border:1px solid #1647e9;
 		  -webkit-border-top-left-radius:2px;
 		  -moz-border-radius-topleft:2px;
@@ -512,8 +512,8 @@
 		margin-top:10px;
 		padding-top:30px;
 		padding-left:30px;
-		border:3px dashed #aaa;
-		height:100px;
+		border:1px soild #aaa;
+		height:200px;
 		text-align:right;
 		padding-right:30px;
 	}
@@ -539,6 +539,7 @@
 $(function(){
 	//初始化：包括各类价格的格式，一些数量
 	var totalPrice = Number(0);
+	var maxMonth=Number(0);
 	$(".success_msg").hide();
 	$(".perPrice").each(function(){
 		var eachPrice = $(this).html();
@@ -553,13 +554,16 @@ $(function(){
 		var quantity = $(this).prevAll(':eq(2)').find(".goodsNum").val();
 		var finalPrice =Number(eachPrice)*Number(quantity);
 		finalPrice = Number(finalPrice).toFixed(2);
+		maxMonth = maxMonth+(finalPrice/($(this).prevAll(':eq(1)').find(":first").html()));
 		$(this).html(finalPrice);
 		totalPrice = Number(totalPrice)+Number(finalPrice);
 	});
 	
 	//设置总价
 	totalPrice= Number( totalPrice).toFixed(2);
+	maxMonth =  Number(maxMonth).toFixed(2);
 	$("#totalPrice").html( totalPrice);
+	$("#maxPer").html(maxMonth);
 	
 	$(".deleteGoodsInCart").click(function(){
 		var goodsID = $(this).closest("tr").attr("title");
@@ -594,6 +598,7 @@ $(function(){
 				success: function (msg){
 					if(msg=="success"){
 						totalPrice = Number(0);
+						maxMonth=Number(0);
 						$(".eachTotoalPrice").each(function(){
 							var eachPrice = $(this).html();
 							eachPrice = $(this).attr("title");
@@ -602,10 +607,13 @@ $(function(){
 							var finalPrice =Number(eachPrice)*Number(quantity);
 							finalPrice = Number(finalPrice).toFixed(2);
 							$(this).html(finalPrice);
+							maxMonth = maxMonth+(finalPrice/($(this).prevAll(':eq(1)').find(":first").html()));
 							totalPrice = Number(totalPrice)+Number(finalPrice);
 						});
 						totalPrice= Number( totalPrice).toFixed(2);
+						maxMonth =  Number(maxMonth).toFixed(2);
 						$("#totalPrice").html( totalPrice);
+						$("#maxPer").html(maxMonth);
 					}
 				}
 			});
@@ -628,6 +636,7 @@ $(function(){
 			success: function (msg){
 				if(msg=="success"){
 					totalPrice = Number(0);
+					maxMonth=Number(0);
 					$(".eachTotoalPrice").each(function(){
 						var eachPrice = $(this).html();
 						eachPrice = $(this).attr("title");
@@ -636,10 +645,13 @@ $(function(){
 						var finalPrice =Number(eachPrice)*Number(quantity);
 						finalPrice = Number(finalPrice).toFixed(2);
 						$(this).html(finalPrice);
+						maxMonth = maxMonth+(finalPrice/($(this).prevAll(':eq(1)').find(":first").html()));
 						totalPrice = Number(totalPrice)+Number(finalPrice);
 					});
 					totalPrice= Number( totalPrice).toFixed(2);
+					maxMonth =  Number(maxMonth).toFixed(2);
 					$("#totalPrice").html( totalPrice);
+					$("#maxPer").html(maxMonth);
 				}
 			}
 		});
@@ -667,17 +679,22 @@ $(function(){
 				success: function (msg){
 					if(msg=="success"){
 						totalPrice = Number(0);
+						maxMonth=Number(0);
 						$(".eachTotoalPrice").each(function(){
 							var eachPrice = $(this).html();
 							eachPrice = $(this).attr("title");
+							eachPrice = Number(eachPrice).toFixed(2);
 							var quantity = $(this).prevAll(':eq(2)').find(".goodsNum").val();
 							var finalPrice =Number(eachPrice)*Number(quantity);
 							finalPrice = Number(finalPrice).toFixed(2);
 							$(this).html(finalPrice);
+							maxMonth = maxMonth+(finalPrice/($(this).prevAll(':eq(1)').find(":first").html()));
 							totalPrice = Number(totalPrice)+Number(finalPrice);
 						});
 						totalPrice= Number( totalPrice).toFixed(2);
+						maxMonth =  Number(maxMonth).toFixed(2);
 						$("#totalPrice").html( totalPrice);
+						$("#maxPer").html(maxMonth);
 					}
 				}
 			});
@@ -790,9 +807,11 @@ function closeBg() {
 							</table>
 						</div>
 						<div class="count_area">
-							<p style="color:#4f90fb;font-size:20px;font-weight:600;"><span>总价：</span><span style="font-size:15px;">￥</span>
-								<span  id="totalPrice"></span></p>
+							<p style="color:#4f90fb;font-size:20px;font-weight:600;padding-right:15px;"><span>总价：</span><span style="font-size:15px;">￥</span><span  id="totalPrice"></span></p>
+							<p style="color:#666;font-size:14px;padding-right:15px;border-bottom:1px dashed #4f90fb;padding-bottom:20px;">(最高月供：<span style="color:#4f90fb;font-size:10px;">￥</span><span id="maxPer" style="color:#4f90fb;font-weight:bold;">11.33</span>)</p>
+							<a href="${ctx}/order/submitOrder"><button class="btn" id="submitBtn">生成订单</button></a>	
 						</div>
+						
 					</div>
 				</div>
 			</div>
