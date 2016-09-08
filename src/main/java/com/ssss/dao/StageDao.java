@@ -37,4 +37,6 @@ public interface StageDao {
 	List<Float> findStageChargeByCreditID(Integer creditID);
 	
 	Float findStageChargeByID(CreditStage creditStage);
+	
+	Float findMaxCredit(Float temp);
 }

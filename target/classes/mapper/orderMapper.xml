@@ -109,6 +109,11 @@
 		where orderID=#{orderID}
 	</update>
 	
+	<update id="updateOrderSendData" parameterType="OrderForm">
+		update orderform set address = #{address},reciever=#{reciever},phone=#{phone}
+		where orderID=#{orderID}
+	</update>
+	
 	<update id="updateGoodsInOrder" parameterType="GoodsInOrder">
 		update goodsinorder set state = #{state},reason=#{reason}  
 		where orderID=#{orderID} and goodsID=#{goodsID} and tag =#{tag}
@@ -125,4 +130,21 @@
 	<update id="updateOrderDetail" parameterType="OrderDetail">
 		update orderdetail set state = #{state},stagePayTime = #{stagePayTime},stageMoney=#{stageMoney} where orderID=#{orderID} and stageNo=#{stageNo}
 	</update>
+	
+	<select id="sumAllPaidByUserID" parameterType="Integer" resultType="Float">
+		select sum(stageMoney) from orderdetail, orderform where orderdetail.orderID = orderform.orderID and orderform.userID = #{userID} and orderdetail.state ="3"
+	</select>
+	
+	<select id="sumAllOweByUserID" parameterType="Integer" resultType="Float">
+		select sum(stageMoney) from orderdetail, orderform where orderdetail.orderID = orderform.orderID and orderform.userID = #{userID} and (orderdetail.state ="1" or orderdetail.state ="2" )
+	</select>
+	
+	<select id="findAllOrder" parameterType="PageModel" resultMap="orderFormMap">
+		select * from orderform
+		limit #{pagestart},#{pagesize}
+	</select>
+	
+	<select id="findAllOrderCount" resultType="Integer">
+	   select count(*) from orderform
+	</select>
 </mapper>

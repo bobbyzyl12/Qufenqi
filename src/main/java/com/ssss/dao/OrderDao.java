@@ -3,9 +3,11 @@ package com.ssss.dao;
 import java.util.List;
 
 import com.ssss.entity.Cart;
+import com.ssss.entity.Credit;
 import com.ssss.entity.GoodsInOrder;
 import com.ssss.entity.OrderDetail;
 import com.ssss.entity.OrderForm;
+import com.ssss.entity.PageModel;
 
 public interface OrderDao {
 	void addCart(Cart cart);
@@ -45,4 +47,14 @@ public interface OrderDao {
 	OrderDetail findOrderDetail(OrderDetail orderDetail);
 	
 	List<GoodsInOrder> findGoodsInOrderByOrderID(Integer orderID);
+	
+	Float sumAllPaidByUserID(Integer userID);
+	
+	Float sumAllOweByUserID(Integer userID);
+	
+	List<OrderForm> findAllOrder(PageModel<OrderForm> t);
+	
+	Integer findAllOrderCount(PageModel<OrderForm> t);
+	
+	void updateOrderSendData(OrderForm orderform);
 }

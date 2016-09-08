@@ -1754,11 +1754,6 @@ function closeBg() {
 			</select>
 			<span class="alert_msg" id="goodsClassError2">*请选择商品分类</span>
 			</p>
-						
-			<p class="login_title">
-				<span class="title_name">商品图片:</span>
-				<button class="btn_cancel" style="width:50px;height:25px;font-size:10px;">上传</button>
-			</p>
 			
 			<p class="login_title">
 				<span class="title_name">商品分期:</span>

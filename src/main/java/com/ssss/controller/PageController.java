@@ -59,7 +59,7 @@ public class PageController {
      */
 	@RequestMapping(value = "/jumpToHomePage")
 	public String jumpToHomePage(Map<String, Object> map,HttpSession session){
-		Integer msgNum =(Integer) session.getAttribute("userMsgNum");
+		Integer msgNum=userService.countMsgNum((Integer)session.getAttribute("userID"));
 		map.put("msgNum",msgNum);
 		return "homePage";
 	}
@@ -264,7 +264,16 @@ public class PageController {
      * @return
      */
 	@RequestMapping(value = "/jumpToOrderAdmin")
-	public String jumpToOrderAdmin(PageModel<GoodsPack> pageModel,Map<String, Object> map){		
+	public String jumpToOrderAdmin(PageModel<OrderForm> pageModel,Map<String, Object> map){	
+		if (pageModel == null) {
+			pageModel = new PageModel<OrderForm>();
+		}
+		pageModel.setPagesize(5);
+		List<OrderForm> orderList = orderService.findAllOrder(pageModel);
+		pageModel.setTotalrecode(orderService.findAllOrderCount(pageModel));
+		pageModel.setDatas(orderList);
+		map.put("goodsList", orderList);
+		map.put("pageModel", pageModel);
 		return "admin/orderAdmin";
 	}
 	

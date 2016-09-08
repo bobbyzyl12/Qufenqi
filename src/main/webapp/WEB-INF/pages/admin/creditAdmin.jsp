@@ -643,6 +643,14 @@
 	});
 
 	$(function(){
+		$(".money").each(function(){
+			var money = $(this).html();
+			money = Number(money).toFixed(2);
+			$(this).html(money);
+		});
+	});
+	
+	$(function(){
 		$("#addBtn").click(function(){
 			$("#addCreditDialog").show();
 			$(".alert_msg").hide();
@@ -935,9 +943,9 @@ function closeBg() {
 				          		<td>${credit.creditID}</td>
 				  				<td>${credit.creditName}</td>
 				  				<td>${credit.charge} (‱)</td>
-				           		<td>￥${credit.maxPass}</td>
-				           		<td>￥${credit.maxOwe}</td>
-				           		<td>￥${credit.minLevelUp}</td>
+				           		<td>￥<span class="money">${credit.maxPass}</span></td>
+				           		<td>￥<span class="money">${credit.maxOwe}</span></td>
+				           		<td>￥<span class="money">${credit.minLevelUp}</span></td>
 				           		<td style="padding:0px 20px 0px 20px">
 				  					<a href="#" class="btn editBtn" id="editBtn" title="${credit.creditID}">修改</a>
 				  				</td>

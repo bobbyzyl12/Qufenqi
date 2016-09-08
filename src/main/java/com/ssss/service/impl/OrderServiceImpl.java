@@ -25,6 +25,7 @@ import com.ssss.entity.Message;
 import com.ssss.entity.MyOrder;
 import com.ssss.entity.OrderDetail;
 import com.ssss.entity.OrderForm;
+import com.ssss.entity.PageModel;
 import com.ssss.entity.Tag;
 import com.ssss.entity.User;
 import com.ssss.service.OrderService;
@@ -40,7 +41,7 @@ public class OrderServiceImpl implements OrderService{
 	private StageDao stageDao;
 	@Autowired
 	private UserDao userDao;
-	private Cart currentGoodsInCart;
+	
 	
 	public void addCart(Cart cart){
 		if(orderDao.findIfExist(cart)==null)
@@ -103,6 +104,7 @@ public class OrderServiceImpl implements OrderService{
 		orderDao.deleteCartByAll(cart);
 	}
 	
+	//生成订单
 	public String submitOrder(String person,String address,String phone,Integer userID){
 		User user =userDao.findByID(userID);
 		
@@ -278,12 +280,18 @@ public class OrderServiceImpl implements OrderService{
 			Integer creditLevel = user.getUserCredit();
 			Credit credit = stageDao.findCreditByID(creditLevel);
 			
-			if(credit.getMaxPass() >= totalTruePrice)	//订单总金额若小于等于最大自动审核通过额度
+			if(credit.getMaxPass() >= totalTruePrice && (user.getUserBadHistory()==0))	//订单总金额若小于等于最大自动审核通过额度
 			{
 				tempOrder.setState("3");
 				String content =user.getUserName()+",您好！您的新订单（编号："+tempOrder.getOrderID()+"已经成功生成。"+"）。<br>我们将在您支付完第一期的款项后尽快给您发货。祝您购物愉快！";
 				msg.setMsgContent(content);
 				userDao.addMsg(msg);
+			}
+			else if(user.getUserBadHistory()>0){
+				String content =user.getUserName()+",您好！您的新订单（编号："+tempOrder.getOrderID()+"已经成功生成。"+"）。<br>由于您曾经有逾期的不良记录，所以我们将对其进行人工审核。<br>我们将在您支付完第一期的款项后尽快给您发货。祝您购物愉快！";
+				msg.setMsgContent(content);
+				userDao.addMsg(msg);
+				tempOrder.setState("6");	//设置状态为人工审核
 			}
 			else				//若总金额大于额度则需要审核
 			{
@@ -354,6 +362,37 @@ public class OrderServiceImpl implements OrderService{
 	}
 	
 	
+	
+	//通过userID更新user的不良记录
+	public Integer updateUserBadHistory(Integer userID){
+			User user = userDao.findByID(userID);
+			Date currentDate = new Date();
+			Integer count=0;
+			List<OrderForm> orderList = orderDao.selectOrderByUserID(userID);
+			for(int i=0;i<orderList.size();++i){
+				Integer orderID = orderList.get(i).getOrderID();
+				List<OrderDetail> detailList = orderDao.findDetailByOrderID(orderID);
+				for(int j=0;j<detailList.size();++j){
+					OrderDetail detail = detailList.get(j);
+					if(detail.getStagePayTime()==null){
+						boolean compareDate =  currentDate.after(detail.getDeadline());
+						if(compareDate){
+							count =count+1;
+						}
+					}
+					else{
+						boolean compareDate =  (detail.getStagePayTime()).after(detail.getDeadline());
+						if(compareDate){
+							count =count+1;
+						}
+					}
+				}
+			}
+			user.setUserBadHistory(count);
+			userDao.update(user);
+			return user.getUserBadHistory();
+		}
+	
 	//通过订单id查询其中商品的信息
 	public List<GoodsDetailInOrder> getGoodsDetail(Integer orderID){
 			
@@ -394,7 +433,8 @@ public class OrderServiceImpl implements OrderService{
 	public List<MyOrder> showMyOrder(Integer userID){	
 		//创建一个专门用于创建结果的数组
 		List<MyOrder> res = new ArrayList<MyOrder>();
-		
+		//更新不良记录
+		Integer bad = updateUserBadHistory(userID);
 		//创建orderList用以存放该用户所有order的基本信息
 		List<OrderForm> orderList= orderDao.selectOrderByUserID(userID);
 			
@@ -433,6 +473,7 @@ public class OrderServiceImpl implements OrderService{
 						{
 							tempOrderDetail.setState("4");
 							tempOrder.setState("8");
+							orderDao.updateOrderDetail(tempOrderDetail);
 						}
 						complete = false;
 					}
@@ -446,6 +487,7 @@ public class OrderServiceImpl implements OrderService{
 							
 							tempOrderDetail.setState("4");
 							tempOrder.setState("8");
+							orderDao.updateOrderDetail(tempOrderDetail);
 						}
 						complete = false;
 					}
@@ -473,7 +515,16 @@ public class OrderServiceImpl implements OrderService{
 				Integer nextStage = 0;
 				if(payedStage == 1)
 				{
-					nextStage = payedStage;
+					OrderDetail od =new OrderDetail();
+					od.setOrderID(tempOrder.getOrderID());
+					od.setStageNo(1);
+					od =orderDao.findOrderDetail(od);
+					if(od.getState().equals("3")&&(!tempOrder.getState().equals("7"))){
+						nextStage = payedStage+1;
+					}
+					else{
+						nextStage = payedStage;
+					}
 				}
 				else
 				{ 
@@ -482,7 +533,6 @@ public class OrderServiceImpl implements OrderService{
 				
 				//更新order的基本状态
 				orderDao.updateOrder(tempOrder);
-				
 				//得到下一次需要支付的stage的detail
 				OrderDetail od = new OrderDetail();
 				od.setOrderID(tempOrder.getOrderID());
@@ -600,7 +650,16 @@ public class OrderServiceImpl implements OrderService{
 		Integer nextStage = 0;
 		if(payedStage == 1)
 		{
-			nextStage = payedStage;
+			OrderDetail od =new OrderDetail();
+			od.setOrderID(orderID);
+			od.setStageNo(1);
+			od =orderDao.findOrderDetail(od);
+			if(od.getState().equals("3")){
+				nextStage = payedStage+1;
+			}
+			else{
+				nextStage = payedStage;
+			}
 		}
 		else
 		{ 
@@ -648,6 +707,7 @@ public class OrderServiceImpl implements OrderService{
 		return tempMyOrder;
 		}
 	
+	//对于订单基础信息进行加密
 	public OrderForm lockSomeMsg(OrderForm order){
 		String phone = order.getPhone();
 		String address=order.getAddress();
@@ -689,5 +749,120 @@ public class OrderServiceImpl implements OrderService{
 		}
 		order.setReciever(newMan);
 		return order;
+	}
+	
+	//支付我的当期成功后对数据库进行操作
+	public void compeletePay(Integer orderID,Integer stageNo)
+	{
+		OrderDetail temp = new OrderDetail();
+		temp.setOrderID(orderID);
+		temp.setStageNo(stageNo);
+			
+		//现在该stage对应的currentDetail
+		OrderDetail currentDetail = orderDao.findOrderDetail(temp);
+		//将当期设置为已支付
+		currentDetail.setState("3");
+		Date currentDate = new Date();
+		currentDetail.setStagePayTime(currentDate);
+		orderDao.updateOrderDetail(currentDetail);
+			
+		//得到下一个stage
+		temp.setStageNo(stageNo+1);
+		OrderDetail nextDetail = orderDao.findOrderDetail(temp);
+		OrderForm currentOrder =  orderDao.findByID(orderID);
+		//如果是第一期则变为等待发货状态
+		if(stageNo==1){
+			currentOrder.setState("4");
+			orderDao.updateOrder(currentOrder);
+		}
+		else{
+			//如果是最后一期
+			if(currentOrder.getOrderStage()==stageNo)
+			{
+				//更新订单的基础信息
+				currentOrder.setState("7");
+				orderDao.updateOrder(currentOrder);
+			}
+			//如果不是最后一期
+			else{
+			//将下一期设置为可以开始支付
+			nextDetail.setState("2");
+		}
+		}
+		//扣除用户的欠款金额
+		Float thisStage = currentOrder.getOrderPrice()/currentOrder.getOrderStage();
+		thisStage =(float)(Math.round((thisStage)*100))/100; //四舍五入为2位小数
+		if(stageNo == 1){
+			thisStage = currentOrder.getOrderPrice() - thisStage*(currentOrder.getOrderStage()-1);
+		}
+		thisStage =(float)(Math.round((thisStage)*100))/100; //四舍五入为2位小数
+		User user = userDao.findByID(currentOrder.getUserID());
+		user.setUserOwe(user.getUserOwe()-thisStage);
+		orderDao.updateOrder(currentOrder);
+		//对于用户累计进行判断，判定用户是否能升级
+		Float paid = orderDao.sumAllPaidByUserID(user.getUserID());	//用户已支付的金额
+		Credit currentCredit=stageDao.findCreditByMinLevelUp(stageDao.findMaxCredit(paid));
+		Integer currentCreditID = currentCredit.getCreditID();
+		if(currentCreditID != user.getUserCredit()){
+			user.setUserCredit(currentCreditID);
+			Message msg = new Message();
+			msg.setMsgClass("1");
+			msg.setMsgState("1");
+			msg.setMsgTitle("您的用户信用等级已经提升");
+			msg.setUserID(user.getUserID());
+			String content = user.getUserName()+"，恭喜您！<br>由于您支付额度达到了"+currentCredit.getMinLevelUp()+"0元,所以您的信用等级已经提高！<br>您可以前往您的个人中心进行更加详细的查看！";
+			msg.setMsgContent(content);
+			userDao.addMsg(msg);
+		}
+		
+		
+		//updateUser
+		userDao.update(user);
+	}
+
+	//确认订单已收货方法
+	public void confirmRecieve(Integer orderID){
+		OrderForm order= orderDao.findByID(orderID);
+		Date date =new Date();
+		if(order.getOrderStage()==1)
+		{
+			order.setState("7");
+		}
+		order.setOrderReachTime(date);
+		order.setState("1");
+		orderDao.updateOrder(order);
+	}
+	
+	//冻结订单方法
+	public void deleteOrder(Integer orderID){
+		OrderForm order= orderDao.findByID(orderID);
+		order.setState("2");
+		orderDao.updateOrder(order);
+	}
+	
+	//订单发货后修改状态
+	public void sendOrder(Integer orderID){
+		Date date =new Date();
+		OrderForm order= orderDao.findByID(orderID);
+		order.setOrderSendTime(date);
+		order.setState("5");
+		orderDao.updateOrder(order);
+	}
+	
+	
+	public List<OrderForm> findAllOrder(PageModel<OrderForm> pageModel){
+		return orderDao.findAllOrder(pageModel);
+	}
+	
+	public Integer findAllOrderCount(PageModel<OrderForm> pageModel){
+		return orderDao.findAllOrderCount(pageModel);
+	}
+	
+	public void updateOrderSendData(Integer orderID,String person,String address,String phone){
+		OrderForm order = orderDao.findByID(orderID);
+		order.setAddress(address);
+		order.setPhone(phone);
+		order.setReciever(person);
+		orderDao.updateOrderSendData(order);
 	}
 }

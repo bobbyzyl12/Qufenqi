@@ -62,4 +62,8 @@
 	<update id="updateCredit" parameterType="Credit">
 		update credit set creditName = #{creditName},charge = #{charge},maxPass =#{maxPass},maxOwe=#{maxOwe},minLevelUp=#{minLevelUp} where creditID = #{creditID}
 	</update>
+	
+	<select id="findMaxCredit" parameterType="Float" resultType="Float">
+		select max(minLevelUp) from credit where minLevelUp&lt;#{temp}
+	</select>
 </mapper>

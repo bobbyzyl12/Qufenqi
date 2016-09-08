@@ -636,7 +636,8 @@
 
 $(function(){
 	var charge = $("#charge").html();
-	
+	$("#confirmRecieveBtn").hide();
+	$("#payBtn").hide();
 	var totalStageNum = $("#totalStageNum").html();
 	var doneStageNum = $("#doneStageNum").html();
 	
@@ -656,11 +657,23 @@ $(function(){
 		$(this).parent().next().find(".l_price").html(temp);
 	});
 	
+	var state = $("#state").html();
+	if(state=="1"||state=="3"||state=="8"){
+		$("#payBtn").show();
+	}
 	
+	if(state=="5"){
+		$("#confirmRecieveBtn").show();
+	}
 	
 	totalPrice= Number(totalPrice).toFixed(2);
 	$("#totalPrice").html('￥'+totalPrice);
-	var percent = Number($("#doneStageNum").html())/Number($("#totalStageNum").html());
+	if(state=="7"){
+		var percent=Number(1);
+	}
+	else{
+		var percent = Number($("#doneStageNum").html())/Number($("#totalStageNum").html());
+	}	
 	//计算已经支付的金额
 	var donePrice =Number(percent) * Number(totalPrice);
 	donePrice= Number(donePrice).toFixed(2);
@@ -669,8 +682,10 @@ $(function(){
 	var leftPrice = Number(totalPrice)-Number(donePrice);
 	leftPrice= Number(leftPrice).toFixed(2);
 	$("#leftPrice").html('￥'+leftPrice);
+	
 	//设置进入条长度
-	var a =percent;
+	var a =(Number(percent)*100)+"%";
+	alert(a);
 	$("#progress_bar").css("width",a);
 	
 	$("#bar_msg").hide();
@@ -780,7 +795,14 @@ function closeBg() {
 								<div class="progress_bar">
 									<div class="pro-bar" style="font-size:12px;">
 										<small class="progress_bar_title">
-											<span class="progress_number" style="font-size:10px;">${basicInfo.nextNo-1} 期/${basicInfo.totalStageNum} 期</span>
+										<c:choose>
+											<c:when test="${order.state=='7'}">
+												<span class="progress_number" style="font-size:10px;">${basicInfo.nextNo} 期/${basicInfo.totalStageNum} 期</span>
+											</c:when>
+											<c:otherwise>
+												<span class="progress_number" style="font-size:10px;">${basicInfo.nextNo-1} 期/${basicInfo.totalStageNum} 期</span>
+											</c:otherwise>
+										</c:choose>
 										</small>
 										<span id="progress_bar" class="progress-bar-inner" style="background-color: #4f90fb; width:95%;" data-value="95" data-percentage-value="95"></span>
 									</div>
@@ -844,7 +866,8 @@ function closeBg() {
 							</div>
 							<div style="position:relative;height:70px;padding-top:20px;border-top:1.5px dashed #4f90fb;">
 								<a href="${ctx}/page/jumpToMyOrder"><button class="btn_cancel" id="submitBtn" style="position:absolute;left:30px;">返回</button></a>	
-								<a href="#"><button class="btn" id="submitBtn">支付本期</button></a>
+								<a href="${ctx}/order/confirmRecieve"><button class="btn" id="confirmRecieveBtn">确认收货</button></a>
+								<a href="${ctx}/order/payOrder?orderID=${basicInfo.orderID}&stageNo=${basicInfo.nextNo}"><button class="btn" id="payBtn">支付本期</button></a>
 							</div>
 							
 						</div>
@@ -871,5 +894,6 @@ function closeBg() {
 	<p style="display:none" id="doneStageNum">${basicInfo.nextNo-1}</p>
 	<p style="display:none" id="totalStageNum">${basicInfo.totalStageNum}</p>
 	<p style="display:none" id="charge">${charge}</p>
+	<p style="display:none" id="state">${order.state}</p>
 </body>
 </html>

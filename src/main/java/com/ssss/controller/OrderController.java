@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ssss.entity.Cart;
+import com.ssss.entity.OrderForm;
 import com.ssss.entity.Tag;
 import com.ssss.service.OrderService;
 import com.ssss.service.UserService;
@@ -84,5 +85,34 @@ public class OrderController {
 		return orderService.submitOrder(person,address,phone,userID);
 	}
 	
+	@RequestMapping(value = "/payOrder")
+	public String payOrder(Integer orderID,Integer stageNo,HttpSession session){
+		orderService.compeletePay(orderID, stageNo);
+		return "redirect:/page/jumpToMyOrder";
+	}
 	
+	@RequestMapping(value = "/confirmRecieve")
+	public String confirmRecieve(Integer orderID,HttpSession session){
+		orderService.confirmRecieve(orderID);
+		return "redirect:/page/jumpToMyOrder";
+	}
+	
+	@RequestMapping(value = "/sendOrder")
+	public String sendOrder(Integer orderID,HttpSession session){
+		orderService.sendOrder(orderID);
+		return "redirect:/page/jumpToOrderAdmin";
+	}
+	
+	@RequestMapping(value = "/findOrder")
+	@ResponseBody
+	public OrderForm findOrder(Integer orderID){
+		return orderService.findOrderByID(orderID);
+	}
+	
+	@RequestMapping(value = "/updateOrderSendData")
+	@ResponseBody
+	public String updateOrderSendData(Integer orderID,String person,String address,String phone,HttpSession session){
+		orderService.updateOrderSendData(orderID,person,address,phone);
+		return "successs";
+	}
 }

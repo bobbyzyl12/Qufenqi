@@ -27,6 +27,7 @@ import com.ssss.entity.Picture;
 import com.ssss.entity.Tag;
 import com.ssss.entity.User;
 import com.ssss.service.GoodsService;
+import com.ssss.service.UserService;
 
 @Controller
 @RequestMapping(value="/goods")
@@ -34,6 +35,8 @@ public class GoodsController {
 	@Autowired
 	private GoodsService goodsService;
 	
+	@Autowired
+	private UserService userService;
 	/**
      * 
      * @param tagList
@@ -180,7 +183,7 @@ public class GoodsController {
 		map.put("defaultStorage", temp.getGoodsTag().get(0).getStorage());
 		Float perMonth =(temp.getGoodsTag().get(0).getPrice());
 		map.put("defaultPerMonth",perMonth);
-		Integer msgNum =(Integer) session.getAttribute("userMsgNum");
+		Integer msgNum=userService.countMsgNum((Integer)session.getAttribute("userID"));
 		map.put("msgNum",msgNum);
 		return "goodsPage/goodsDetail";
 	}
@@ -192,6 +195,8 @@ public class GoodsController {
      */
 	@RequestMapping(value = "/searchAll")
 	public String searchAll(@RequestParam(value = "searchContent") String searchContent,PageModel<GoodsPack> pageModel,Map<String, Object> map,HttpSession session){
+		Integer msgNum=userService.countMsgNum((Integer)session.getAttribute("userID"));
+		map.put("msgNum",msgNum);
 		if(searchContent==null||searchContent==""){
 			session.setAttribute("haveRes", "no");
 			return "goodsPage/goodsView";
@@ -214,8 +219,6 @@ public class GoodsController {
 		session.setAttribute("haveRes", "yes");
 		map.put("goodsList", goodsList);
 		map.put("pageModel", pageModel);
-		Integer msgNum =(Integer) session.getAttribute("userMsgNum");
-		map.put("msgNum",msgNum);
 		map.put("searchContent",searchContent);
 		
 		return "goodsPage/goodsView";
@@ -228,6 +231,8 @@ public class GoodsController {
      */
 	@RequestMapping(value = "/searchByClass")
 	public String searchByClass(@RequestParam(value = "searchContent")String searchContent,PageModel<GoodsPack> pageModel,Map<String, Object> map,HttpSession session){
+		Integer msgNum=userService.countMsgNum((Integer)session.getAttribute("userID"));
+		map.put("msgNum",msgNum);
 		if(searchContent==null||searchContent==""){
 			session.setAttribute("haveRes", "no");
 			return "goodsPage/goodsViewClass";
@@ -260,8 +265,6 @@ public class GoodsController {
 		pageModel.setTotalrecode(goodsService.searchByClassCount(pageModel, truecontent));
 		pageModel.setDatas(goodsList);
 		session.setAttribute("haveRes", "yes");
-		Integer msgNum =(Integer) session.getAttribute("userMsgNum");
-		map.put("msgNum",msgNum);
 		map.put("goodsList", goodsList);
 		map.put("pageModel", pageModel);
 		map.put("searchContent",searchContent);

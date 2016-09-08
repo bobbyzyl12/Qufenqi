@@ -15,6 +15,7 @@ import com.ssss.entity.Administrator;
 import com.ssss.entity.Manager;
 import com.ssss.entity.PageModel;
 import com.ssss.entity.User;
+import com.ssss.service.OrderService;
 import com.ssss.service.StageService;
 import com.ssss.service.UserService;
 
@@ -31,6 +32,9 @@ public class UserController {
 	
 	@Autowired
 	private StageService stageService;
+	
+	@Autowired
+	private OrderService orderService;
 	/**
      * ÓÃ»§µÇÂ½
      * @param id
@@ -50,7 +54,7 @@ public class UserController {
              {
             	 session.setAttribute("userID", user.getUserID());
             	 session.setAttribute("userName", user.getUserName());
-            	 
+            	 orderService.updateUserBadHistory(user.getUserID());
             	 Integer msgNum=userService.countMsgNum(user.getUserID());
             	 map.put("msgNum",msgNum);
             	 
