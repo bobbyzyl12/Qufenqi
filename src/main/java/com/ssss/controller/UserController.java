@@ -355,4 +355,16 @@ public class UserController {
 		return userService.updateUser(tempUser);
 	}
 	
+	@RequestMapping(value = "/passCheck")
+	public String passCheck(Integer userID){
+		userService.passCheck(userID);
+		return "redirect:/page/jumpToCheckUser";
+	}
+	
+	@RequestMapping(value = "/rejectCheck")
+	@ResponseBody
+	public String rejectCheck(Integer userID,String reason){
+		userService.rejectCheck(userID,reason);
+		return "success";
+	}
 }

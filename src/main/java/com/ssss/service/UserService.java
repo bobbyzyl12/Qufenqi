@@ -44,4 +44,7 @@ public interface UserService{
 	
 	public User findUserToCheck();
 	
+	public void passCheck(Integer userID);
+	
+	public void rejectCheck(Integer userID,String reason);
 }

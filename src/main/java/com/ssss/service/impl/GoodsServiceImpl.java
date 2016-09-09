@@ -207,7 +207,8 @@ public class GoodsServiceImpl implements GoodsService{
 				return "repeatName";
 			}
 		}
-		goods.setGoodsState(oldGoods.getGoodsState());
+		
+		if(goods.getGoodsState()==null){goods.setGoodsState(oldGoods.getGoodsState());}
 		
 		String goodsDescribe = goods.getGoodsDescribe();
 		goodsDescribe = changeToHtml(goodsDescribe);

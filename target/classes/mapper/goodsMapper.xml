@@ -85,19 +85,19 @@
 	</delete>
 	
 	<select id="searchAll" parameterType="String" resultMap="goodsMap">
-		SELECT * FROM goods WHERE goodsName LIKE #{query} or goodsBrand LIKE #{query} or goodsClass LIKE #{query}
+		SELECT * FROM goods WHERE (goodsName LIKE #{query} or goodsBrand LIKE #{query} or goodsClass LIKE #{query}) and goodsState="1"
 	</select>
 	
 	<select id="searchAllCount" parameterType="String" resultType="Integer">
-		SELECT count(*) FROM goods WHERE goodsName LIKE #{query} or goodsBrand LIKE #{query} or goodsClass LIKE #{query}
+		SELECT count(*) FROM goods WHERE (goodsName LIKE #{query} or goodsBrand LIKE #{query} or goodsClass LIKE #{query}) and goodsState="1"
 	</select>
 	
 	<select id="searchByClass" parameterType="String" resultMap="goodsMap">
-		SELECT * FROM goods WHERE goodsClass = #{query}
+		SELECT * FROM goods WHERE goodsClass = #{query} and goodsState="1"
 	</select>
 	
 	<select id="searchByClassCount" parameterType="String" resultType="Integer">
-		SELECT count(*) FROM goods WHERE goodsClass = #{query}
+		SELECT count(*) FROM goods WHERE goodsClass = #{query} and goodsState="1"
 	</select>
 	
 	<insert id="addPicture" parameterType="Picture" useGeneratedKeys="true" keyProperty="pictureID">

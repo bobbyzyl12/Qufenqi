@@ -53,4 +53,8 @@ public interface OrderService {
 	public List<Integer> findCountOrderState(Integer userID);
 	
 	public List<Float> findSumOrderPrice(Integer userID);
+	
+	public void rejectOrder(String reason,Integer orderID);
+	
+	public void passOrder(Integer orderID);
 }

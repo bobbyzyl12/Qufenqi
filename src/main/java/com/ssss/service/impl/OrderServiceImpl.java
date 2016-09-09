@@ -541,24 +541,32 @@ public class OrderServiceImpl implements OrderService{
 				OrderDetail nextDetail = orderDao.findOrderDetail(od);
 				
 				float nextStageMoney = perMonth;
-				if(nextDetail.getState().equals("4"))	//如果当前需要支付的当期是逾期
-				{
-					//查找该用户的信用等级所对应的每日利率（万分之）
-					float interest =1 + perDayCharge/10000;
-					
-					//计算出两者间隔
-					Calendar cal = Calendar.getInstance();  
-				    cal.setTime(currentDate);  
-				    long time1 = cal.getTimeInMillis();               
-				    cal.setTime(nextDetail.getDeadline());  
-				    long time2 = cal.getTimeInMillis();       
-				    long between_days=(time2-time1)/(1000*3600*24);  
-				    Integer days = (int) between_days;
-				    
-				    //计算并化为小数点后两位
-				    nextStageMoney = nextStageMoney * (float) Math.pow(interest, days); 
-				    nextStageMoney = (float)(Math.round((nextStageMoney)*100))/100;
+				if(nextDetail == null){
+					od.setOrderID(tempOrder.getOrderID());
+					od.setStageNo(nextStage-1);
+					nextDetail = orderDao.findOrderDetail(od);
 				}
+				else{
+					if(nextDetail.getState().equals("4"))	//如果当前需要支付的当期是逾期
+					{
+						//查找该用户的信用等级所对应的每日利率（万分之）
+						float interest =1 + perDayCharge/10000;
+						
+						//计算出两者间隔
+						Calendar cal = Calendar.getInstance();  
+					    cal.setTime(currentDate);  
+					    long time1 = cal.getTimeInMillis();               
+					    cal.setTime(nextDetail.getDeadline());  
+					    long time2 = cal.getTimeInMillis();       
+					    long between_days=(time2-time1)/(1000*3600*24);  
+					    Integer days = (int) between_days;
+					    
+					    //计算并化为小数点后两位
+					    nextStageMoney = nextStageMoney * (float) Math.pow(interest, days); 
+					    nextStageMoney = (float)(Math.round((nextStageMoney)*100))/100;
+					}
+				}
+				
 					
 				MyOrder tempMyOrder = new MyOrder();
 				
@@ -879,7 +887,6 @@ public class OrderServiceImpl implements OrderService{
 		return orderDao.findOrderToCheck();
 	}
 	
-	//
 	
 	public List<Float> findSumOrderDetial(Integer userID){
 		List<Float> res =new ArrayList<Float>();
@@ -893,6 +900,10 @@ public class OrderServiceImpl implements OrderService{
 		
 		temp = orderDao.sumAllOweByUserID(userID);
 		res.add(temp);
+		
+		User user =userDao.findByID(userID);
+		user.setUserOwe(temp);
+		userDao.update(user);
 		return res;
 	}
 	
@@ -931,5 +942,60 @@ public class OrderServiceImpl implements OrderService{
 		temp = orderDao.sumAllOtherPriceByUserID(userID);
 		res.add(temp);
 		return res;
+	}
+	
+	public void rejectOrder(String reason,Integer orderID){
+		//更新订单状态：冻结该订单
+		OrderForm order = orderDao.findByID(orderID);
+		order.setState("2");
+		orderDao.updateOrder(order);
+		
+		//改变orderDetail的状态
+		List<OrderDetail> odList = orderDao.findDetailByOrderID(orderID);
+		for(int i=0;i<odList.size();++i){
+			OrderDetail current = odList.get(i);
+			current.setState("5");
+			orderDao.updateOrderDetail(current);
+		}
+		
+		//重新计算userOwe
+		Float owe = (orderDao.sumAllOweByUserID(order.getUserID()))+(orderDao.sumAllOverTimeByUserID(order.getUserID()));
+		User user= userDao.findByID(order.getUserID());
+		user.setUserOwe(owe);
+		userDao.update(user);
+		
+		//给用户发送消息告知原因
+		reason.replace("\n", "、");
+		String str=(userDao.findByID(order.getUserID()).getUserName())+"，您好。<br>由于"+reason+"等原因,您的订单"+order.getOrderID()+"未通过审核。";
+		Message msg =new Message();
+		msg.setMsgClass("1");
+		msg.setMsgState("1");
+		msg.setMsgTitle("您的订单未通过审核");
+		msg.setUserID(order.getUserID());
+		msg.setMsgContent(str);
+		userDao.addMsg(msg);
+	}
+	
+	public void passOrder(Integer orderID){
+		OrderForm order = orderDao.findByID(orderID);
+		order.setState("1");
+		orderDao.updateOrder(order);
+		//更新第一期的detail为可支付
+		OrderDetail od =new OrderDetail();
+		od.setOrderID(orderID);
+		od.setStageNo(1);
+		od = orderDao.findOrderDetail(od);
+		od.setState("2");
+		orderDao.updateOrderDetailState(od);
+		
+		//给用户发送消息告知订单审核
+		String str=(userDao.findByID(order.getUserID()).getUserName())+"，您好。<br>恭喜您，您的订单"+order.getOrderID()+"通过了审核。在您第一次支付过后，我们将给您发送货物。<br>祝您购物愉快！";
+		Message msg =new Message();
+		msg.setMsgClass("1");
+		msg.setMsgState("1");
+		msg.setMsgTitle("您的订单通过了审核");
+		msg.setUserID(order.getUserID());
+		msg.setMsgContent(str);
+		userDao.addMsg(msg);
 	}
 }

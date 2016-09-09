@@ -159,4 +159,17 @@ public class OrderController {
 	public List<Float> getThirdCartDataU(Integer userID){
 		return orderService.findSumOrderPrice(userID);
 	}
+	
+	@RequestMapping(value = "/passOrder")
+	public String rejectOrder(Integer orderID){
+		orderService.passOrder(orderID);
+		return "redirect:/page/jumpToCheckOrder";
+	}
+	
+	@RequestMapping(value = "/rejectOrder")
+	@ResponseBody
+	public String rejectOrder(String reason,Integer orderID){
+		orderService.rejectOrder(reason, orderID);
+		return "success";
+	}
 }

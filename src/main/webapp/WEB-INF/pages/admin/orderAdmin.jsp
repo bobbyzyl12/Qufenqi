@@ -897,28 +897,28 @@ function closeBg() {
 				</div>
 				<div class="work_page_box">
 					<div class="pages" align="center">
-								<a href="${ctx}/page/jumpToUserAdmin?pageNo=${pageModel.pageNo-1}"><button class="page_btn" style="width:100px" id="prePage">上一页</button></a>
+								<a href="${ctx}/page/jumpToOrderAdmin?pageNo=${pageModel.pageNo-1}"><button class="page_btn" style="width:100px" id="prePage">上一页</button></a>
 							
 							
-								<a href="${ctx}/page/jumpToUserAdmin"><button class="page_btn" id="page_btn1">1</button></a>
+								<a href="${ctx}/page/jumpToOrderAdmin"><button class="page_btn" id="page_btn1">1</button></a>
 							
 								<span class="pages_span" id="prePoint">...</span>
 							
-								<a href="${ctx}/page/jumpToUserAdmin?pageNo=${pageModel.pageNo-2}"><button class="page_btn" id="page_btn2"></button></a>
+								<a href="${ctx}/page/jumpToOrderAdmin?pageNo=${pageModel.pageNo-2}"><button class="page_btn" id="page_btn2"></button></a>
 							
-								<a href="${ctx}/page/jumpToUserAdmin?pageNo=${pageModel.pageNo-1}"><button class="page_btn" id="page_btn3"></button></a>
+								<a href="${ctx}/page/jumpToOrderAdmin?pageNo=${pageModel.pageNo-1}"><button class="page_btn" id="page_btn3"></button></a>
 							
 								<a><button class="page_btn" id="page_btn4"></button></a>
 							
-								<a href="${ctx}/page/jumpToUserAdmin?pageNo=${pageModel.pageNo+1}"><button class="page_btn" id="page_btn5"></button></a>
+								<a href="${ctx}/page/jumpToOrderAdmin?pageNo=${pageModel.pageNo+1}"><button class="page_btn" id="page_btn5"></button></a>
 							
-								<a href="${ctx}/page/jumpToUserAdmin?pageNo=${pageModel.pageNo+2}"><button class="page_btn" id="page_btn6"></button></a>
+								<a href="${ctx}/page/jumpToOrderAdmin?pageNo=${pageModel.pageNo+2}"><button class="page_btn" id="page_btn6"></button></a>
 							
 								<span class="pages_span" id="sufPoint">...</span>
 							
-								<a href="${ctx}/page/jumpToUserAdmin?pageNo=${pageModel.totalpage}"><button class="page_btn" id="page_btn7"></button></a>
+								<a href="${ctx}/page/jumpToOrderAdmin?pageNo=${pageModel.totalpage}"><button class="page_btn" id="page_btn7"></button></a>
 							
-								<a href="${ctx}/page/jumpToUserAdmin?pageNo=${pageModel.pageNo+1}"><button class="page_btn" style="width:100px;" id="sufPage">下一页</button></a>
+								<a href="${ctx}/page/jumpToOrderAdmin?pageNo=${pageModel.pageNo+1}"><button class="page_btn" style="width:100px;" id="sufPage">下一页</button></a>
 							
 						</ul>
 					</div>

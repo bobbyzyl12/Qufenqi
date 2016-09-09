@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ssss.dao.StageDao;
 import com.ssss.dao.UserDao;
 import com.ssss.entity.Administrator;
 import com.ssss.entity.Manager;
@@ -22,6 +23,8 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private UserDao userDao;
 	
+	@Autowired
+	private StageDao stageDao;
 	public User checkLogin(String userName, String userPwd) {
         User user = userDao.findByUserName(userName);
         if (user != null && user.getUserPwd().equals(userPwd)) {
@@ -252,5 +255,38 @@ public class UserServiceImpl implements UserService {
 	
 	public User findUserToCheck(){
 		return userDao.findUserToCheck();
+	}
+	
+	public void passCheck(Integer userID){
+		User user = userDao.findByID(userID);
+		user.setUserCredit(user.getUserCredit()+1);
+		user.setUserState("1");
+		userDao.update(user);
+		
+		//给用户发送消息告知订单审核通过
+		String str=(user.getUserName())+"，您好。<br>恭喜您,您已通过了信用审核。现在您的信用等级为"+stageDao.findCreditNameByID(user.getUserCredit())+"。<br>祝您购物愉快！";
+		Message msg =new Message();
+		msg.setMsgClass("1");
+		msg.setMsgState("1");
+		msg.setMsgTitle("您的信用等级已经提升");
+		msg.setUserID(userID);
+		msg.setMsgContent(str);
+		userDao.addMsg(msg);
+	}
+	
+	public void rejectCheck(Integer userID,String reason){
+		User user = userDao.findByID(userID);
+		user.setUserState("1");
+		userDao.update(user);
+		
+		reason.replace("\n", "、");
+		String str=(user.getUserName())+"，您好。<br>很抱歉,由于"+reason+"您并未通过通过了信用审核。";
+		Message msg =new Message();
+		msg.setMsgClass("1");
+		msg.setMsgState("1");
+		msg.setMsgTitle("您的信用等级提升的请求未通过审核");
+		msg.setUserID(userID);
+		msg.setMsgContent(str);
+		userDao.addMsg(msg);
 	}
 }

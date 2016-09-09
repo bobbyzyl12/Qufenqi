@@ -284,33 +284,50 @@ public class PageController {
      * @return
      */
 	@RequestMapping(value = "/jumpToCheckOrder")
-	public String jumpToCheckOrder(Map<String, Object> map){
+	public String jumpToCheckOrder(Map<String, Object> map,HttpSession session){
 		OrderForm order = orderService.findOrderToCheck();
-		Float charge= stageService.findCharge(order.getOrderCredit(), order.getOrderStage());
-		Float finalPrice = order.getOrderPrice()*((charge/100)+1);
-		Integer userID = order.getUserID();
-		User user = userService.findByID(userID);
-		Credit userCredit = stageService.findCreditByID(user.getUserCredit());
+		if(order==null){
+			map.put("haveRes","no");
+			session.setAttribute("haveRes", "no");
+		}
+		else{
+			session.setAttribute("haveRes", "yes");
+			Float charge= stageService.findCharge(order.getOrderCredit(), order.getOrderStage());
+			Float finalPrice = order.getOrderPrice()*((charge/100)+1);
+			Integer userID = order.getUserID();
+			User user = userService.findByID(userID);
+			Credit userCredit = stageService.findCreditByID(user.getUserCredit());
+			
+			map.put("haveRes","yes");
+			map.put("order",order);
+			map.put("finalPrice",finalPrice);
+			map.put("user", user);
+			map.put("credit",userCredit);
+		}
 		
-		map.put("order",order);
-		map.put("finalPrice",finalPrice);
-		map.put("user", user);
-		map.put("credit",userCredit);
 		return "manager/checkOrder";
 	}
 	
 	/**
-     * 跳转审核员订单审核页面
+     * 跳转审核员用户审核页面
      * @param
      * @return
      */
 	@RequestMapping(value = "/jumpToCheckUser")
-	public String jumpToCheckUser(Map<String, Object> map){
+	public String jumpToCheckUser(Map<String, Object> map,HttpSession session){
 		User user = userService.findUserToCheck();
-		Credit userCredit = stageService.findCreditByID(user.getUserCredit());
+		if(user==null){
+			map.put("haveRes","no");
+			session.setAttribute("haveRes", "no");
+		}
+		else{
+			session.setAttribute("haveRes", "no");
+			Credit userCredit = stageService.findCreditByID(user.getUserCredit());
+			map.put("user", user);
+			map.put("credit",userCredit);
+			map.put("haveRes","yes");
+		}
 		
-		map.put("user", user);
-		map.put("credit",userCredit);
 		return "manager/checkUser";
 	}
 	
