@@ -622,13 +622,16 @@ $(function(){
 	$("#goodsNum").val(Number(1));
 	
 	//初始化
-	
 	var tagPrice=$("#current_price").html();
 	tagPrice = Number(tagPrice).toFixed(2);
 	$("#current_price").html(tagPrice);
 	$("#current_per_month").html(tagPrice);
+	
 	var tagStorage=$("#current_storage").html;
 	var stage=Number(1);
+	var onePerMonth = (Number(tagPrice))/(Number(stage));
+	var charge =Number(0);
+	$("#pm").html(onePerMonth);
 	
 	//选项初始都选择第一个
 	$(".tagLi :first").css("border","2px solid #4f90fb");
@@ -644,18 +647,49 @@ $(function(){
 		tag = $(this).children(":eq(2)").html();
 		$("#current_price").html(tagPrice);
 		$("#current_storage").html(tagStorage);
-		var perMonth = Number(tagPrice)/Number(stage);
-		perMonth = Number(perMonth).toFixed(2);
+		var quantity = $("#goodsNum").val();
+		onePerMonth = (Number(tagPrice))/(Number(stage));
+		var perMonth = Number(quantity)*Number(tagPrice)/Number(stage);
+		$("#pm").html(onePerMonth);
+		perMonth  = Number(perMonth).toFixed(2);
 		$("#current_per_month").html(perMonth);
-
 	});
 	
 	$(".stageLi").click(function(){
 		$(".stageLi").css("border","1px solid #666");
 		$(this).css("border","2px solid #4f90fb");
 		stage = $(this).children(":first").html();
-		var perMonth = Number(tagPrice)/Number(stage);
-		perMonth = Number(perMonth).toFixed(2);
+		
+		if(stage == "1"){
+			charge = $("#chargeList").find(":eq(0)").html();
+		}
+		else if(stage == "3"){
+			charge = $("#chargeList").find(":eq(1)").html();
+		}
+		else if(stage == "6"){
+			charge = $("#chargeList").find(":eq(2)").html();
+		}
+		else if(stage == "9"){
+			charge = $("#chargeList").find(":eq(3)").html();
+		}
+		else if(stage == "12"){
+			charge = $("#chargeList").find(":eq(4)").html();
+		}
+		else if(stage == "18"){
+			charge = $("#chargeList").find(":eq(5)").html();
+		}
+		else if(stage == "24"){
+			charge = $("#chargeList").find(":eq(6)").html();
+		}
+		else if(stage == "36"){
+			charge = $("#chargeList").find(":eq(7)").html();
+		}
+		
+		var quantity = $("#goodsNum").val();
+		onePerMonth = (Number(tagPrice))/(Number(stage))*((Number(charge)/100)+1);
+		var perMonth = (Number(quantity)*Number(tagPrice)/Number(stage))*((Number(charge)/100)+1);
+		$("#pm").html(onePerMonth);
+		perMonth  = Number(perMonth).toFixed(2);
 		$("#current_per_month").html(perMonth);
 	});
 	
@@ -706,12 +740,19 @@ function plus(){
 	var currentNum = $("#goodsNum").val();
 	currentNum = Number(currentNum)+Number(1);
 	 $("#goodsNum").val(currentNum);
+	 var perMonth = Number(currentNum)*Number($("#pm").html());
+	 perMonth  = Number(perMonth).toFixed(2);
+	 $("#current_per_month").html(perMonth);
 }
 function minus(){
 	var currentNum = $("#goodsNum").val();
 	if(currentNum==1){$("#goodsNum").val(currentNum);}
 	else{currentNum = Number(currentNum)-Number(1);
-	 $("#goodsNum").val(currentNum);}
+	 $("#goodsNum").val(currentNum);
+	 var perMonth = Number(currentNum)*Number($("#pm").html());
+	 perMonth  = Number(perMonth).toFixed(2);
+	 $("#current_per_month").html(perMonth); 
+	}
 }
 
 function checkIsNum(){
@@ -720,7 +761,11 @@ function checkIsNum(){
 	var reg=/^[1-9]\d*|0$/;
 	if(!reg.test(currentNum)){
 		$("#goodsNum").val(Number(1));
+		currentNum =Number(1);
 	}
+	 var perMonth = Number(currentNum)*Number($("#pm").html());
+	 perMonth  = Number(perMonth).toFixed(2);
+	 $("#current_per_month").html(perMonth);
 }
 //关闭灰色 jQuery 遮罩
 function closeBg() {
@@ -799,7 +844,6 @@ function closeBg() {
 			<div class="center_area">
 				<div><p>
 					<a href="${ctx}/page/jumpToHomePage">首页</a>
-					 >
 					<c:choose>
 						<c:when test="${goodsPack.goodsClass == '手机通讯'}">
 					 		<a href="${ctx}/goods/searchByClass?searchContent=1">${goodsPack.goodsClass}</a>
@@ -940,5 +984,11 @@ function closeBg() {
 	
 	<!-- 暂存数据用 -->
 	<p id="goodsID" style="display:none">${goodsPack.goodsID}</p>
+	<p id="pm" style="display:none"></p>
+	<div id="chargeList" style="display:none">
+		<c:forEach items="${chargeList}" var="charge">
+		<p>${charge}</p>
+		</c:forEach>
+	</div>
 </body>
 </html>

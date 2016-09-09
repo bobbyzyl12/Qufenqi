@@ -505,6 +505,7 @@ public class OrderServiceImpl implements OrderService{
 						tempOrder.setState("8");
 						complete = false;
 					}
+					orderDao.updateOrderDetail(tempOrderDetail);
 				}
 			
 				//如果只有已支付完成状态则设置状态为已支付完成
@@ -640,6 +641,9 @@ public class OrderServiceImpl implements OrderService{
 					tempOrder.setState("8");
 					complete = false;
 				}
+				
+				//更新orderDetail的状态
+				orderDao.updateOrderDetail(tempOrderDetail);
 			}
 			
 		//如果只有已支付完成状态则设置状态为已支付完成
@@ -677,23 +681,29 @@ public class OrderServiceImpl implements OrderService{
 		OrderDetail nextDetail = orderDao.findOrderDetail(od);
 		
 		float nextStageMoney = perMonth;
-		if(nextDetail.getState().equals("4"))	//如果当前需要支付的当期是逾期
-		{
-			//查找该用户的信用等级所对应的每日利率（万分之）
-			float interest =1 + perDayCharge/10000;
-			
-			//计算出两者间隔
-			Calendar cal = Calendar.getInstance();  
-		    cal.setTime(currentDate);  
-		    long time1 = cal.getTimeInMillis();               
-		    cal.setTime(nextDetail.getDeadline());  
-		    long time2 = cal.getTimeInMillis();       
-		    long between_days=(time2-time1)/(1000*3600*24);  
-		    Integer days = (int) between_days;
-		    
-		    //计算并化为小数点后两位
-		    nextStageMoney = nextStageMoney * (float) Math.pow(interest, days); 
-		    nextStageMoney = (float)(Math.round((nextStageMoney)*100))/100;
+		if( nextDetail == null){//已经支付完成的话
+			od.setStageNo(nextStage-1);
+			nextDetail  = orderDao.findOrderDetail(od);
+		}
+		else{
+			if(nextDetail.getState().equals("4"))	//如果当前需要支付的当期是逾期
+			{
+				//查找该用户的信用等级所对应的每日利率（万分之）
+				float interest =1 + perDayCharge/10000;
+				
+				//计算出两者间隔
+				Calendar cal = Calendar.getInstance();  
+			    cal.setTime(currentDate);  
+			    long time1 = cal.getTimeInMillis();               
+			    cal.setTime(nextDetail.getDeadline());  
+			    long time2 = cal.getTimeInMillis();       
+			    long between_days=(time2-time1)/(1000*3600*24);  
+			    Integer days = (int) between_days;
+			    
+			    //计算并化为小数点后两位
+			    nextStageMoney = nextStageMoney * (float) Math.pow(interest, days); 
+			    nextStageMoney = (float)(Math.round((nextStageMoney)*100))/100;
+			}
 		}
 		
 		tempMyOrder.setOrderID(tempOrder.getOrderID());
@@ -814,8 +824,6 @@ public class OrderServiceImpl implements OrderService{
 			msg.setMsgContent(content);
 			userDao.addMsg(msg);
 		}
-		
-		
 		//updateUser
 		userDao.update(user);
 	}
@@ -857,12 +865,71 @@ public class OrderServiceImpl implements OrderService{
 	public Integer findAllOrderCount(PageModel<OrderForm> pageModel){
 		return orderDao.findAllOrderCount(pageModel);
 	}
-	
+	//修改订单送货信息方法
 	public void updateOrderSendData(Integer orderID,String person,String address,String phone){
 		OrderForm order = orderDao.findByID(orderID);
 		order.setAddress(address);
 		order.setPhone(phone);
 		order.setReciever(person);
 		orderDao.updateOrderSendData(order);
+	}
+	
+	//查找第一条需要审核的order
+	public OrderForm findOrderToCheck(){
+		return orderDao.findOrderToCheck();
+	}
+	
+	//
+	
+	public List<Float> findSumOrderDetial(Integer userID){
+		List<Float> res =new ArrayList<Float>();
+		Float temp = new Float(0);
+		//赋值
+		temp = orderDao.sumAllPaidByUserID(userID);
+		res.add(temp);
+		
+		temp = orderDao.sumAllOverTimeByUserID(userID);
+		res.add(temp);
+		
+		temp = orderDao.sumAllOweByUserID(userID);
+		res.add(temp);
+		return res;
+	}
+	
+	public List<Integer> findCountOrderState(Integer userID){
+		List<Integer> res =new ArrayList<Integer>();
+		Integer temp = 0;
+		//赋值
+		temp = orderDao.countAllPaidByUserID(userID);
+		res.add(temp);
+		
+		temp = orderDao.countAllOweByUserID(userID);
+		res.add(temp);
+		
+		temp = orderDao.countAllOverTimeByUserID(userID);
+		res.add(temp);
+		
+		temp = orderDao.countAllOthersByUserID(userID);
+		res.add(temp);
+		
+		return res;
+	}
+	
+	public List<Float> findSumOrderPrice(Integer userID){
+		List<Float> res =new ArrayList<Float>();
+		Float temp = new Float(0);
+		//赋值
+		temp = orderDao.sumAllPaidPriceByUserID(userID);
+		res.add(temp);
+		
+		temp = orderDao.sumAllOverTimePriceByUserID(userID);
+		res.add(temp);
+		
+		temp = orderDao.sumAllOwePriceByUserID(userID);
+		res.add(temp);
+		
+		temp = orderDao.sumAllOtherPriceByUserID(userID);
+		res.add(temp);
+		return res;
 	}
 }

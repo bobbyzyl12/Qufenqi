@@ -685,7 +685,6 @@ $(function(){
 	
 	//设置进入条长度
 	var a =(Number(percent)*100)+"%";
-	alert(a);
 	$("#progress_bar").css("width",a);
 	
 	$("#bar_msg").hide();
@@ -809,9 +808,10 @@ function closeBg() {
 								</div>
 							</div>
 							<div style="position:relative;left:-400px;position:relative;">
-								<p><span class="i_title">收件人:</span>${order.reciever}
-									<span class="i_title" style="position:absolute;right:50px;">收件地址:${order.address}</span><span class="i_title" style="position:absolute;right:0px;"></span>
-									<span class="i_title" style="position:absolute;right:-220px;">联系电话:${order.phone}</span>
+								<p>
+									<span class="i_title">收件人:${order.reciever}</span>
+									<span class="i_title" style="position:absolute;right:-50px;">收件地址:${order.address}</span><span class="i_title" style="position:absolute;right:0px;"></span>
+									<span class="i_title" style="position:absolute;right:-300px;">联系电话:${order.phone}</span>
 								</p>
 							</div>
 							<div style="height:140px;width:180px;padding:0px 10px 10px 10px;background-color:#fff;border:2px solid #4f90fb;border-radius:5px;;position:relative;top:-130px;left:550px;" id="bar_msg">
@@ -866,7 +866,7 @@ function closeBg() {
 							</div>
 							<div style="position:relative;height:70px;padding-top:20px;border-top:1.5px dashed #4f90fb;">
 								<a href="${ctx}/page/jumpToMyOrder"><button class="btn_cancel" id="submitBtn" style="position:absolute;left:30px;">返回</button></a>	
-								<a href="${ctx}/order/confirmRecieve"><button class="btn" id="confirmRecieveBtn">确认收货</button></a>
+								<a href="${ctx}/order/confirmRecieve?orderID=${basicInfo.orderID}"><button class="btn" id="confirmRecieveBtn">确认收货</button></a>
 								<a href="${ctx}/order/payOrder?orderID=${basicInfo.orderID}&stageNo=${basicInfo.nextNo}"><button class="btn" id="payBtn">支付本期</button></a>
 							</div>
 							

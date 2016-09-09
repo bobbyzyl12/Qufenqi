@@ -48,13 +48,34 @@ public interface OrderDao {
 	
 	List<GoodsInOrder> findGoodsInOrderByOrderID(Integer orderID);
 	
-	Float sumAllPaidByUserID(Integer userID);
-	
-	Float sumAllOweByUserID(Integer userID);
-	
 	List<OrderForm> findAllOrder(PageModel<OrderForm> t);
 	
 	Integer findAllOrderCount(PageModel<OrderForm> t);
 	
 	void updateOrderSendData(OrderForm orderform);
+	
+	OrderForm findOrderToCheck();
+	
+	Float sumAllPaidByUserID(Integer userID);
+	
+	Float sumAllOweByUserID(Integer userID);
+	
+	Float sumAllOverTimeByUserID(Integer userID);
+	
+	Integer countAllPaidByUserID(Integer userID);
+	
+	Integer countAllOweByUserID(Integer userID);
+	
+	Integer countAllOverTimeByUserID(Integer userID);
+	
+	Integer countAllOthersByUserID(Integer userID);
+	
+	Float sumAllPaidPriceByUserID(Integer userID);
+	
+	Float sumAllOwePriceByUserID(Integer userID);
+	
+	Float sumAllOverTimePriceByUserID(Integer userID);
+	
+	Float sumAllOtherPriceByUserID(Integer userID);
+	
 }

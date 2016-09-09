@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ssss.entity.Credit;
+import com.ssss.entity.CreditStage;
 import com.ssss.entity.Goods;
 import com.ssss.entity.GoodsDetailInOrder;
 import com.ssss.entity.GoodsInCart;
@@ -278,12 +279,50 @@ public class PageController {
 	}
 	
 	/**
+     * Ã¯◊™…Û∫À‘±∂©µ•…Û∫À“≥√Ê
+     * @param
+     * @return
+     */
+	@RequestMapping(value = "/jumpToCheckOrder")
+	public String jumpToCheckOrder(Map<String, Object> map){
+		OrderForm order = orderService.findOrderToCheck();
+		Float charge= stageService.findCharge(order.getOrderCredit(), order.getOrderStage());
+		Float finalPrice = order.getOrderPrice()*((charge/100)+1);
+		Integer userID = order.getUserID();
+		User user = userService.findByID(userID);
+		Credit userCredit = stageService.findCreditByID(user.getUserCredit());
+		
+		map.put("order",order);
+		map.put("finalPrice",finalPrice);
+		map.put("user", user);
+		map.put("credit",userCredit);
+		return "manager/checkOrder";
+	}
+	
+	/**
+     * Ã¯◊™…Û∫À‘±∂©µ•…Û∫À“≥√Ê
+     * @param
+     * @return
+     */
+	@RequestMapping(value = "/jumpToCheckUser")
+	public String jumpToCheckUser(Map<String, Object> map){
+		User user = userService.findUserToCheck();
+		Credit userCredit = stageService.findCreditByID(user.getUserCredit());
+		
+		map.put("user", user);
+		map.put("credit",userCredit);
+		return "manager/checkUser";
+	}
+	
+	/**
      * Ã¯◊™≤‚ ‘“≥√Ê
      * @param
      * @return
      */
 	@RequestMapping(value = "/jumpToTestPage")
-	public String jumpToTestPage(Map<String, Object> map){		
+	public String jumpToTestPage(Map<String, Object> map){
+		OrderForm order = orderService.findOrderToCheck();
+		map.put("order",order);
 		return "test";
 	}
 	

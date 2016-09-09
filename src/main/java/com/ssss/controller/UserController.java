@@ -250,6 +250,7 @@ public class UserController {
 		User user = userService.findByID(userID);
 		if(userService.findSameIdentify(userIdentify)==null){
 			user.setUserIdentify(userIdentify);
+			user.setUserCredit(3);
 			userService.update(user);
 			return "success";
 		}

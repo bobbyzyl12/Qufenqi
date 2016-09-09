@@ -35,7 +35,7 @@
 	div.wrapper{
 		position:relative;
 		min-height:100%;
-		height:auto !important;
+		height:570px;
 		width:100%;
 	}
 	
@@ -58,7 +58,7 @@
 	div.footer{
 		height:30px;
 		position:absolute;
-		bottom:0px;
+		bottom:-50px;
 		left:0px;
 		width:100%;
 		text-align:center;
@@ -191,14 +191,14 @@
 	}
 	
 	.message_box{
-		height:560px;
+		height:320px;
 		width:540px;
 		margin-left:auto;
 		margin-right:auto;
 		position:absolute;
 		top:20px;
 		right:20px;
-		
+		margin-top:100px;
 		background-color:white;
 		box-shadow:2px 2px 3px #aaaaaa;
 		border-radius:5px;
@@ -352,7 +352,6 @@
 	  								<p style="font-size:16px;">信用审核</p>
 								</a>
 							</li>
-							
 						</ul>
 					</div>
 					<div class="header_botton_box">
@@ -369,123 +368,224 @@
 			</div>
 		</div>
 		<div class="main_container">
-			
+			<div class="main_container_box">
+				<div class="chart_box">
+					<div class="big_chart">
+						<canvas id="myChart" width="400" height="325"></canvas>
+						<p>用户当前所有状态金额统计</p>
+					</div>
+					<div class="small_chart_box">
+						<div class="small_chart">
+							<canvas id="smallChart" width="195" height="180"></canvas>
+							<p>用户所有订单各状态数量</p>
+						</div>
+						<div class="chart_btn_box">
+							<canvas id="smallChart2" width="195" height="180"></canvas>
+							<p>用户订单各状态原始金额</p>
+						</div>
+					</div>
+				</div>
+				<div class="message_box">
+					<div class="user_msg">
+						<p><span class="title_text">用户编号：</span id="userID">${user.userID}</p>
+						<p><span class="title_text">用户信用额度等级：</span>${credit.creditName}</p>
+						<p><span class="title_text">用户累计逾期次数：</span>${user.userBadHistory}次</p>
+						<p><span class="title_text">用户现总欠款金额：</span>￥ <span id="userOwe" class="money">${user.userOwe}</span></p>
+						<p><span class="title_text">用户最高欠款累计额度：</span>￥ <span id="maxOwe" class="money">${credit.maxOwe}</span></p>
+						<p><span class="title_text">用户剩余可欠款额度：</span><span class="important_text">￥<span id="leftMoney" class="money">${credit.maxOwe}-${user.userOwe}</span></span></p>		
+						<img src="${ctx}/img/userImg.png" class="icon_img" style="position:absolute;top:20px;right:40px;"/>
+					</div>
+					<div class="result_msg">
+						<a href="#"><button class="btn_pass">通过</button></a>
+						<button class="btn_reject">不通过</button>
+					</div>
+				</div>
+			</div>
 		</div>
 		<div class="footer">
 			Copyright (c) 2016
 		</div>
 	</div>
-	<script type="text/javascript">
+<script type="text/javascript">
 	$(function(){
-		var price = Number(111.11);
-		var data_big = {
-			    labels: [
-			        "已逾期金额",
-			        "已支付金额",
-			        "等待支付金额",
-			    ],
-			    datasets: [
-			        {
-			            data: [price, 22.21, 33.33],
-			            backgroundColor: [
-			                "#FF6384",
-			                "#36A2EB",
-			                "#FFCE56"
-			            ],
-			            hoverBackgroundColor: [
-			                "#FF6384",
-			                "#36A2EB",
-			                "#FFCE56"
-			            ]
-			        }]
-			};
-		var options_big={
-				   animateRotate :true,
-				   animateScale : true,
-		};
-		
-		var ctx = document.getElementById("myChart").getContext("2d");
-		var newChart = new Chart(ctx, {
-		  	type: 'doughnut',
-		    data: data_big,
-		    options: options_big
-		});
-		
-		var data_small = {
-			    labels: [
-			        "已逾期",
-			        "已支付",
-			        "待支付",
-			        "其他",
-			    ],
-			    datasets: [
-			        {
-			            data: [1,3,4,6],
-			            backgroundColor: [
-			                "#FF6384",
-			                "#36A2EB",
-			                "#FFCE56",
-			                "#666666"
-			            ],
-			            hoverBackgroundColor: [
-			                "#FF6384",
-			                "#36A2EB",
-			                "#FFCE56",
-			                "#666666"
-			            ]
-			        }]
-			};
-		var options_small={
-				   animateRotate :true,
-				   animateScale : true,
-		};
-		
-		var ctx = document.getElementById("smallChart").getContext("2d");
-		var newSmallChart = new Chart(ctx, {
-		  	type: 'doughnut',
-		    data: data_small,
-		    options: options_small
-		});
-		
-
-		var data_small2 = {
-			    labels: [
-			        "已逾期",
-			        "已支付",
-			        "待支付",
-			        "其他",
-			    ],
-			    datasets: [
-			        {
-			            data: [21.32,313.1,411.1,11.32],
-			            backgroundColor: [
-			                "#FF6384",
-			                "#36A2EB",
-			                "#FFCE56",
-			                "#666666"
-			            ],
-			            hoverBackgroundColor: [
-			                "#FF6384",
-			                "#36A2EB",
-			                "#FFCE56",
-			                "#666666"
-			            ]
-			        }]
-			};
-		var options_small2={
-				   animateRotate :true,
-				   animateScale : true,
-		};
-		
-		var ctx = document.getElementById("smallChart2").getContext("2d");
-		var newSmallChart2 = new Chart(ctx, {
-		  	type: 'doughnut',
-		    data: data_small2,
-		    options: options_small2
+		var finalPrice = $("#finalPrice").html();
+		var stage = $("#stage").html();
+		var perStagePrice = Number(finalPrice)/Number(stage);
+		$("#perStagePrice").html(perStagePrice);
+		$("#leftMoney").html((Number($("#maxOwe").html()))-Number($("#userOwe").html()));
+		$(".money").each(function(){
+			var money =$(this).html();
+			money = Number(money).toFixed(2);
+			$(this).html(money);
 		});
 	});
 	
+	$(function(){
+		var userID =$("#userID").html();
 		
+		$.ajax({                           	  
+			url: '${ctx}/order/getFirstCartDataU',       //处理测试页面                 
+			type: 'POST',                  
+			data: {userID:userID},                
+			success: function (msg){
+				var	a = msg[0];
+				var b = msg[1];
+				var c = msg[2];
+				a
+				if(a==null){a=Number(0);}
+				if(b==null){b=Number(0);}
+				if(c==null){c=Number(0);}
+				a=Number(a).toFixed(2);
+				b=Number(b).toFixed(2);
+				c=Number(c).toFixed(2);
+				var data_big = {
+					    labels: [
+					        "已逾期金额",
+					        "已支付金额",
+					        "等待支付金额",
+					    ],
+					    datasets: [
+					        {
+					            data: [b, a, c],
+					            backgroundColor: [
+					                "#FF6384",
+					                "#36A2EB",
+					                "#FFCE56"
+					            ],
+					            hoverBackgroundColor: [
+					                "#FF6384",
+					                "#36A2EB",
+					                "#FFCE56"
+					            ]
+					        }]
+					};
+				var options_big={
+						   animateRotate :true,
+						   animateScale : true,
+				};
+				
+				var ctx = document.getElementById("myChart").getContext("2d");
+				var newChart = new Chart(ctx, {
+				  	type: 'doughnut',
+				    data: data_big,
+				    options: options_big
+				});
+			}
+		});
+		
+		$.ajax({                           	  
+			url: '${ctx}/order/getSecondCartDataU',       //处理测试页面                 
+			type: 'POST',                  
+			data: {userID:userID},                
+			success: function (msg){
+				var	a = msg[0];
+				var b = msg[1];
+				var c = msg[2];
+				var d = msg[3];
+				if(a==null){a=Number(0);}
+				if(b==null){b=Number(0);}
+				if(c==null){c=Number(0);}
+				if(d==null){d=Number(0);}
+				
+				var data_small = {
+					    labels: [
+					        "已逾期",
+					        "已支付",
+					        "待支付",
+					        "其他",
+					    ],
+					    datasets: [
+					        {
+					            data: [c,a,b,d],
+					            backgroundColor: [
+					                "#FF6384",
+					                "#36A2EB",
+					                "#FFCE56",
+					                "#666666"
+					            ],
+					            hoverBackgroundColor: [
+					                "#FF6384",
+					                "#36A2EB",
+					                "#FFCE56",
+					                "#666666"
+					            ]
+					        }]
+					};
+				var options_small={
+						   animateRotate :true,
+						   animateScale : true,
+				};
+				
+				var ctx = document.getElementById("smallChart").getContext("2d");
+				var newSmallChart = new Chart(ctx, {
+				  	type: 'doughnut',
+				    data: data_small,
+				    options: options_small
+				});
+			}
+			
+		});
+		
+		
+		
+		$.ajax({                           	  
+			url: '${ctx}/order/getThirdCartDataU',       //处理测试页面                 
+			type: 'POST',                  
+			data: {userID:userID},                
+			success: function (msg){
+				var	a = msg[0];
+				var b = msg[1];
+				var c = msg[2];
+				var d = msg[3];
+				if(a==null){a=Number(0);}
+				if(b==null){b=Number(0);}
+				if(c==null){c=Number(0);}
+				if(d==null){d=Number(0);}
+				
+				a=Number(a).toFixed(2);
+				b=Number(b).toFixed(2);
+				c=Number(c).toFixed(2);
+				d=Number(d).toFixed(2);
+				
+				var data_small2 = {
+					    labels: [
+					        "已逾期",
+					        "已支付",
+					        "待支付",
+					        "其他",
+					    ],
+					    datasets: [
+					        {
+					            data: [b,a,c,d],
+					            backgroundColor: [
+					                "#FF6384",
+					                "#36A2EB",
+					                "#FFCE56",
+					                "#666666"
+					            ],
+					            hoverBackgroundColor: [
+					                "#FF6384",
+					                "#36A2EB",
+					                "#FFCE56",
+					                "#666666"
+					            ]
+					        }]
+					};
+				var options_small2={
+						   animateRotate :true,
+						   animateScale : true,
+				};
+				
+				var ctx = document.getElementById("smallChart2").getContext("2d");
+				var newSmallChart2 = new Chart(ctx, {
+				  	type: 'doughnut',
+				    data: data_small2,
+				    options: options_small2
+				});
+			}
+		});
+		
+	});
 	</script>
 	
 </body>

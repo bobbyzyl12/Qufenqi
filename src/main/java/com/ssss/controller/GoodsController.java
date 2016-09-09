@@ -27,6 +27,7 @@ import com.ssss.entity.Picture;
 import com.ssss.entity.Tag;
 import com.ssss.entity.User;
 import com.ssss.service.GoodsService;
+import com.ssss.service.StageService;
 import com.ssss.service.UserService;
 
 @Controller
@@ -37,6 +38,9 @@ public class GoodsController {
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private StageService stageService;
 	/**
      * 
      * @param tagList
@@ -183,6 +187,15 @@ public class GoodsController {
 		map.put("defaultStorage", temp.getGoodsTag().get(0).getStorage());
 		Float perMonth =(temp.getGoodsTag().get(0).getPrice());
 		map.put("defaultPerMonth",perMonth);
+		
+		 
+		Integer userID = (Integer)session.getAttribute("userID");
+		if(userID == null){
+			userID = 0;
+		}
+		User user = userService.findByID(userID);
+		List<Float> chargeList = stageService.findStageChargeByCreditID(user.getUserCredit());
+		map.put("chargeList", chargeList);
 		Integer msgNum=userService.countMsgNum((Integer)session.getAttribute("userID"));
 		map.put("msgNum",msgNum);
 		return "goodsPage/goodsDetail";

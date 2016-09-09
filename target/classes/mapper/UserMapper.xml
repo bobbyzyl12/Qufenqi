@@ -82,4 +82,7 @@
 		insert into message values(null,#{msgTitle},#{msgContent},#{msgState},#{msgClass},#{userID})
 	</insert>
 	
+	<select id="findUserToCheck" resultType="User">
+		select * from user where userState="2" limit 0,1
+	</select>
 </mapper>

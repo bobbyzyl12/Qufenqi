@@ -131,14 +131,6 @@
 		update orderdetail set state = #{state},stagePayTime = #{stagePayTime},stageMoney=#{stageMoney} where orderID=#{orderID} and stageNo=#{stageNo}
 	</update>
 	
-	<select id="sumAllPaidByUserID" parameterType="Integer" resultType="Float">
-		select sum(stageMoney) from orderdetail, orderform where orderdetail.orderID = orderform.orderID and orderform.userID = #{userID} and orderdetail.state ="3"
-	</select>
-	
-	<select id="sumAllOweByUserID" parameterType="Integer" resultType="Float">
-		select sum(stageMoney) from orderdetail, orderform where orderdetail.orderID = orderform.orderID and orderform.userID = #{userID} and (orderdetail.state ="1" or orderdetail.state ="2" )
-	</select>
-	
 	<select id="findAllOrder" parameterType="PageModel" resultMap="orderFormMap">
 		select * from orderform
 		limit #{pagestart},#{pagesize}
@@ -147,4 +139,54 @@
 	<select id="findAllOrderCount" resultType="Integer">
 	   select count(*) from orderform
 	</select>
+	
+	<select id="findOrderToCheck" resultType="OrderForm">
+	   select * from orderform where state="6"
+	   limit 0,1
+	</select>
+	
+	<select id="sumAllPaidByUserID" parameterType="Integer" resultType="Float">
+		select sum(stageMoney) from orderdetail, orderform where orderdetail.orderID = orderform.orderID and orderform.userID = #{userID} and orderdetail.state ="3"
+	</select>
+	
+	<select id="sumAllOweByUserID" parameterType="Integer" resultType="Float">
+		select sum(stageMoney) from orderdetail, orderform where orderdetail.orderID = orderform.orderID and orderform.userID = #{userID} and (orderdetail.state ="1" or orderdetail.state ="2" )
+	</select>
+	
+	<select id="sumAllOverTimeByUserID" parameterType="Integer" resultType="Float">
+		select sum(stageMoney) from orderdetail, orderform where orderdetail.orderID = orderform.orderID and orderform.userID = #{userID} and (orderdetail.state ="4")
+	</select>
+	
+	<select id="countAllPaidByUserID" parameterType="Integer" resultType="Integer">
+		select count(*) from orderform where userID = #{userID} and (state ="7")
+	</select>
+	
+	<select id="countAllOweByUserID" parameterType="Integer" resultType="Integer">
+		select count(*) from orderform where userID = #{userID} and (state ="1" or  state ="3")
+	</select>
+	
+	<select id="countAllOverTimeByUserID" parameterType="Integer" resultType="Integer">
+		select count(*) from orderform where userID = #{userID} and (state ="8")
+	</select>
+	
+	<select id="countAllOthersByUserID" parameterType="Integer" resultType="Integer">
+		select count(*) from orderform where userID = #{userID} and (state ="2" or state = "4" or state ="5" or state = "6" )
+	</select>
+	
+	<select id="sumAllPaidPriceByUserID" parameterType="Integer" resultType="Float">
+		select sum(orderPrice) from orderform where userID = #{userID} and (state ="7")
+	</select>
+	
+	<select id="sumAllOwePriceByUserID" parameterType="Integer" resultType="Float">
+		select sum(orderPrice) from orderform where userID = #{userID} and (state ="1" or  state ="3")
+	</select>
+	
+	<select id="sumAllOverTimePriceByUserID" parameterType="Integer" resultType="Float">
+		select sum(orderPrice) from orderform where userID = #{userID} and (state ="8")
+	</select>
+	
+	<select id="sumAllOtherPriceByUserID" parameterType="Integer" resultType="Float">
+		select sum(orderPrice) from orderform where userID = #{userID} and (state ="2" or state = "4" or state ="5" or state = "6" )
+	</select>
+	
 </mapper>

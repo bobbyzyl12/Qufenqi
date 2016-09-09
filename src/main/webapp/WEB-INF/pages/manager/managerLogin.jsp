@@ -168,7 +168,7 @@
 		padding:20px 10px 20px 10px;
 		margin:0;
 		float:left;
-		background-image:url(${ctx}/img/ad.jpg);
+		background-image:url(${ctx}/img/loginPic.jpg);
 	}
 	
 	div.input_box{

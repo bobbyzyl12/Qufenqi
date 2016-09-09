@@ -45,4 +45,12 @@ public interface OrderService {
 	public Integer findAllOrderCount(PageModel<OrderForm> pageModel);
 	
 	public void updateOrderSendData(Integer orderID,String person,String address,String phone);
+	
+	public OrderForm findOrderToCheck();
+	
+	public List<Float> findSumOrderDetial(Integer userID);
+	
+	public List<Integer> findCountOrderState(Integer userID);
+	
+	public List<Float> findSumOrderPrice(Integer userID);
 }

@@ -105,5 +105,7 @@ public interface UserDao {
 	 Integer findAllCount(PageModel<User> pageModel);
 	 
 	 void addMsg(Message message);
+	 
+	 User findUserToCheck();
 }
 

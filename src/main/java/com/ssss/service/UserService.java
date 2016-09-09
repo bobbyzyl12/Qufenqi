@@ -42,4 +42,6 @@ public interface UserService{
 	
 	public String updateUser(User user);
 	
+	public User findUserToCheck();
+	
 }

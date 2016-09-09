@@ -1,5 +1,7 @@
 package com.ssss.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -114,5 +116,47 @@ public class OrderController {
 	public String updateOrderSendData(Integer orderID,String person,String address,String phone,HttpSession session){
 		orderService.updateOrderSendData(orderID,person,address,phone);
 		return "successs";
+	}
+	
+	@RequestMapping(value = "/getFirstCartData")
+	@ResponseBody
+	public List<Float> getFirstCartData(Integer orderID){
+		OrderForm order = orderService.findOrderByID(orderID);
+		Integer userID= order.getUserID();
+		return orderService.findSumOrderDetial(userID);
+	}
+	
+	@RequestMapping(value = "/getSecondCartData")
+	@ResponseBody
+	public List<Integer> getSecondCartData(Integer orderID){
+		OrderForm order = orderService.findOrderByID(orderID);
+		Integer userID= order.getUserID();
+		return orderService.findCountOrderState(userID);
+	}
+	
+	@RequestMapping(value = "/getThirdCartData")
+	@ResponseBody
+	public List<Float> getThirdCartData(Integer orderID){
+		OrderForm order = orderService.findOrderByID(orderID);
+		Integer userID= order.getUserID();
+		return orderService.findSumOrderPrice(userID);
+	}
+	
+	@RequestMapping(value = "/getFirstCartDataU")
+	@ResponseBody
+	public List<Float> getFirstCartDataU(Integer userID){
+		return orderService.findSumOrderDetial(userID);
+	}
+	
+	@RequestMapping(value = "/getSecondCartDataU")
+	@ResponseBody
+	public List<Integer> getSecondCartDataU(Integer userID){
+		return orderService.findCountOrderState(userID);
+	}
+	
+	@RequestMapping(value = "/getThirdCartDataU")
+	@ResponseBody
+	public List<Float> getThirdCartDataU(Integer userID){
+		return orderService.findSumOrderPrice(userID);
 	}
 }
