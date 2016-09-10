@@ -827,7 +827,7 @@ function closeBg() {
 			<div class="header_under">
 				<div class="header_under_center">
 					<div class="header_logo_box">
-						<a href="">
+						<a href="${ctx}/page/jumpToHomePage">
 							<img class="header_logo" src="${ctx}/img/logo.png">
 						</a>
 					</div>
@@ -843,7 +843,7 @@ function closeBg() {
 		<div class="main_container" style="overflow:auto;background-color:#f2f2f2;">
 			<div class="center_area">
 				<div><p>
-					<a href="${ctx}/page/jumpToHomePage">首页</a>
+					<a href="${ctx}/page/jumpToHomePage">首页</a>>
 					<c:choose>
 						<c:when test="${goodsPack.goodsClass == '手机通讯'}">
 					 		<a href="${ctx}/goods/searchByClass?searchContent=1">${goodsPack.goodsClass}</a>

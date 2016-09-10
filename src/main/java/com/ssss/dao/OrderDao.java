@@ -42,6 +42,8 @@ public interface OrderDao {
 	
 	List<OrderForm> selectOrderByUserID(Integer userID);
 	
+	List<OrderForm> findAllOrders();
+	
 	List<OrderDetail> findDetailByOrderID(Integer orderID);
 	
 	OrderDetail findOrderDetail(OrderDetail orderDetail);

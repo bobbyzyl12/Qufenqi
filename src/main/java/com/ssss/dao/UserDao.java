@@ -107,5 +107,7 @@ public interface UserDao {
 	 void addMsg(Message message);
 	 
 	 User findUserToCheck();
+	 
+	 List<User> findAllUser();
 }
 

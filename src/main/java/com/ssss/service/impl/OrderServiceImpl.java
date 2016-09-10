@@ -58,6 +58,14 @@ public class OrderServiceImpl implements OrderService{
 		return orderDao.findCartByUserID(userID);
 	}
 	
+	public void updateUserOwe(Integer userID){
+		User user = userDao.findByID(userID);
+		Float owe =orderDao.sumAllOweByUserID(userID);
+		if(owe==null){owe= (float) 0;}
+		user.setUserOwe(owe);
+		userDao.update(user);
+	}
+	
 	public void deleteCartByID(Integer userID){
 		orderDao.deleteCartByID(userID);
 	}
@@ -136,9 +144,6 @@ public class OrderServiceImpl implements OrderService{
 			return "oweTooMuch";
 		}
 		
-		//在信用额度内扣除总价，即提高userOwe
-		user.setUserOwe(user.getUserOwe()+totalMoney);
-		userDao.update(user);
 		//此list用于存放所有新建的order的id用于后续的order进一步处理
 		List<Integer> orderIDList = new ArrayList<Integer>();
 		
@@ -351,6 +356,8 @@ public class OrderServiceImpl implements OrderService{
 			}
 		}
 		
+		//更新userOwe
+		updateUserOwe(userID);
 		
 		//清空购物车
 		orderDao.deleteCartByID(userID);
@@ -455,7 +462,7 @@ public class OrderServiceImpl implements OrderService{
 			//获取user所可能产生的逾期利率
 			Float perDayCharge = stageDao.findCreditByID(userDao.findByID(userID).getUserCredit()).getCharge();
 			
-			if(tempOrder.getState().equals("8"))	//如果原来是逾期状态，初始化为未完成支付(正常)状态，重新判断
+			if(tempOrder.getState().equals("0"))	//如果原来是逾期状态，初始化为未完成支付(正常)状态，重新判断
 			{
 				tempOrder.setState("1");
 			}
@@ -472,7 +479,7 @@ public class OrderServiceImpl implements OrderService{
 						if(compareDate)		//如果当前日期在ddl后，则将detail和order的状态都设置为逾期
 						{
 							tempOrderDetail.setState("4");
-							tempOrder.setState("8");
+							tempOrder.setState("0");
 							orderDao.updateOrderDetail(tempOrderDetail);
 						}
 						complete = false;
@@ -486,7 +493,7 @@ public class OrderServiceImpl implements OrderService{
 						{
 							
 							tempOrderDetail.setState("4");
-							tempOrder.setState("8");
+							tempOrder.setState("0");
 							orderDao.updateOrderDetail(tempOrderDetail);
 						}
 						complete = false;
@@ -502,7 +509,7 @@ public class OrderServiceImpl implements OrderService{
 					else if(tempOrderDetail.getState().equals("4"))
 					{
 						
-						tempOrder.setState("8");
+						tempOrder.setState("0");
 						complete = false;
 					}
 					orderDao.updateOrderDetail(tempOrderDetail);
@@ -554,10 +561,12 @@ public class OrderServiceImpl implements OrderService{
 						
 						//计算出两者间隔
 						Calendar cal = Calendar.getInstance();  
-					    cal.setTime(currentDate);  
+						cal.setTime(nextDetail.getDeadline());
 					    long time1 = cal.getTimeInMillis();               
-					    cal.setTime(nextDetail.getDeadline());  
-					    long time2 = cal.getTimeInMillis();       
+		
+					    cal.setTime(currentDate);  
+					    long time2 = cal.getTimeInMillis();
+					    
 					    long between_days=(time2-time1)/(1000*3600*24);  
 					    Integer days = (int) between_days;
 					    
@@ -603,7 +612,7 @@ public class OrderServiceImpl implements OrderService{
 		//获取user所可能产生的逾期利率
 		Float perDayCharge = stageDao.findCreditByID(userDao.findByID(userID).getUserCredit()).getCharge();
 			
-		if(tempOrder.getState()=="8")	//如果原来是逾期状态，初始化为未完成支付状态，重新判断
+		if(tempOrder.getState()=="0")	//如果原来是逾期状态，初始化为未完成支付状态，重新判断
 		{
 				tempOrder.setState("1");
 		}
@@ -618,7 +627,7 @@ public class OrderServiceImpl implements OrderService{
 					if(compareDate)		//如果当前日期在ddl后，则将detail和order的状态都设置为逾期
 					{
 						tempOrderDetail.setState("4");
-						tempOrder.setState("8");
+						tempOrder.setState("0");
 					}
 					complete = false;
 				}
@@ -631,7 +640,7 @@ public class OrderServiceImpl implements OrderService{
 					{
 						
 						tempOrderDetail.setState("4");
-						tempOrder.setState("8");
+						tempOrder.setState("0");
 					}
 					complete = false;
 				}
@@ -646,7 +655,7 @@ public class OrderServiceImpl implements OrderService{
 				else if(tempOrderDetail.getState().equals("4"))
 				{
 					
-					tempOrder.setState("8");
+					tempOrder.setState("0");
 					complete = false;
 				}
 				
@@ -701,9 +710,11 @@ public class OrderServiceImpl implements OrderService{
 				
 				//计算出两者间隔
 				Calendar cal = Calendar.getInstance();  
-			    cal.setTime(currentDate);  
-			    long time1 = cal.getTimeInMillis();               
+			   
 			    cal.setTime(nextDetail.getDeadline());  
+			    long time1 = cal.getTimeInMillis();
+			    
+			    cal.setTime(currentDate);
 			    long time2 = cal.getTimeInMillis();       
 			    long between_days=(time2-time1)/(1000*3600*24);  
 			    Integer days = (int) between_days;
@@ -997,5 +1008,102 @@ public class OrderServiceImpl implements OrderService{
 		msg.setUserID(order.getUserID());
 		msg.setMsgContent(str);
 		userDao.addMsg(msg);
+	}
+	
+	public void updateData(){
+		System.out.println("数据更新更新开始……");
+		//对所有的user的属性进行更新
+		
+		Date currentDate = new Date();
+		
+		//查找所有订单
+		List<OrderForm> orderList = orderDao.findAllOrders();
+		
+		//遍历订单
+		for(int i =0 ;i<orderList.size();++i){
+			OrderForm tempOrder = orderList.get(i);
+			//记录订单原本的状态
+			String oldState = tempOrder.getState();
+			if(oldState=="0"){
+				tempOrder.setState("1");//先将视作正常看待
+			}
+			List<OrderDetail> detailList = orderDao.findDetailByOrderID(tempOrder.getOrderID());
+			for(int j=0;j<detailList.size();++j){
+				OrderDetail tempDetail = detailList.get(j);
+				String detailState = tempDetail.getState();
+				if(tempDetail.getStagePayTime()==null)//这一期还未支付
+				{	
+					//计算出当前日期和期限的差几天
+					Calendar cal = Calendar.getInstance();  
+					cal.setTime(currentDate);
+				    long time1 = cal.getTimeInMillis();               
+				    cal.setTime(tempDetail.getDeadline()); 
+				    long time2 = cal.getTimeInMillis();       
+				    long between_days=(time2-time1)/(1000*3600*24);  
+				    Integer days = (int) between_days;
+				    if(days==7 ||((days<3)&&(days>0))){
+				    	User user = userDao.findByID(tempOrder.getUserID());
+				    	Message msg = new Message();
+						msg.setMsgClass("1");
+						msg.setMsgState("1");
+						msg.setMsgTitle("您的订单即将到期");
+						msg.setUserID(user.getUserID());
+						String content = user.getUserName()+",您好<br>您的订单"+tempOrder.getOrderID()+"的第"+tempDetail.getStageNo()+""+days+"天后就将逾期！<br>逾期后每天会产生一定的日利率，请您及时支付以免产生更多的费用。";
+						msg.setMsgContent(content);
+						userDao.addMsg(msg);
+				    }
+				    
+					boolean compareDate =  currentDate.after(tempDetail.getDeadline());
+					if(compareDate){	//如果当前时间超过了最后期限
+						tempDetail.setState("4");
+						tempOrder.setState("0");//设置为逾期
+						orderDao.updateOrderDetail(tempDetail);
+						orderDao.updateOrder(tempOrder);
+					}
+				}
+				orderDao.updateOrder(tempOrder);
+			}
+			
+		}
+		
+		List<User> userList = userDao.findAllUser();
+		for(int i =0 ;i<userList.size();++i){
+			User tempUser =userList.get(i);
+			//更新userOwe
+			Float owe =orderDao.sumAllOweByUserID(tempUser.getUserID());
+			if(owe==null){owe= (float) 0;}
+			tempUser.setUserOwe(owe);
+			
+			//更新userBadHistory
+			Integer bad =  updateUserBadHistory(tempUser.getUserID());
+			tempUser.setUserBadHistory(bad);
+			
+			//更新userCredit
+			Float paid = orderDao.sumAllPaidByUserID(tempUser.getUserID());
+			if(paid==null){
+				paid= (float) 0;
+			}
+			else{
+				Credit currentCredit=stageDao.findCreditByMinLevelUp(stageDao.findMaxCredit(paid));
+				Integer currentCreditID = currentCredit.getCreditID();
+				if(currentCreditID != tempUser.getUserCredit()){
+					tempUser.setUserCredit(currentCreditID);
+					Message msg = new Message();
+					msg.setMsgClass("1");
+					msg.setMsgState("1");
+					msg.setMsgTitle("您的用户信用等级已经提升");
+					msg.setUserID(tempUser.getUserID());
+					String content = tempUser.getUserName()+"，恭喜您！<br>由于您支付额度达到了"+currentCredit.getMinLevelUp()+"0元,所以您的信用等级已经提高！<br>您可以前往您的个人中心进行更加详细的查看！";
+					msg.setMsgContent(content);
+					userDao.addMsg(msg);
+				}
+			}
+			
+			//更新user
+			userDao.update(tempUser);
+		}
+		
+		//在控制台输出更新结束的提示信息
+		System.out.println("更新结束");
 	}
 }

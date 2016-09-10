@@ -23,6 +23,10 @@
         font-family: "Microsoft YaHei",Arial,Helvetica,sans-serif;
 	}
 	
+	body{
+		overflow-x:hidden;
+	}
+	
 	.header_container
 	{
 		width:auto;
@@ -648,6 +652,8 @@
 			money = Number(money).toFixed(2);
 			$(this).html(money);
 		});
+		$(".editBtn :eq(0)").hide();
+		$(".editBtn :eq(1)").hide();
 	});
 	
 	$(function(){

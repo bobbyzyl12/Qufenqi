@@ -55,7 +55,11 @@ public class GoodsServiceImpl implements GoodsService{
 			tempPack.setGoodsState(temp.getGoodsState());
 			Integer tempGoodsID = temp.getGoodsID();
 			tempPack.setGoodsStage(goodsDao.findAllStages(tempGoodsID));
-			tempPack.setGoodsPictureID(goodsDao.findPictureByGoodsID(tempGoodsID).getPictureID());
+			Integer picID = goodsDao.findPictureIDByGoodsID(tempGoodsID);
+			if(picID==null){
+				picID = 0;
+			}
+			tempPack.setGoodsPictureID(picID);
 			List<Tag> tempTagList = new ArrayList<Tag>();
 			
 			List<Tag> resList = goodsDao.findTagsByID(temp.getGoodsID());
@@ -95,8 +99,11 @@ public class GoodsServiceImpl implements GoodsService{
 			tempPack.setGoodsState(temp.getGoodsState());
 			Integer tempGoodsID = temp.getGoodsID();
 			tempPack.setGoodsStage(goodsDao.findAllStages(tempGoodsID));
-			tempPack.setGoodsPictureID(goodsDao.findPictureByGoodsID(tempGoodsID).getPictureID());
-			
+			Integer picID = goodsDao.findPictureIDByGoodsID(tempGoodsID);
+			if(picID==null){
+				picID = 0;
+			}
+			tempPack.setGoodsPictureID(picID);
 			List<Tag> tempTagList = new ArrayList<Tag>();
 			
 			List<Tag> resList = goodsDao.findTagsByID(temp.getGoodsID());
@@ -147,8 +154,11 @@ public class GoodsServiceImpl implements GoodsService{
 			tempPack.setGoodsState(temp.getGoodsState());
 			Integer tempGoodsID = temp.getGoodsID();
 			tempPack.setGoodsStage(goodsDao.findAllStages(tempGoodsID));
-			tempPack.setGoodsPictureID(goodsDao.findPictureByGoodsID(tempGoodsID).getPictureID());
-			
+			Integer picID = goodsDao.findPictureIDByGoodsID(tempGoodsID);
+			if(picID==null){
+				picID = 0;
+			}
+			tempPack.setGoodsPictureID(picID);
 			List<Tag> tempTagList = new ArrayList<Tag>();
 			
 			List<Tag> resList = goodsDao.findTagsByID(temp.getGoodsID());
@@ -231,7 +241,9 @@ public class GoodsServiceImpl implements GoodsService{
 		goodsPack.setGoodsState(goods.getGoodsState());
 		goodsPack.setGoodsTag(tagList);
 		goodsPack.setGoodsStage(goodsDao.findAllStages(goodsID));
-		goodsPack.setGoodsPictureID(goodsDao.findPictureByGoodsID(goodsID).getPictureID());
+		Integer picID =goodsDao.findPictureIDByGoodsID(goodsID);
+		if(picID==null){picID=0;}
+		goodsPack.setGoodsPictureID(picID);
 		return goodsPack;
 	}
 	

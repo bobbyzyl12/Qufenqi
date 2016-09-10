@@ -57,4 +57,8 @@ public interface OrderService {
 	public void rejectOrder(String reason,Integer orderID);
 	
 	public void passOrder(Integer orderID);
+	
+	public void updateData();
+	
+	public void updateUserOwe(Integer userID);
 }

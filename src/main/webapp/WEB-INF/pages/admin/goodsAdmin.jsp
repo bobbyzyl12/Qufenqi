@@ -23,6 +23,10 @@
         font-family: "Microsoft YaHei",Arial,Helvetica,sans-serif;
 	}
 	
+	body{
+		overflow:hidden;
+	}
+	
 	.header_container
 	{
 		width:auto;
@@ -896,7 +900,7 @@ $(function(){
 				    			}
 				    			
 				    			if($('#addCheckBox24').is(':checked')) {
-				    				tempStage = Number(18);
+				    				tempStage = Number(24);
 				    				$.ajax({
 					    				url: '${ctx}/goods/addStage',
 					    				type: 'POST',
@@ -906,7 +910,7 @@ $(function(){
 				    			}
 				    			
 				    			if($('#addCheckBox36').is(':checked')) {
-				    				tempStage = Number(18);
+				    				tempStage = Number(36);
 				    				$.ajax({
 					    				url: '${ctx}/goods/addStage',
 					    				type: 'POST',
@@ -1096,7 +1100,7 @@ $(function(){
 	            			$("#editCheckBox24").attr("checked","checked");
 	              			break;
 	            		case 36:
-	            			$("#editCheckBox24").attr("checked","checked");
+	            			$("#editCheckBox36").attr("checked","checked");
 	              			break;
             		}
             	};
@@ -1360,7 +1364,7 @@ $(function(){
 			    			}
 			    			
 			    			if($('#editCheckBox24').is(':checked')) {
-			    				tempStage = Number(18);
+			    				tempStage = Number(24);
 			    				$.ajax({
 				    				url: '${ctx}/goods/addStage',
 				    				type: 'POST',
@@ -1370,7 +1374,7 @@ $(function(){
 			    			}
 			    			
 			    			if($('#editCheckBox36').is(':checked')) {
-			    				tempStage = Number(18);
+			    				tempStage = Number(36);
 			    				$.ajax({
 				    				url: '${ctx}/goods/addStage',
 				    				type: 'POST',
@@ -1526,8 +1530,7 @@ function closeBg() {
 						<thead>
 							<tr>
 								<th width=50px>ID</th>
-  								<th width=100px>商品名</th>
-					  			<th width=150px>商品描述</th>
+  								<th width=200px>商品名</th>
 					  			<th width=120px>状态</th>
 					  			<th width=120px>品牌</th>
 					  			<th width=80px>所属分区</th>
@@ -1540,8 +1543,7 @@ function closeBg() {
 							<c:forEach items="${pageModel.datas}" var="goods">
 				             <tr class="infoTable">
 				          		<td>${goods.goodsID}</td>
-				  				<td>${goods.goodsName}</td>
-				  				<td><div style="height:20px;overflow:hidden;display:block;">${goods.goodsDescribe}</div></td>
+				  				<td><div style="height:20px;overflow:hidden;display:block;">${goods.goodsName}</div></td>
 				  				<td>
 				  					<c:choose>
 				    					<c:when test="${goods.goodsState == '1'}">
@@ -1552,7 +1554,7 @@ function closeBg() {
 				   						</c:when>
 									</c:choose>
 				  				</td>
-				  				<td>${goods.goodsBrand}</td>
+				  				<td><div style="height:20px;overflow:hidden;display:block;">${goods.goodsBrand}</div></td>
 				           		<td>${goods.goodsClass}</td>
 				           		<td style="padding:0px 5px 0px 5px">
 				  					<a href="#" class="btn editBtn" id="editBtn" title="${goods.goodsID}">修改</a>

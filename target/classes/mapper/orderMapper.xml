@@ -67,7 +67,7 @@
 	
 	<!--根据userID查找所有该user的所有order-->
 	<select id="selectOrderByUserID" parameterType="Integer" resultMap="orderFormMap">
-		select * from orderform where userID = #{userID} order by state
+		select * from orderform where userID = #{userID} and (state="1" or state ="3" or state="4" or state ="5" or state="6" or state="7" or state ="0") order by state
 	</select>
 	
 	<select id="findDetailByOrderID" parameterType="Integer" resultMap="orderDetailMap">
@@ -132,8 +132,12 @@
 	</update>
 	
 	<select id="findAllOrder" parameterType="PageModel" resultMap="orderFormMap">
-		select * from orderform
+		select * from orderform 
 		limit #{pagestart},#{pagesize}
+	</select>
+	
+	<select id="findAllOrders" resultMap="orderFormMap">
+		select * from orderform
 	</select>
 	
 	<select id="findAllOrderCount" resultType="Integer">
@@ -166,7 +170,7 @@
 	</select>
 	
 	<select id="countAllOverTimeByUserID" parameterType="Integer" resultType="Integer">
-		select count(*) from orderform where userID = #{userID} and (state ="8")
+		select count(*) from orderform where userID = #{userID} and (state ="0")
 	</select>
 	
 	<select id="countAllOthersByUserID" parameterType="Integer" resultType="Integer">
@@ -182,7 +186,7 @@
 	</select>
 	
 	<select id="sumAllOverTimePriceByUserID" parameterType="Integer" resultType="Float">
-		select sum(orderPrice) from orderform where userID = #{userID} and (state ="8")
+		select sum(orderPrice) from orderform where userID = #{userID} and (state ="0")
 	</select>
 	
 	<select id="sumAllOtherPriceByUserID" parameterType="Integer" resultType="Float">

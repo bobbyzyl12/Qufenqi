@@ -776,7 +776,14 @@ $(function(){
 						window.location.href='${ctx}/page/jumpToHomePage';
 					}
 					else if(msg=="oweTooMuch"){
-						alert("oweTooMuch");
+						var bh = $(".wrapper").height();
+					    var bw = $(".wrapper").width();
+					    $("#coverbg").css({
+					        height: bh,
+					        width: bw,
+					        display: "block"
+					    });
+					    $("#oweTooMuchDialog").show();
 					}
 				}
 			});
@@ -930,7 +937,10 @@ function closeBg() {
 		<a href="#" onclick="closeBg();"><button class="btn" style="width:120px;height:40px;font-size:18px;background-color:#fff;color:#666;border-color:#666;">取消</button></a>
 		</div>
 	</div>
-	
+	<div id="oweTooMuchDialog" class="dialog">
+  		<p class="dialog_msg">抱歉，您的欠款余额不足，请考虑删除部分商品！</p>
+  		<a href="#" onclick="closeBg();"><button class="btn" style="width:120px;">关闭</button></a>
+	</div>
 	<!-- 暂存数据用 -->
 	
 </body>

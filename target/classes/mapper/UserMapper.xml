@@ -42,6 +42,10 @@
 		limit #{pagestart},#{pagesize}
 	</select>
 	
+	<select id="findAllUser" resultMap="userMap">
+		select * from user where userState="1" or userState="2" or userState="3"
+	</select>
+	
 	<select id="findAllCount" parameterType="PageModel" resultType="Integer">
 	   select count(*) from user where userState="1" or userState="2" or userState="3"
 	</select>

@@ -726,140 +726,164 @@ function closeBg() {
 				</div>
 				<div class="puzzle_area">
 					<div class="puzzle_box small_box grid">
+						<a href="${ctx}/goods/goodsDetail?goodsID=2">
 						<figure class="effect-ming small">
-							<img src="${ctx}/img/watch.jpg" alt="watch"/>
+							<img src="${ctx}/img/goodsImg/2.jpg"/>
 							<figcaption>
 								<h2><span></span></h2>
-								<p style="padding:3px;font-size:16px;">天梭<br>T0636171603</p>
-								<p style="padding:1px;">￥4085.97</p>
-								<p style="padding:1px;">3期/6期/12期</p>
+								<p style="padding:3px;font-size:16px;">华为麦芒5</p>
+								<p style="padding:1px;">32G:￥2399.00</p>
+								<p style="padding:1px;">64G:￥2599.00</p>
+								<p style="padding:1px;"> 1期/3期/6期</p>
 							</figcaption>			
 						</figure>
+						</a>
 					</div>
 					<div class="puzzle_box small_box grid" style="left:140px;">
+						<a href="${ctx}/goods/goodsDetail?goodsID=36">
 						<figure class="effect-ming small">
-							<img src="${ctx}/img/camera.jpg" alt="camera"/>
+							<img src="${ctx}/img/goodsImg/22.jpg"/>
 							<figcaption>
 								<h2><span></span></h2>
-								<p style="padding:3px;font-size:16px;">佳能<br>EOS 80D</p>
-								<p style="padding:1px;font-size:12px;">￥8989.98</p>
-								<p style="padding:1px;">6期/12期/24期</p>
+								<p style="padding:3px;font-size:16px;">天梭机械男表</p>
+								<p style="padding:1px;font-size:12px;">￥12000.00</p>
+								<p style="padding:1px;">1期/12期/24期</p>
 							</figcaption>			
 						</figure>
+						</a>
 					</div>
 					<div class="puzzle_box small_box grid" style="left:280px;">
+						<a href="${ctx}/goods/goodsDetail?goodsID=40">
 						<figure class="effect-ming small">
-							<img src="${ctx}/img/bag.jpg" alt="bag"/>
+							<img src="${ctx}/img/goodsImg/35.jpg"/>
 							<figcaption>
 								<h2><span></span></h2>
-								<p style="padding:3px;font-size:16px;">TOM TAILOR<br>双肩包</p>
-								<p style="padding:1px;">￥498.08</p>
-								<p style="padding:1px;">3期</p>
+								<p style="padding:3px;font-size:16px;">飞利浦<br>4K智能电视</p>
+								<p style="padding:1px;">￥4999.00</p>
+								<p style="padding:1px;">1期/12期/36期</p>
 							</figcaption>			
 						</figure>
+						</a>
 					</div>
 					<div class="puzzle_box big_box grid" style="top:140px;">
+						<a href="${ctx}/goods/goodsDetail?goodsID=26">
 						<figure class="effect-ming big">
-							<img src="${ctx}/img/laptop.jpg" alt="laptop"/>
+							<img src="${ctx}/img/goodsImg/12.jpg"/>
 							<figcaption>
 								<h2><span></span></h2>
-								<p style="padding:0px;font-size:22px;">Dell X13系列</p>
-								<p>9350-3708：￥6988.98<br>
-								   9350-4708：￥8999.98
+								<p style="padding:0px;font-size:22px;">联想  Y50-70</p>
+								<p>4G 1TB：￥5199.00<br>
+								   8G 1TB：￥5499.00
 								</p>
-								<p>3期/6期/12期/24期</p>
+								<p>1期/6期/12期/18期</p>
 							</figcaption>			
 						</figure>
+						</a>
 					</div>
 					<div class="puzzle_box small_box grid" style="left:280px;top:140px;">
+						<a href="${ctx}/goods/goodsDetail?goodsID=44">
 						<figure class="effect-ming small">
-							<img src="${ctx}/img/earphone.jpg" alt="earphone"/>
+							<img src="${ctx}/img/goodsImg/66.jpg"/>
 							<figcaption>
 								<h2><span></span></h2>
-								<p style="padding:3px;font-size:16px;">森海塞尔<br>HD 598</p>
-								<p style="padding:1px;">￥1799.98</p>
-								<p style="padding:1px;">3期/6期</p>
+								<p style="padding:3px;font-size:16px;">巧克力优选礼盒</p>
+								<p style="padding:1px;">￥2259.00</p>
+								<p style="padding:1px;"> 1期/3期/6期</p>
 							</figcaption>			
 						</figure>
 					</div>
 					<div class="puzzle_box small_box grid" style="left:280px;top:280px;">
+						<a href="${ctx}/goods/goodsDetail?goodsID=45">
 						<figure class="effect-ming small">
-							<img src="${ctx}/img/wallpaper.jpg" alt="wallpaper"/>
+							<img src="${ctx}/img/goodsImg/50.jpg"/>
 							<figcaption>
 								<h2><span></span></h2>
-								<p style="padding:3px;font-size:16px;">本木壁纸<br>HS210101</p>
-								<p style="padding:1px;">￥158.06</p>
-								<p style="padding:1px;">3期/6期</p>
+								<p style="padding:3px;font-size:16px;">实木餐桌椅</p>
+								<p style="padding:1px;">￥8800.00</p>
+								<p style="padding:1px;"> 1期/6期/12期</p>
 							</figcaption>			
 						</figure>
+						</a>
 					</div>
 					<div class="puzzle_box big_box grid" style="left:420px;">
+						<a href="${ctx}/goods/goodsDetail?goodsID=19">
 						<figure class="effect-ming big">
-							<img src="${ctx}/img/phone.jpg" alt="phone"/>
+							<img src="${ctx}/img/goodsImg/5.jpg"/>
 							<figcaption>
 								<h2><span></span></h2>
-								<p style="padding:0px;font-size:22px;">iPhone Pro</p>
-								<p>32G:￥4088.98<br>
-									64G:￥5188.98
+								<p style="padding:0px;font-size:22px;">iPhone 6</p>
+								<p>16G:￥3699.00<br>
+									64G:￥4599.00
 								</p>
-								<p>3期/6期/12期/24期</p>
+								<p>1期/3期/6期/9期/12期/18期</p>
 							</figcaption>			
 						</figure>
+						</a>
 					</div>
 					<div class="puzzle_box small_box grid" style="left:420px;top:280px;">
+						<a href="${ctx}/goods/goodsDetail?goodsID=37">
 						<figure class="effect-ming small">
-							<img src="${ctx}/img/biscuit.jpg" alt="biscuit"/>
+							<img src="${ctx}/img/goodsImg/31.jpg"/>
 							<figcaption>
 								<h2><span></span></h2>
-								<p style="padding:3px;font-size:16px;">白色恋人</p>
-								<p style="padding:1px;">￥358.15</p>
-								<p style="padding:1px;">3期</p>
+								<p style="padding:3px;font-size:16px;">莱卡 <br>S(TYP007)</p>
+								<p style="padding:1px;">￥188800.00</p>
+								<p style="padding:1px;">1期/24期/36期 </p>
 							</figcaption>			
 						</figure>
+						</a>
 					</div>
 					<div class="puzzle_box small_box grid" style="left:560px;top:280px;">
+						<a href="${ctx}/goods/goodsDetail?goodsID=34">
 						<figure class="effect-ming small">
-							<img src="${ctx}/img/sofa.jpg" alt="sofa"/>
+							<img src="${ctx}/img/goodsImg/20.jpg"/>
 							<figcaption>
 								<h2><span></span></h2>
-								<p style="padding:3px;font-size:16px;">奥古拉<br>折叠沙发床</p>
-								<p style="padding:1px;">￥1189.18</p>
-								<p style="padding:1px;">3期/6期</p>
+								<p style="padding:3px;font-size:16px;">iPad Air</p>
+								<p style="padding:1px;">64G:￥3899.00</p>
+								<p style="padding:1px;">1期/6期/12期</p>
 							</figcaption>			
 						</figure>
+						</a>
 					</div>
 					<div class="puzzle_box small_box grid" style="left:700px;top:0px;">
+					<a href="${ctx}/goods/goodsDetail?goodsID=38">
 						<figure class="effect-ming small">
-							<img src="${ctx}/img/books.jpg" alt="books"/>
+							<img src="${ctx}/img/goodsImg/34.jpg"/>
 							<figcaption>
 								<h2><span></span></h2>
-								<p style="padding:3px;font-size:15px;">东野圭吾精选集</p>
-								<p style="padding:1px;">￥106.61</p>
-								<p style="padding:1px;">3期</p>
+								<p style="padding:3px;font-size:15px;">EOS 1DX <br>Mark II </p>
+								<p style="padding:1px;">￥39199.00</p>
+								<p style="padding:1px;">1期/12期/24期</p>
 							</figcaption>			
 						</figure>
+						</a>
 					</div>
 					<div class="puzzle_box small_box grid"" style="left:700px;top:140px;">
+					<a href="${ctx}/goods/goodsDetail?goodsID=46">
 						<figure class="effect-ming small">
-							<img src="${ctx}/img/pen.jpg" alt="pen"/>
+							<img src="${ctx}/img/goodsImg/68.jpg"/>
 							<figcaption>
 								<h2><span></span></h2>
-								<p style="padding:3px;font-size:15px;">凌美  恒星系列<br>L71笔尖</p>
-								<p style="padding:1px;">￥298.00</p>
-								<p style="padding:1px;">3期</p>
+								<p style="padding:3px;font-size:15px;">牦牛奶粉</p>
+								<p style="padding:1px;">￥12000.00</p>
+								<p style="padding:1px;"> 1期/6期/12期</p>
 							</figcaption>			
 						</figure>
+						</a>
 					</div>
-					<div class="puzzle_box small_box grid"" style="left:700px;top:280px;">		
+					<div class="puzzle_box small_box grid"" style="left:700px;top:280px;">
+						<a href="${ctx}/goods/goodsDetail?goodsID=47">
 						<figure class="effect-ming small">
-							<img src="${ctx}/img/hardDisk.jpg" alt="hardDisk"/>
+							<img src="${ctx}/img/goodsImg/87.jpg"/>
 							<figcaption>
 								<h2><span></span></h2>
-								<p style="padding:3px;font-size:15px;">希捷 移动硬盘<br>STDR1000103</p>
-								<p style="padding:0px;">1TB:￥367.71<br>2TB:￥534.88 </p>
-								<p style="padding:1px;">3期</p>
+								<p style="padding:3px;font-size:15px;">小牛皮手提包</p>
+								<p style="padding:0px;">￥12380.00</p>
+								<p style="padding:1px;"> 1期/12期/24期</p>
 							</figcaption>			
 						</figure>
+						</a>
 					</div>
 					
 				</div>

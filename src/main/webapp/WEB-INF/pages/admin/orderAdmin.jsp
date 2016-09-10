@@ -871,8 +871,8 @@ function closeBg() {
 						   				<c:when test="${order.state=='7'}">
 						       				<span name="7" style="color: #4db8ff;font-weight:700">支付完成</span>
 						   				</c:when>
-						   				<c:when test="${order.state=='8'}">
-						       				<span name="8" style="color: #red;font-weight:700">已逾期</span>
+						   				<c:when test="${order.state=='0'}">
+						       				<span name="0" style="color: #ff1a1a;font-weight:700">已逾期</span>
 						   				</c:when>
    										</c:choose>
 									</td>
@@ -882,7 +882,7 @@ function closeBg() {
 								<td>￥<span class="money">${order.orderPrice}</span></td>
 								<td>${order.orderStage}</td>
 								<td>${order.orderCredit}</td>
-								<td>${order.address}</td>
+								<td><div style="height:20px;overflow:hidden;display:block;">${order.address}</div></td>
 								<td>${order.reciever}</td>
 								<td>${order.phone}</td>
 				  				<td style="padding:0px 5px 0px 5px">
